@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 2,
+  "id": "03-hotteok-survivor",
+  "doc": "기술문서.md",
+  "title": "호떡 서바이버",
+  "tagline": "수많은 적과 탄환을 감당하기 위해 물리 엔진 대신 공간 분할 격자로 충돌을 직접 구현",
+  "cover": null,
+  "team": { "type": "solo", "size": "개인", "role": "기획·개발 전체 (수업 제공 풀·싱글톤 유틸 사용)" },
+  "meta": [
+    { "label": "장르", "value": "2D 탑다운 서바이버 (뱀서류)" },
+    { "label": "기간", "value": "2026.06 – 07" },
+    { "label": "인원", "value": "개인" },
+    { "label": "환경", "value": "Unity 6, C#" }
+  ],
+  "tags": ["Unity 6", "C#", "공간 분할 격자", "무한맵", "추상 클래스", "HashSet"],
+  "links": { "github": "", "video": "", "extra": [] },
+  "intent": { "text": "최적화를 직접 공부해 보고 싶었습니다. 뱀서류는 적과 탄환이 화면 가득 몰려나오는 장르라, 처음부터 많은 오브젝트를 어떻게 가볍게 처리할지를 중심에 두고 설계했습니다.", "verbatim": true },
+  "highlights": [
+    {
+      "title": "주변 9칸만 확인하는 공간 분할 격자",
+      "what": "화면 전체가 아니라 가까운 9칸에 있는 소수의 적과만 거리를 계산합니다.",
+      "how": "칸 좌표(`Vector2Int`)를 키로 그 칸의 오브젝트 목록을 값으로 두고, 제곱 거리와 반지름 합으로 원형 충돌을 판정하며 이미 맞힌 적은 `HashSet`으로 거릅니다.",
+      "why": "뱀서류는 적과 탄환이 대량으로 몰려나오기 때문에, 문제가 생기기 전에 미리 예상하고 물리 엔진 대신 격자 방향을 택했습니다.",
+      "section": "3.1 주변 9칸만 확인하는 공간 분할 격자",
+      "image": null
+    },
+    {
+      "title": "추상 클래스로 늘어나는 무기",
+      "what": "레벨업 때 랜덤으로 능력을 얻거나 강화하면, 강화 레벨만큼 풀에서 호떡을 꺼내 재사용합니다.",
+      "how": "탐색·충돌·사거리처럼 모든 호떡에 공통인 부분은 추상 클래스가 맡고, 각 호떡은 이동(Move)과 피해(SendDamage)만 구현합니다.",
+      "why": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.",
+      "section": "2.2 추상 클래스로 늘어나는 무기",
+      "image": null
+    },
+    {
+      "title": "끝없는 맵",
+      "what": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.",
+      "how": "플레이어와 1.5칸 넘게 멀어진 타일을 반대편 끝(3칸 너비)으로 옮기고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.",
+      "why": "",
+      "section": "3.2 끝없는 맵과 늘어나는 호떡",
+      "image": null
+    }
+  ],
+  "troubleshooting": [
+    {
+      "title": "재시작하면 호떡이 나가지 않음",
+      "problem": "재시작하면 호떡이 나가지 않음",
+      "cause": "파괴된 오브젝트 참조가 격자에 남아 있던 것이 원인이었습니다.",
+      "solution": "null 확인과 초기화로 먼저 막았습니다.",
+      "result": "",
+      "lesson": "근본적으로는 적이 비활성화될 때 격자에서 빠져야 한다는 걸 알게 됐습니다.",
+      "section": "5.2 트러블슈팅 — 재시작하면 호떡이 나가지 않음"
+    }
+  ],
+  "screenshots": [],
+  "retro": {
+    "section": "5. 회고",
+    "achieved": ["격자 기반 충돌, 무한맵, 호떡 3종과 시간에 따른 난이도 상승까지 한 판의 루프를 혼자 완성했습니다."],
+    "regrets": [
+      "효과를 수치로 확인하지 못함 — 예상만으로 방향을 잡았습니다.",
+      "격자 정리가 불완전함 — 적이 재배치·파괴될 때 칸에서 빠지지 않는 경우가 있습니다.",
+      "PoolingSystem의 책임이 많음 — 풀 관리, 적 재배치, 발사 일정까지 한 클래스가 맡습니다."
+    ],
+    "plans": [
+      "프로파일러로 격자 사용과 물리 사용의 프레임을 비교",
+      "OnDisable에서 칸 해제",
+      "역할별로 분리"
+    ]
+  },
+  "deck": {
+    "chapters": [
+      { "key": "overview", "title": "개요", "sectionPath": ["1. 개요"] },
+      { "key": "structure", "title": "시스템 구조", "sectionPath": ["2. 시스템 구조"] },
+      { "key": "features", "title": "핵심 기능", "sectionPath": ["3. 핵심 기능"] },
+      { "key": "tradeoffs", "title": "고민과 선택", "sectionPath": ["4. 고민과 선택"] },
+      { "key": "retro-ch", "title": "회고", "sectionPath": ["5. 회고"] }
+    ],
+    "slides": [
+      {
+        "key": "why", "chapter": "overview", "layout": "overview", "tab": "개요",
+        "title": { "text": "1.2 왜 만들었나", "verbatim": true },
+        "lead": { "text": "최적화를 직접 공부해 보고 싶었습니다.", "verbatim": true },
+        "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+        "points": [
+          { "label": "", "text": "뱀서류는 적과 탄환이 화면 가득 몰려나오는 장르라, 처음부터 많은 오브젝트를 어떻게 가볍게 처리할지를 중심에 두고 설계했습니다.", "verbatim": true }
+        ],
+        "visuals": []
+      },
+      {
+        "key": "loop", "chapter": "overview", "layout": "visual", "tab": "흐름",
+        "title": { "text": "1.3 게임 루프", "verbatim": true },
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.3 게임 루프"],
+        "points": [],
+        "visuals": [{ "kind": "mermaid", "n": 1, "fp": "flowchart LR" }]
+      },
+      {
+        "key": "grid", "chapter": "structure", "layout": "visual", "tab": "구조",
+        "title": { "text": "2.1 격자를 중심으로 모이는 충돌 판정", "verbatim": true },
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 격자를 중심으로 모이는 충돌 판정"],
+        "points": [
+          { "label": "", "text": "적과 돈다발은 자신이 속한 칸에 등록하고, 호떡과 플레이어는 자기 칸과 주변 8칸만 조회합니다.", "verbatim": true },
+          { "label": "", "text": "같은 격자를 공격 판정과 돈 줍기에 함께 씁니다.", "verbatim": true }
+        ],
+        "visuals": [{ "kind": "mermaid", "n": 1, "fp": "flowchart LR" }]
+      },
+      {
+        "key": "weapons", "chapter": "structure", "layout": "visual", "tab": "구조",
+        "title": { "text": "2.2 추상 클래스로 늘어나는 무기", "verbatim": true },
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 추상 클래스로 늘어나는 무기"],
+        "points": [
+          { "label": "", "text": "탐색·충돌·사거리처럼 모든 호떡에 공통인 부분은 추상 클래스가 맡고, 각 호떡은 이동(Move)과 피해(SendDamage)만 구현합니다.", "verbatim": true }
+        ],
+        "visuals": [{ "kind": "mermaid", "n": 1, "fp": "classDiagram" }]
+      },
+      {
+        "key": "grid-search", "chapter": "features", "layout": "code", "tab": "구현",
+        "title": { "text": "3.1 주변 9칸만 확인하는 공간 분할 격자", "verbatim": true },
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 주변 9칸만 확인하는 공간 분할 격자"],
+        "points": [
+          { "label": "칸은 Dictionary로", "text": "칸 좌표(Vector2Int)를 키로, 그 칸의 오브젝트 목록을 값으로 둡니다. 적은 칸이 바뀔 때만 다시 등록합니다.", "verbatim": true },
+          { "label": "검사 대상을 줄이기", "text": "화면 전체가 아니라 가까운 9칸에 있는 소수의 적과만 거리를 계산합니다.", "verbatim": true },
+          { "label": "제곱근 없는 거리 비교", "text": "실제 거리 대신 제곱 거리로 비교해 매 프레임 제곱근 계산을 피했습니다.", "verbatim": true },
+          { "label": "관통 호떡의 다단히트 방지", "text": "이미 맞힌 적은 HashSet에 기록해 같은 적을 여러 번 때리지 않습니다.", "verbatim": true }
+        ],
+        "visuals": [{ "kind": "code", "n": 1, "fp": "// ① 내 위치가 속한 칸 번호" }]
+      },
+      {
+        "key": "infinite-map", "chapter": "features", "layout": "code", "tab": "구현",
+        "title": { "text": "3.2 끝없는 맵과 늘어나는 호떡", "verbatim": true },
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.2 끝없는 맵과 늘어나는 호떡"],
+        "points": [
+          { "label": "", "text": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.", "verbatim": true },
+          { "label": "", "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.", "verbatim": true }
+        ],
+        "visuals": [{ "kind": "code", "n": 1, "fp": "// 플레이어와 1.5칸 넘게 멀어진 타일을" }]
+      },
+      {
+        "key": "hotteok-types", "chapter": "features", "layout": "full", "tab": "구현",
+        "title": { "text": "호떡 3종", "verbatim": true },
+        "lead": { "text": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.", "verbatim": true },
+        "sectionPath": ["3.2 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
+        "points": [],
+        "visuals": [{ "kind": "table", "n": 1, "fp": "호떡|동작" }]
+      },
+      {
+        "key": "physics-choice", "chapter": "tradeoffs", "layout": "full", "tab": "선택",
+        "title": { "text": "4.1 충돌 판정을 물리 엔진에 맡길 것인가", "verbatim": true },
+        "lead": { "text": "문제가 생기기 전에 미리 예상하고 물리 엔진 대신 격자 방향을 택했습니다.", "verbatim": true },
+        "sectionPath": ["4. 고민과 선택", "4.1 충돌 판정을 물리 엔진에 맡길 것인가"],
+        "points": [],
+        "visuals": [{ "kind": "table", "n": 1, "fp": "|콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)" }]
+      },
+      {
+        "key": "restart-bug", "chapter": "retro-ch", "layout": "problem", "tab": "문제 해결",
+        "title": { "text": "5.2 트러블슈팅 — 재시작하면 호떡이 나가지 않음", "verbatim": true },
+        "lead": null,
+        "sectionPath": ["5. 회고", "5.2 트러블슈팅 — 재시작하면 호떡이 나가지 않음"],
+        "points": [
+          { "label": "원인", "text": "파괴된 오브젝트 참조가 격자에 남아 있던 것이 원인이었습니다.", "verbatim": true },
+          { "label": "해결", "text": "null 확인과 초기화로 먼저 막았고", "verbatim": true },
+          { "label": "배운 점", "text": "근본적으로는 적이 비활성화될 때 격자에서 빠져야 한다는 걸 알게 됐습니다.", "verbatim": true }
+        ],
+        "visuals": []
+      }
+    ]
+  }
+}

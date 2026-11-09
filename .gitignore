@@ -13,3 +13,6 @@ Thumbs.db
 
 # Python 실행 캐시 (스킬의 점검 스크립트를 돌리면 생김)
 __pycache__/
+
+# 원본 플레이 영상 (편집본은 src/<폴더>/video/에 있음)
+Play Video/
