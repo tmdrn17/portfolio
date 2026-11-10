@@ -178,6 +178,7 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
 .fg-tag { padding: 1px 8px; border-radius: var(--pill); border: 1px solid var(--line-2); font-size: 12px; font-weight: 700; color: var(--muted); }
 .fg-t p:not(.fg-h) { margin-top: 8px; font-size: 14px; line-height: 1.6; color: var(--body); }
 .fg-t .fg-why { color: var(--muted); }
+.fr-t .f-int b { color: var(--accent); font-weight: 700; margin-right: .35em; }
 .fg-btns { margin-top: 20px; }
 
 /* ⑤ 한눈에 보기 */

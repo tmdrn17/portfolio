@@ -181,7 +181,7 @@
         <figcaption><span>${inline(capText(h.image.caption) || h.title)}</span></figcaption></figure>`;
     };
     // 화면은 그 기능과 같은 줄 왼쪽에(화면이 없는 기능은 빈 칸) — 그림이 다른 기능 옆으로 밀리지 않게
-    const rows = hl.map((h, i) => `<li data-fi="${i}">${shots.length ? `<div class="fr-s">${h.image?.src ? tile({ h, i }) : ''}</div>` : ''}<div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.what ? `<p>${inline(h.what)}</p>` : ''}</div>
+    const rows = hl.map((h, i) => `<li data-fi="${i}">${shots.length ? `<div class="fr-s">${h.image?.src ? tile({ h, i }) : ''}</div>` : ''}<div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.intent?.text ? `<p class="f-int"><b>${T('label.intent')}</b> ${inline(h.intent.text)}</p>` : ''}${h.what ? `<p>${inline(h.what)}</p>` : ''}</div>
       <div class="fr-a">${link({ href: PF.projectUrl(p.id, PF.deckSceneFor(p, h.section)), label: T('page.see-in-deck'), kind: 'page', cls: 'pill',
         attrs: `aria-label="${esc(PF.normTitle(h.title))} — ${T('page.see-in-deck')} (새 탭)"` })}</div></li>`).join('');
     const body = `<div class="fe noshot${shots.length ? ' rowshot' : ''}">
@@ -196,7 +196,7 @@
     const deck = (section, title) => link({ href: PF.projectUrl(p.id, PF.deckSceneFor(p, section)), label: T('page.see-in-deck'), kind: 'page', cls: 'pill',
       attrs: `aria-label="${esc(PF.normTitle(title))} — ${T('page.see-in-deck')} (새 탭)"` });
     const block = (h, i) => {
-      const head = `<ol class="flist"><li data-fi="${i}"><div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.what ? `<p>${inline(h.what)}</p>` : ''}${h.how ? `<p>${inline(h.how)}</p>` : ''}</div>
+      const head = `<ol class="flist"><li data-fi="${i}"><div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.intent?.text ? `<p class="f-int"><b>${T('label.intent')}</b> ${inline(h.intent.text)}</p>` : ''}${h.what ? `<p>${inline(h.what)}</p>` : ''}${h.how ? `<p>${inline(h.how)}</p>` : ''}</div>
         <div class="fr-a">${deck(h.section, h.title)}</div></li></ol>`;
       const m = h.method;
       const method = m && (m.title || (m.text || []).length) ? `<div class="fg-m"><div class="fr-t">${m.label ? `<p class="fk">${inline(m.label)}</p>` : ''}${m.title ? `<h4>${inline(m.title)}</h4>` : ''}

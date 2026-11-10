@@ -73,7 +73,7 @@ const DEFAULTS = {
   "page.nav-stack": "{page.stack}", "page.nav-projects": "프로젝트", "page.nav-contact": "연락처",
   "page.print-email": "이메일",
   "en.portfolio": "PORTFOLIO", "en.skills": "SKILLS", "en.project": "PROJECT", "en.contact": "CONTACT", "en.feature": "FEATURE",
-  "label.feature": "기능", "label.impl": "구현", "label.reason": "이유",
+  "label.intent": "의도", "label.feature": "기능", "label.impl": "구현", "label.reason": "이유",
 };
 async function loadStrings() {
   const s = { ...DEFAULTS };
@@ -258,7 +258,7 @@ function ProjectDetail({ p, S }) {
                 <div>
                   <h4 className="font-bold text-xl"><span className="accent mr-2" style={{ fontFamily: "var(--display)" }}>{String(i + 1).padStart(2, "0")}</span>{h.title}</h4>
                   <dl className="mt-3 space-y-3 text-[15px] leading-relaxed">
-                    {[["label.feature", h.what], ["label.impl", h.how], ["label.reason", h.why]].filter(x => x[1]).map(([k, v]) => (
+                    {[["label.intent", h.intent?.text], ["label.feature", h.what], ["label.impl", h.how], ["label.reason", h.why]].filter(x => x[1]).map(([k, v]) => (
                       <div key={k} className="grid grid-cols-[3rem_1fr] gap-2"><dt className="ink font-bold">{S[k]}</dt><dd>{v}</dd></div>
                     ))}
                   </dl>
