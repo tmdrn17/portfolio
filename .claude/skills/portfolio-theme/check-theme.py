@@ -45,6 +45,11 @@ def main(path):
 
     imports = re.findall(r'@import\s+url\(\s*["\']?([^"\')]+)["\']?\s*\)\s*;', src)
     rest = re.sub(r'@import\s+url\([^)]*\)\s*;', '', src)
+    # 다크 모드 블록(선택): 페이지의 라이트/다크 버튼(assets/mode.js)이 html에 data-mode="dark"를 붙이면 이 값이 :root를 덮음
+    darks = re.findall(r':root\[data-mode=["\']?dark["\']?\]\s*\{([^{}]*)\}', rest)
+    rest = re.sub(r':root\[data-mode=["\']?dark["\']?\]\s*\{[^{}]*\}', '', rest)
+    if len(darks) > 1:
+        errs.append(':root[data-mode="dark"] 블록은 하나만 둡니다')
     roots = re.findall(r':root\s*\{([^{}]*)\}', rest)
     leftover = re.sub(r':root\s*\{[^{}]*\}', '', rest).strip()
     if leftover:
@@ -111,8 +116,31 @@ def main(path):
     elif imports and disp in FONTS:
         errs.append(f'{disp}는 페이지가 이미 싣습니다 — @import를 지웁니다')
 
-    # 대비
     rows = []
+    check_contrast(T, C, ok_hex, rows, errs, notes)
+    if darks:
+        D = dict(T)
+        for k, v in re.findall(r'--t-([a-z0-9-]+)\s*:\s*([^;]+);', darks[0]):
+            if k not in KNOWN: errs.append(f'다크 블록: 모르는 손잡이 --t-{k}')
+            D[k] = v.strip()
+        for k in ('radius', 'pill', 'display', 'grad', 'badge'):
+            if k in D and D[k] != T.get(k): errs.append(f'다크 블록: --t-{k}는 모드마다 바꾸지 않습니다(색만 바꿈 — 발표 덱 배치가 모드에 따라 달라지지 않게)')
+        DC = {k: D.get(k, DEFAULT.get(k)) for k in COLOR_KEYS}
+        d_ok = all(DC[k] and re.fullmatch(r'#[0-9A-Fa-f]{6}', DC[k]) for k in COLOR_KEYS)
+        rows.append('  ── 다크 모드(:root[data-mode="dark"]) ──')
+        de, dn = [], []
+        check_contrast(D, DC, d_ok, rows, de, dn)
+        errs += [f'다크: {e}' for e in de]; notes += [f'다크: {n}' for n in dn]
+
+    print(f'테마 점검: {path}')
+    if rows:
+        print('대비(바탕 기준, ✓ 통과 · ✗ 고칠 것 · △ 참고)'); print('\n'.join(rows))
+    for e in errs: print(f'[고칠 것] {e}')
+    for n in notes: print(f'[참고] {n}')
+    print('통과' if not errs else f'고칠 것 {len(errs)}개')
+    return 1 if errs else 0
+
+def check_contrast(T, C, ok_hex, rows, errs, notes):
     def need(fg, bg, lo, label, hard=True):
         if not ok_hex: return
         r = contrast(C[fg] if fg in C else fg, C[bg] if bg in C else bg)
@@ -146,14 +174,6 @@ def main(path):
             notes.append('강조가 한 색(라벨 단색)인데 --t-accent-2·-3이 없습니다 — 지우면 짝 색이 선 끝·진행 막대에 보입니다. 강조색과 같은 값으로(rules.md §2-6)')
         if not dark and 'shadow' not in T:
             notes.append('밝은 바탕인데 --t-shadow가 없습니다 — 기본(rgb(0 0 0 / .8))은 밝은 바탕에서 너무 진합니다. rgb(20 22 30 / .16) 정도')
-
-    print(f'테마 점검: {path}')
-    if rows:
-        print('대비(바탕 기준, ✓ 통과 · ✗ 고칠 것 · △ 참고)'); print('\n'.join(rows))
-    for e in errs: print(f'[고칠 것] {e}')
-    for n in notes: print(f'[참고] {n}')
-    print('통과' if not errs else f'고칠 것 {len(errs)}개')
-    return 1 if errs else 0
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1] if len(sys.argv) > 1 else 'theme/theme.css'))

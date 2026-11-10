@@ -298,3 +298,7 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
   .ct-lk b { font-size: 11pt; }
   a { text-decoration: none; }
 }
+
+/* 라이트/다크 전환 버튼(assets/mode.js) — 머리 막대 [PDF로 저장] 왼쪽, 아이콘만 */
+.top .mode-btn { padding: 0; width: 34px; height: 34px; justify-content: center; flex: none; color: var(--muted); }
+.top .mode-btn svg { display: block; }

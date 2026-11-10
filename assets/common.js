@@ -142,7 +142,9 @@ const PF = (() => {
   }
   // theme/theme.css의 테마 손잡이(없으면 빈 글자)
   const themeVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  let lastAccent;                                                         // 라이트/다크 전환(assets/mode.js) 때 같은 강조색으로 다시 계산
   function applyTheme(hex) {
+    if (hex !== undefined) lastAccent = hex; else hex = lastAccent;
     const accent = themeVar('--t-accent');
     const t = themeTokens(isHex(accent) ? accent : hex, { bg: themeVar('--t-bg'), a2: themeVar('--t-accent-2'), a3: themeVar('--t-accent-3') });
     if (t) Object.entries(t).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));

@@ -56,6 +56,7 @@
           ${deckBtn}${ext.join('')}
           <span class="newtab-note">${T('ui.newtab')}</span>
         </nav>
+        <button type="button" class="mode-btn" data-mode-toggle></button>
       </div>
     </header>
     <div class="print-only print-urls"></div>

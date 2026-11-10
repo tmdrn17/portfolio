@@ -420,6 +420,7 @@
       ${opts.pptx ? `<button type="button" data-a="pptx" class="pf-pptx" title="${LH('ui.pptx-tip')}"><span class="l">${LH('ui.pptx')}</span><span class="s">${LH('ui.pptx-short')}</span></button>` : ''}
       <button type="button" data-a="help" aria-expanded="false" aria-controls="pf-hud-help" aria-label="저장 안내" title="저장 안내(PDF${opts.pptx ? '·PPTX' : ''})">?</button>
       <button type="button" data-a="view"><span class="l"></span><span class="s"></span></button>
+      <button type="button" class="pf-mode" data-mode-toggle></button>
       <button type="button" data-a="anyway" hidden>${LH('ui.print-anyway')}</button>
       ${isLocal ? '<span class="pf-hud-badge" role="img" hidden title="미리보기에서만 보이는 장면 배치 점검 결과(찾은 항목 수). 배포된 페이지·PDF에는 나오지 않습니다. 슬라이드에 &quot;내용이 잘렸습니다&quot; 띠가 있으면 그 장면의 글이 나온 파일(src/의 기술 문서)을 줄이거나 /portfolio-edit로 장면을 나누고 /portfolio-build를 다시 실행하세요."></span>' : ''}
       <span class="pf-hud-msg" role="status" aria-live="polite"></span>

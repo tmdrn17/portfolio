@@ -138,6 +138,7 @@
     root.innerHTML = `<header class="top no-print"><div class="wrap top-in">
         <a class="top-name" href="#cover">${esc(nameT)}</a>
         <nav aria-label="절 이동"><ul>${nav.map(([id, label]) => `<li><a href="#${esc(id)}">${esc(label)}</a></li>`).join('')}</ul></nav>
+        <button type="button" class="btn mode-btn" data-mode-toggle></button>
         <button type="button" class="btn primary pdf" data-pdf>${T('ui.pdf')}</button></div></header>
       <main id="main">${out.join('')}</main>`;
     root.querySelectorAll('img').forEach((i) => { if (!i.hasAttribute('loading')) i.loading = 'lazy'; i.decoding = 'async'; });

@@ -302,3 +302,13 @@ dialog.lightbox::backdrop { background: rgba(10, 11, 14, .82); }
 .md.print-probe table { font-size: 9pt; }
 .md.print-probe :is(th, td) { padding: 4pt 6pt; white-space: normal; overflow-wrap: break-word; }
 .md.print-probe :is(th, td) a { overflow-wrap: anywhere; }
+
+/* 라이트/다크 전환 버튼(assets/mode.js) — 머리 막대 오른쪽 끝, 휴대폰에서도 보임(.head-nav가 접혀도) */
+.mode-btn { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; flex: none;
+            width: 34px; height: 34px; margin-left: auto; border: 1px solid var(--line-2); border-radius: var(--pill, 999px);
+            color: var(--muted); cursor: pointer; transition: color .15s, border-color .15s; }
+.head-nav + .mode-btn { margin-left: 0; }
+.mode-btn:hover { color: var(--accent-ink); border-color: var(--accent-ink); }
+.mode-btn:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.mode-btn svg { display: block; }
+@media print { .mode-btn { display: none !important; } }
