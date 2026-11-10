@@ -27,10 +27,15 @@
 > 근거를 찾지 못한 기술은 싣지 않고, 점검 리포트로 알려 줍니다. 비워 두면 문서에서 자동으로 고릅니다.
 
 - Unity (2020.3 ~ Unity 6), C#
-- Animator Blend Tree, AnimationCurve, StateMachineBehaviour 신호
-- Coroutine, UniTask, DOTween
-- TSV 데이터 테이블, JsonUtility 세이브
-- Git · GitHub · Fork — 기능 단위 브랜치, 씬·프리팹 충돌 해결
+- Animator Blend Tree, AnimationCurve
+- FSM · 디자인 패턴 (상태 · 전략 · 추상 클래스)
+- 최적화 · ObjectPool · 충돌 직접 구현 (공간 분할 격자, 거리 판정)
+- 2D 물리 · 래그돌 제어
+- UniTask, DOTween
+- TSV 데이터 테이블
+- 절차적 생성 (레벨 · 무한맵)
+- Git · Fork — 기능 단위 브랜치, 씬·프리팹 충돌 해결
+- AI 활용 (Claude) · Blender — 카메라 초안 검수, 에디터 툴 · 에셋 파이프라인
 
 ## 페이지 설정
 

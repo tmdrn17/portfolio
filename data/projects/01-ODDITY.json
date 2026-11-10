@@ -8,7 +8,7 @@
   "team": {
     "type": "team",
     "size": "4인",
-    "role": "플레이어 이동·구르기·피격 반응, 플레이어 애니메이터, 미션 시스템, UI 입력 잠금, BGM·사운드, 에디터 툴"
+    "role": "플레이어 이동·구르기·피격 반응, 플레이어 애니메이터, 3인칭 카메라(기본 구조·상황별 전환), 미션 시스템, UI 입력 잠금, BGM·사운드, 에디터 툴"
   },
   "meta": [
     {
@@ -48,9 +48,9 @@
   "highlights": [
     {
       "title": "애니메이션 진행도를 따라 움직이는 커브 기반 구르기",
-      "what": "애니메이션 진행도에 맞춰 이동하고, 커브로 구르는 도중 속도를 바꾸는 구르기",
-      "how": "총 거리는 `rollDistance`로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정하며, 애니메이션이 끝나기 조금 앞(기본 80%)에서 이동을 멈춥니다.",
-      "why": "사용한 구르기 애니메이션에는 루트 모션이 없어, 이동을 코드로 만들되 애니메이션과 어긋나지 않도록 '애니메이션 진행도'를 기준으로 삼는 쪽을 택했습니다.",
+      "what": "애니메이션 진행도에 맞춰 이동하고, 커브로 구르는 도중 속도를 바꿈",
+      "how": "애니메이션이 끝나는 부분보다 조금 앞(기본 80%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다. 총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.",
+      "why": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다. 그래서 이동을 코드로 만들되, 애니메이션과 어긋나지 않도록 '애니메이션 진행도'를 기준으로 삼는 쪽을 택했습니다.",
       "section": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기",
       "image": {
         "src": "images/roll_dodge.gif",
@@ -62,7 +62,7 @@
     {
       "title": "피격 종류와 방향을 애니메이터에 맡기는 피격 반응",
       "what": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.",
-      "how": "코드는 '어떤 반응인지' 번호만 넘기고 실제 모션은 Blend Tree가 고르며, 앞뒤는 공격자 방향과 캐릭터 정면의 내적 부호로 판정합니다.",
+      "how": "코드는 '어떤 반응인지' 번호만 넘기고 실제 모션은 Blend Tree가 고릅니다. 앞인지 뒤인지만 알면 되므로 각도를 계산하지 않고 내적의 부호만 봤습니다.",
       "why": "피격 모션을 추가해도 코드 분기가 늘지 않습니다.",
       "section": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응",
       "image": {
@@ -74,9 +74,9 @@
     },
     {
       "title": "결과를 enum으로 돌려주는 데이터 기반 미션 시스템",
-      "what": "missions.tsv → MissionTable → 수락 목록(최대 3개, 씬이 바뀌어도 유지) → 출격으로 이어지는 미션 시스템",
-      "how": "TSV 데이터를 `MissionTable`이 DTO → `MissionDef`로 변환해 보상 테이블·아이콘과 연결하고, `AddMission`은 실패 이유를 enum으로 돌려줍니다.",
-      "why": "미션이 계속 추가·수정될 구조라 ScriptableObject보다 표 하나에서 관리·확장하기 편한 TSV 데이터 테이블을 택했습니다.",
+      "what": "missions.tsv → MissionTable(DTO → MissionDef 변환, 보상 테이블·아이콘 연결) → 수락 목록(최대 3개, 씬이 바뀌어도 유지) → 출격",
+      "how": "UI가 결과에 따라 '이미 수락한 미션', '목록이 가득 참' 같은 메시지를 골라 띄울 수 있습니다. 수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.",
+      "why": "팀장님이 처음 TSV를 제안했고, 미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.",
       "section": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템",
       "image": null
     }
@@ -287,37 +287,6 @@
         ]
       },
       {
-        "key": "aim-zoom",
-        "chapter": "structure",
-        "layout": "visual",
-        "tab": "구현",
-        "title": {
-          "text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"
-        ],
-        "points": [],
-        "visuals": [
-          {
-            "kind": "image",
-            "src": "images/aim_zoom.gif",
-            "w": 560,
-            "h": 315,
-            "caption": {
-              "text": "물체를 조준하고 오른쪽 마우스를 누르는 동안 카메라 줌인",
-              "verbatim": true
-            }
-          }
-        ]
-      },
-      {
         "key": "mission-flow",
         "chapter": "structure",
         "layout": "full",
@@ -492,7 +461,7 @@
           "verbatim": true
         },
         "lead": {
-          "text": "미션 UI 전체를 코드로 조립하는 MissionUIBuilder와 로비 자동 배치 툴도 만들어 반복 작업을 줄였습니다.",
+          "text": "미션 UI 전체를 코드로 조립하는 MissionUIBuilder와 로비 자동 배치 툴도 AI(Claude)로 만들어 반복 작업을 줄였습니다.",
           "verbatim": true
         },
         "sectionPath": [
@@ -516,6 +485,87 @@
             "kind": "code",
             "n": 1,
             "fp": "public AddMissionResult AddMission(MissionDef missionDef)"
+          }
+        ]
+      },
+      {
+        "key": "aim-zoom",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "구현",
+        "title": {
+          "text": "3.4 상황에 따라 바뀌는 3인칭 카메라",
+          "verbatim": true
+        },
+        "lead": null,
+        "sectionPath": [
+          "3. 핵심 기능",
+          "3.4 상황에 따라 바뀌는 3인칭 카메라"
+        ],
+        "points": [
+          {
+            "label": "",
+            "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.",
+            "verbatim": true
+          },
+          {
+            "label": "",
+            "text": "카메라의 첫 버전은 AI(Claude)가 만든 초안이었습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/aim_zoom.gif",
+            "w": 560,
+            "h": 315,
+            "caption": {
+              "text": "물체를 조준하고 오른쪽 마우스를 누르는 동안 카메라 줌인",
+              "verbatim": true
+            }
+          }
+        ]
+      },
+      {
+        "key": "camera-code",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {
+          "text": "3.4 상황에 따라 바뀌는 3인칭 카메라",
+          "verbatim": true
+        },
+        "lead": {
+          "text": "검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했고, 필요한 기능이라고 판단해 남겼습니다.",
+          "verbatim": true
+        },
+        "sectionPath": [
+          "3. 핵심 기능",
+          "3.4 상황에 따라 바뀌는 3인칭 카메라"
+        ],
+        "points": [
+          {
+            "label": "선 대신 공으로 벽 검사",
+            "text": "SphereCast는 카메라 크기만큼의 공으로 검사해 이를 막고, 충돌 대상은 LayerMask로 지정합니다.",
+            "verbatim": true
+          },
+          {
+            "label": "상황별 카메라 전환",
+            "text": "물체를 잡고 있을 때는 다른 피벗 · 거리로, 달릴 때는 카메라가 더 뒤로 물러나도록 목표 값을 바꿉니다.",
+            "verbatim": true
+          },
+          {
+            "label": "FPS와 관계없는 보간",
+            "text": "1 - e^(-속도 × deltaTime)을 보간 비율로 써서, 프레임이 달라도 같은 빠르기로 목표에 다가갑니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "code",
+            "n": 1,
+            "fp": "private Vector3 UpdatePosition()"
           }
         ]
       },

@@ -18,17 +18,17 @@
       "name": "Unity · C#",
       "evidence": [
         {
-          "text": "Unity 6로 보스 레이드의 구르기·피격 조작과 미션 시스템 구현",
+          "text": "Unity 6로 보스 레이드의 플레이어 조작·미션 시스템 구현",
           "project": "01-ODDITY"
         },
         {
-          "text": "Unity 2023.1로 3D 크라우드 러너를 혼자 제작, 2026년 리팩터링 중",
+          "text": "Unity 2023.1로 3D 크라우드 러너를 혼자 제작·리팩터링",
           "project": "05-AnimalRun"
         }
       ]
     },
     {
-      "name": "Animator · AnimationCurve",
+      "name": "Animator · Blend Tree · AnimationCurve",
       "evidence": [
         {
           "text": "AnimationCurve로 애니메이션 진행도를 따르는 구르기 이동",
@@ -37,6 +37,45 @@
         {
           "text": "Blend Tree로 피격 종류·방향별 모션 선택, 넉다운·기상 애니메이터 구성",
           "project": "01-ODDITY"
+        }
+      ]
+    },
+    {
+      "name": "FSM · 디자인 패턴",
+      "evidence": [
+        {
+          "text": "기존 물고기 FSM(IFishState)에 납치·복귀·해마 상태를 추가",
+          "project": "02-WeGotOne"
+        },
+        {
+          "text": "추상 클래스로 공통 판정을 묶고 호떡은 Move·SendDamage만 구현",
+          "project": "03-hotteok-survivor"
+        },
+        {
+          "text": "delegate 생성기 목록으로 수식 문 유형을 고르는 전략 패턴",
+          "project": "05-AnimalRun"
+        }
+      ]
+    },
+    {
+      "name": "최적화 · ObjectPool · 충돌 직접 구현",
+      "evidence": [
+        {
+          "text": "공간 분할 격자로 주변 9칸만 검사, 제곱 거리로 원형 충돌",
+          "project": "03-hotteok-survivor"
+        },
+        {
+          "text": "이동 선분과 적의 거리로 총알 명중 판정, 총알은 ObjectPool",
+          "project": "05-AnimalRun"
+        }
+      ]
+    },
+    {
+      "name": "2D 물리 · 래그돌 제어",
+      "evidence": [
+        {
+          "text": "납치 중 래그돌 Rigidbody2D를 Kinematic으로 고정 후 복원",
+          "project": "02-WeGotOne"
         }
       ]
     },
@@ -67,6 +106,19 @@
       ]
     },
     {
+      "name": "절차적 생성 (레벨 · 무한맵)",
+      "evidence": [
+        {
+          "text": "목표 플레이 시간에 맞춰 청크를 이어 붙이는 레벨 생성",
+          "project": "05-AnimalRun"
+        },
+        {
+          "text": "배경 타일 9장을 옮겨 쓰는 끝없는 맵",
+          "project": "03-hotteok-survivor"
+        }
+      ]
+    },
+    {
       "name": "Git · Fork",
       "evidence": [
         {
@@ -76,14 +128,18 @@
       ]
     },
     {
-      "name": "에디터 툴 · 자동화",
+      "name": "AI 활용 (Claude) · Blender",
       "evidence": [
         {
-          "text": "미션 UI를 코드로 조립하는 MissionUIBuilder와 로비 자동 배치 툴",
+          "text": "Claude 카메라 초안을 검수해 SphereCast 충돌 보정을 남김",
           "project": "01-ODDITY"
         },
         {
-          "text": "RunnerPrefabBuilder로 블렌더 동물 모델 → 러너 프리팹·미리보기 캡처 자동화",
+          "text": "미션 UI 조립·로비 자동 배치 에디터 툴을 Claude로 제작",
+          "project": "01-ODDITY"
+        },
+        {
+          "text": "블렌더 동물 모델 → 러너 프리팹 파이프라인에 Claude 사용",
           "project": "05-AnimalRun"
         }
       ]
