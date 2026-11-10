@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>포트폴리오</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/montserrat@5.2.8/latin-800.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+<!-- 기존 페이지(index.html)와 같은 테마: theme/theme.css의 손잡이(--t-*)를 그대로 씀 -->
+<link rel="stylesheet" href="../theme/theme.css">
+<style>
+  :root {
+    --bg: var(--t-bg, #fff); --surface: var(--t-surface, #F3F5F4);
+    --ink: var(--t-ink, #0B3D2E); --body: var(--t-body, #222); --muted: var(--t-muted, #5F6670);
+    --line: var(--t-line, #D7DED9); --line-2: var(--t-line-2, #B7CFC4);
+    --accent: var(--t-accent, #2E6B57);
+    --radius: var(--t-radius, 12px); --pill: var(--t-pill, 8px);
+    --display: var(--t-display, 'Montserrat'), 'Pretendard', sans-serif;
+  }
+  html, body { background: var(--bg); color: var(--body); font-family: Pretendard, system-ui, sans-serif; word-break: keep-all; }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4, .ink { color: var(--ink); }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); }
+  .line { border-color: var(--line); }
+  .eyebrow { font-family: var(--display); font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+
+  /* 탭 */
+  .tab { color: var(--ink); transition: background .15s; }
+  .tab:hover { background: var(--surface); }
+  .tab[aria-selected="true"] { background: var(--accent) !important; color: #fff; }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+
+  /* 카드 · 버튼 · 태그 */
+  .card { display: block; width: 100%; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .15s, border-color .15s; }
+  .card:hover { transform: translateY(-2px); border-color: var(--line-2); }
+  .card[aria-expanded="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .btn { display: inline-flex; align-items: center; padding: 9px 16px; border-radius: var(--pill); font-weight: 700; font-size: 14px; border: 1px solid var(--line-2); color: var(--ink); background: var(--bg); }
+  .btn:hover { border-color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip { display: inline-block; padding: 1px 8px; border: 1px solid var(--line-2); border-radius: var(--pill); font-size: 12px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .chip:hover { border-color: var(--accent); }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .ext { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-2); color: var(--ink); }
+  .ext:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* 그림 틀: 한 프로젝트 안의 그림·GIF는 모두 같은 크기의 틀에, 가운데 맞춤(잘리지 않게) */
+  .media { position: relative; width: 100%; aspect-ratio: var(--media-ratio, 16 / 9); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .media img { width: 100%; height: 100%; object-fit: contain; }
+  .media a { display: contents; }
+  figure figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+
+  .fade { animation: fade .25s ease-out; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
+
+// ── 문구 표(theme/strings.tsv): 맨 끝 "내 문구" 칸이 있으면 그 문구, 없으면 기본 문구 ──
+const DEFAULTS = {
+  "name.portfolio": "포트폴리오", "name.deck": "발표 덱", "name.doc": "상세 기술문서",
+  "name.video": "시연 영상", "name.role": "내 역할", "name.intent": "개발 의도",
+  "name.team": "팀 프로젝트", "name.solo": "개인 프로젝트",
+  "page.stack": "기술 스택", "page.stack-note": "근거 프로젝트와 함께", "page.features": "기능 소개",
+  "page.nav-stack": "{page.stack}", "page.nav-projects": "프로젝트", "page.nav-contact": "연락처",
+  "page.print-email": "이메일",
+  "en.portfolio": "PORTFOLIO", "en.skills": "SKILLS", "en.project": "PROJECT", "en.contact": "CONTACT", "en.feature": "FEATURE",
+  "label.feature": "기능", "label.impl": "구현", "label.reason": "이유",
+};
+async function loadStrings() {
+  const s = { ...DEFAULTS };
+  try {
+    const r = await fetch('../theme/strings.tsv');
+    if (r.ok) {
+      const txt = (await r.text()).replace(/^﻿/, '');
+      for (const line of txt.split(/\r?\n/)) {
+        if (!line || line.startsWith('#')) continue;
+        const c = line.split('\t');
+        if (c.length < 3 || !/^[a-z]+\.[\w-]+$/.test(c[0])) continue;
+        s[c[0]] = (c[3] || '').trim() || c[2];
+      }
+    }
+  } catch (e) {}
+  const resolve = (v, d = 0) => d > 5 ? v : v.replace(/\{([a-z]+\.[\w-]+)\}/g, (m, k) => s[k] != null ? resolve(s[k], d + 1) : m);
+  const out = {};
+  for (const k in s) out[k] = resolve(s[k]);
+  return out;
+}
+
+const img = (id, src) => `../src/${id}/${src}`;
+
+// 프로젝트 카드에만 쓰는 이미지(대표 이미지가 카드 틀에서 잘리는 프로젝트). 경로는 custom/ 기준
+const CARD_IMAGE = {
+  "05-AnimalRun": { src: "images/animal_run_icon.jpg", position: "50% 30%" },
+};
+
+// 기능 하나에 더 붙일 그림(그 프로젝트 screenshots[]에 있는 src만). 키 = 기능 제목(highlights[].title)
+const FEATURE_IMAGES = {
+  "01-ODDITY": {
+    "피격 종류와 방향을 애니메이터에 맡기는 피격 반응": ["images/animator_knockdown_blendtree.png", "images/animator_event_sender.png"],
+  },
+  "05-AnimalRun": {
+    "상점 대신 게임 시작 시 동물 · 무기 선택": ["images/augment_select.gif"],
+  },
+};
+
+// 아래 그림 모음을 보이지 않을 프로젝트(그림은 기능 소개 안에서만)
+const NO_GALLERY = new Set(["02-WeGotOne"]);
+
+// 기능의 그림 목록: 기능 그림 + 덧붙인 그림(같은 src는 한 번만)
+function featureImages(p, h) {
+  const extra = (FEATURE_IMAGES[p.id]?.[h.title] || []).map(src => (p.screenshots || []).find(s => s.src === src)).filter(Boolean);
+  const list = [h.image, ...extra].filter(Boolean);
+  return list.filter((m, i) => list.findIndex(x => x.src === m.src) === i);
+}
+
+// 이 프로젝트의 그림이 대부분 세로형이면 세로 틀, 아니면 16:9 틀
+function mediaRatio(p) {
+  const list = [...(p.highlights || []).map(h => h.image).filter(Boolean), ...(p.screenshots || [])].filter(m => m.w && m.h);
+  const portrait = list.filter(m => m.h > m.w).length;
+  return list.length && portrait * 2 > list.length ? "3 / 4" : "16 / 9";
+}
+
+function Media({ id, m }) {
+  return (
+    <figure>
+      <div className="media">
+        <a href={img(id, m.src)} target="_blank" rel="noopener" title="원본 크기로 보기">
+          <img src={img(id, m.src)} alt={m.caption || ""} loading="lazy" />
+        </a>
+      </div>
+      {m.caption && <figcaption>{m.caption}</figcaption>}
+    </figure>
+  );
+}
+
+function Ext({ href, children, className = "" }) {
+  if (!href) return null;
+  return <a href={href} target="_blank" rel="noopener" className={"ext inline-flex items-center gap-1 " + className}>{children}<span aria-hidden="true">↗</span></a>;
+}
+
+// ── 패널: 링크 ──
+function LinksPanel({ profile, projects, S }) {
+  const own = [];
+  if (profile.github) own.push({ label: "GitHub", url: profile.github });
+  (profile.links || []).forEach(l => l && l.url && own.push({ label: l.label || l.url, url: l.url }));
+  const rows = projects.map(p => {
+    const items = [];
+    if (p.links?.github) items.push({ label: "GitHub", url: p.links.github });
+    if (p.links?.video) items.push({ label: S["name.video"], url: p.links.video });
+    (p.links?.extra || []).forEach(x => x && x.url && items.push({ label: x.label || x.url, url: x.url }));
+    return { p, items };
+  }).filter(r => r.items.length);
+  return (
+    <div className="fade">
+      {own.length > 0 && (
+        <ul className="flex flex-wrap gap-x-8 gap-y-3 text-lg mb-10">
+          {own.map(l => <li key={l.url}><Ext href={l.url}>{l.label}</Ext></li>)}
+        </ul>
+      )}
+      <ul className="divide-y line border-y">
+        {rows.map(({ p, items }) => (
+          <li key={p.id} className="line py-4 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+            <span className="ink font-bold sm:w-48 shrink-0">{p.title}</span>
+            <span className="flex flex-wrap gap-x-6 gap-y-1">
+              {items.map(l => <Ext key={l.url} href={l.url}>{l.label}</Ext>)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ── 패널: 기술 스택 ──
+function StackPanel({ skills, titles, onProject, S }) {
+  return (
+    <div className="fade">
+      <div className="flex items-baseline justify-between gap-4 mb-6">
+        <p className="eyebrow">{S["en.skills"]}</p>
+        <p className="text-sm muted">{S["page.stack-note"]}</p>
+      </div>
+      <ul className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+        {skills.map(s => (
+          <li key={s.name} className="border-t line pt-4">
+            <h3 className="font-bold text-lg mb-2">{s.name}</h3>
+            <ul className="space-y-2 text-[15px] leading-relaxed">
+              {(s.evidence || []).map((e, i) => (
+                <li key={i}>
+                  {e.text}
+                  {e.project && titles[e.project] && (
+                    <button onClick={() => onProject(e.project)} className="chip ml-2 align-[1px]">{titles[e.project]}</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ── 패널: 프로젝트 (목록 → 누르면 아래에 자세히) ──
+function ProjectDetail({ p, S }) {
+  const team = p.team ? (p.team.type === "solo" ? S["name.solo"] : S["name.team"]) : "";
+  const ratio = mediaRatio(p);
+  const portrait = ratio !== "16 / 9";
+  // 아래 그림 모음: 기능 소개에 이미 나온 그림은 빼고(중복 없이)
+  const used = new Set((p.highlights || []).flatMap(h => [...featureImages(p, h), ...(h.items || []).map(it => it.image).filter(Boolean)].map(m => m.src)));
+  const gallery = NO_GALLERY.has(p.id) ? [] : (p.screenshots || []).filter(s => !used.has(s.src));
+  return (
+    <article className="fade border-t line pt-10 mt-10" id={"p-" + p.id} style={{ "--media-ratio": ratio }}>
+      <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] items-start">
+        {p.cover && (
+          <div className="media" style={{ "--media-ratio": "16 / 9" }}>
+            <img src={img(p.id, p.cover)} alt={p.title} />
+          </div>
+        )}
+        <div>
+          <p className="eyebrow">{team}</p>
+          <h2 className="text-3xl font-extrabold mt-2">{p.title}</h2>
+          <p className="mt-3 leading-relaxed">{p.tagline}</p>
+          <dl className="panel mt-6 p-5 grid grid-cols-[4.5rem_1fr] gap-y-2 text-[15px]">
+            {(p.meta || []).map(m => (<React.Fragment key={m.label}><dt className="muted">{m.label}</dt><dd className="ink">{m.value}</dd></React.Fragment>))}
+            {p.team?.role && <><dt className="muted">{S["name.role"]}</dt><dd className="ink">{p.team.role}</dd></>}
+          </dl>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <a href={`../project.html?p=${encodeURIComponent(p.id)}`} className="btn primary">{S["name.deck"]}</a>
+            <a href={`../doc.html?p=${encodeURIComponent(p.id)}`} className="btn">{S["name.doc"]}</a>
+            {p.links?.video && <a href={p.links.video} target="_blank" rel="noopener" className="btn">{S["name.video"]}</a>}
+            {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn">GitHub</a>}
+          </div>
+        </div>
+      </div>
+
+      {p.intent?.text && (
+        <section className="mt-12">
+          <p className="eyebrow">{S["name.intent"]}</p>
+          <p className="ink mt-2 text-lg leading-relaxed max-w-3xl">{p.intent.text}</p>
+        </section>
+      )}
+
+      {(p.highlights || []).length > 0 && (
+        <section className="mt-12">
+          <p className="eyebrow mb-4">{S["page.features"]}</p>
+          <ol className="space-y-10">
+            {p.highlights.map((h, i) => { const ims = featureImages(p, h); const many = ims.length > 1; return (
+              <li key={i} className={"grid gap-6 lg:gap-10 border-t line pt-6 items-start " + (ims.length === 1 ? (portrait ? "md:grid-cols-[1fr_260px]" : "md:grid-cols-[1fr_440px]") : "")}>
+                <div>
+                  <h4 className="font-bold text-xl"><span className="accent mr-2" style={{ fontFamily: "var(--display)" }}>{String(i + 1).padStart(2, "0")}</span>{h.title}</h4>
+                  <dl className="mt-3 space-y-3 text-[15px] leading-relaxed">
+                    {[["label.feature", h.what], ["label.impl", h.how], ["label.reason", h.why]].filter(x => x[1]).map(([k, v]) => (
+                      <div key={k} className="grid grid-cols-[3rem_1fr] gap-2"><dt className="ink font-bold">{S[k]}</dt><dd>{v}</dd></div>
+                    ))}
+                  </dl>
+                  {h.method && (h.method.title || (h.method.text || []).length > 0) && (
+                    <div className="mt-6 rounded-[var(--radius)] border line p-5" style={{ borderLeft: "3px solid var(--accent)", background: "var(--surface)" }}>
+                      {h.method.label && <p className="eyebrow">{h.method.label}</p>}
+                      {h.method.title && <h5 className="ink font-bold text-lg mt-1">{h.method.title}</h5>}
+                      <div className="mt-2 space-y-1.5 text-[15px] leading-relaxed">
+                        {(h.method.text || []).map((x, k) => <p key={k}>{x}</p>)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {ims.length === 1 && <Media id={p.id} m={ims[0]} />}
+                {many && (
+                  <div className={"grid gap-x-5 gap-y-6 items-start " + (portrait ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : "sm:grid-cols-2 lg:grid-cols-3")}>
+                    {ims.map(m => <Media key={m.src} id={p.id} m={m} />)}
+                  </div>
+                )}
+                {(h.items || []).length > 0 && (
+                  <ul className="grid gap-5 sm:grid-cols-2">
+                    {h.items.map((it, j) => (
+                      <li key={j} className="rounded-[var(--radius)] border line overflow-hidden" style={{ background: "var(--bg)" }}>
+                        {it.image && (
+                          <div className="media" style={{ borderRadius: 0, border: 0, borderBottom: "1px solid var(--line)" }}>
+                            <a href={img(p.id, it.image.src)} target="_blank" rel="noopener" title="원본 크기로 보기">
+                              <img src={img(p.id, it.image.src)} alt={it.image.caption || it.title || ""} loading="lazy" />
+                            </a>
+                          </div>
+                        )}
+                        <div className="p-4">
+                          <p className="flex items-center gap-2 flex-wrap">
+                            <span className="accent font-bold" style={{ fontFamily: "var(--display)" }}>{String(j + 1).padStart(2, "0")}</span>
+                            <strong className="ink text-lg">{it.title}</strong>
+                            {it.tag && <span className="text-xs font-bold border line rounded-full px-2 py-0.5">{it.tag}</span>}
+                          </p>
+                          {it.what && <p className="mt-2 text-[15px] leading-relaxed">{it.what}</p>}
+                          {it.why && <p className="mt-1.5 text-[14px] leading-relaxed opacity-75">{it.why}</p>}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ); })}
+          </ol>
+        </section>
+      )}
+
+      {gallery.length > 0 && (
+        <section className="mt-12 border-t line pt-6">
+          <div className={"grid gap-x-5 gap-y-8 items-start " + (portrait ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : "sm:grid-cols-2 lg:grid-cols-3")}>
+            {gallery.map(s => <Media key={s.src} id={p.id} m={s} />)}
+          </div>
+        </section>
+      )}
+    </article>
+  );
+}
+
+function ProjectsPanel({ projects, openId, setOpenId, S }) {
+  const open = projects.find(p => p.id === openId);
+  return (
+    <div className="fade">
+      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {projects.map((p, i) => {
+          const ci = CARD_IMAGE[p.id];
+          const src = ci ? ci.src : (p.cover ? img(p.id, p.cover) : "");
+          return (
+            <li key={p.id}>
+              <button onClick={() => setOpenId(openId === p.id ? null : p.id)} aria-expanded={openId === p.id} className="card">
+                {src && <img src={src} alt="" className="w-full aspect-video object-cover border-b line" style={{ objectPosition: ci?.position || "50% 50%" }} />}
+                <div className="p-4">
+                  <p className="eyebrow">{S["en.project"]} {String(i + 1).padStart(2, "0")}</p>
+                  <p className="ink font-bold text-lg mt-1">{p.title}</p>
+                  <p className="text-sm mt-1 leading-snug line-clamp-2">{p.tagline}</p>
+                </div>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      {open && <ProjectDetail p={open} S={S} />}
+    </div>
+  );
+}
+
+// ── 페이지 ──
+function App() {
+  const [data, setData] = useState(null);
+  const [err, setErr] = useState("");
+  const [tab, setTab] = useState("projects");   // 처음 열면 프로젝트 칸이 눌려 있음
+  const [openId, setOpenId] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const S = await loadStrings();
+        const pf = await (await fetch('../data/portfolio.json')).json();
+        const projects = await Promise.all((pf.projects || []).map(id => fetch(`../data/projects/${id}.json`).then(r => r.json())));
+        document.title = [pf.profile?.name, S["name.portfolio"]].filter(Boolean).join(" · ");
+        setData({ pf, projects, S });
+        // 주소(#links · #stack · #projects · #p-<폴더>)로 바로 열기
+        const fromHash = () => {
+          const h = decodeURIComponent(location.hash.slice(1));
+          if (h.startsWith("p-") && projects.some(p => p.id === h.slice(2))) { setTab("projects"); setOpenId(h.slice(2)); }
+          else if (["links", "stack", "projects"].includes(h)) { setTab(h); setOpenId(null); }
+        };
+        fromHash();
+        window.addEventListener("hashchange", fromHash);
+      } catch (e) { setErr(String(e)); }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!data) return;
+    const h = tab === "projects" && openId ? "p-" + openId : (tab || "");
+    history.replaceState(null, "", h ? "#" + h : location.pathname + location.search);
+    if (openId) requestAnimationFrame(() => document.getElementById("p-" + openId)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }, [tab, openId, data]);
+
+  if (err) return <p className="p-8 text-red-600">데이터를 읽지 못했습니다. /portfolio-build를 먼저 실행해 주세요. ({err})</p>;
+  if (!data) return <p className="p-8 muted">불러오는 중…</p>;
+
+  const { pf, projects, S } = data;
+  const profile = pf.profile || {};
+  const titles = Object.fromEntries(projects.map(p => [p.id, p.title]));
+  const TABS = [
+    { id: "links", label: "GitHub · 영상 링크" },
+    { id: "stack", label: S["page.nav-stack"] },
+    { id: "projects", label: S["page.nav-projects"] },
+  ];
+  const goProject = id => { setTab("projects"); setOpenId(id); };
+
+  return (
+    <div className="min-h-screen">
+      <header className="border-b line">
+        <div className="grid md:grid-cols-[1fr_minmax(16rem,32%)]">
+          {/* 왼쪽: 이름 + 탭 */}
+          <div className="md:border-r line flex flex-col">
+            <div className="px-5 sm:px-10 pt-10 pb-8 flex-1">
+              <p className="eyebrow">{S["en.portfolio"]}</p>
+              <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mt-2">{profile.name}</h1>
+              {profile.nameEn && <p className="mt-2 text-lg accent" style={{ fontFamily: "var(--display)", fontWeight: 800 }}>{profile.nameEn}</p>}
+              {profile.headline && <p className="mt-4 text-lg">{profile.headline}</p>}
+            </div>
+            <nav role="tablist" aria-label="항목" className="grid grid-cols-3 border-t line">
+              {TABS.map((t, i) => (
+                <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => { setTab(tab === t.id ? null : t.id); if (t.id !== "projects") setOpenId(null); }}
+                  className={"tab px-3 sm:px-6 py-4 text-sm sm:text-base font-bold text-left " + (i > 0 ? "border-l line" : "")}>
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+          {/* 오른쪽: 연락처 */}
+          <aside className="px-5 sm:px-10 py-10 border-t md:border-t-0 line">
+            <p className="eyebrow">{S["en.contact"]}</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{S["page.nav-contact"]}</h2>
+            <dl className="mt-6 space-y-3 text-[15px]">
+              {profile.email && <div><dt className="muted text-sm">{S["page.print-email"]}</dt><dd><a href={"mailto:" + profile.email} className="ext break-all">{profile.email}</a></dd></div>}
+              {profile.github && <div><dt className="muted text-sm">GitHub</dt><dd><Ext href={profile.github} className="break-all">{profile.github.replace(/^https?:\/\//, "")}</Ext></dd></div>}
+            </dl>
+          </aside>
+        </div>
+      </header>
+
+      {/* 아래 빈 공간: 고른 항목이 여기에 */}
+      <main className="px-5 sm:px-10 py-12 max-w-7xl">
+        {tab === null && <p className="muted">위에서 항목을 골라 주세요.</p>}
+        {tab === "links" && <LinksPanel profile={profile} projects={projects} S={S} />}
+        {tab === "stack" && <StackPanel skills={pf.skills || []} titles={titles} onProject={goProject} S={S} />}
+        {tab === "projects" && <ProjectsPanel projects={projects} openId={openId} setOpenId={setOpenId} S={S} />}
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

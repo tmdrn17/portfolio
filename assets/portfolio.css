@@ -160,6 +160,25 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
         font-size: 13px; font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; transition: border-color .15s, background .15s, color .15s; }
 .pill:hover, li.on .pill { border-color: var(--accent-ink); background: var(--accent-soft); color: var(--accent-ink); }
 .fe-r .btns { margin-top: 20px; }
+/* 화면이 있는 기능 소개: 기능마다 한 줄에 화면 · 설명 · 버튼 */
+.rowshot .fr-s:empty { display: none; }
+.rowshot .shot-m img { max-height: 240px; }
+/* 묶음 기능(highlights[].items): 대단원 → 제작 방식 → 하위 항목 카드 */
+.fg + .fg { margin-top: 28px; }
+.fg-m { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 16px; padding: 20px 24px; background: var(--surface); border: 1px solid var(--line);
+        border-left: 3px solid var(--accent); border-radius: var(--radius); }
+.fg-m h4 { margin-top: 4px; font-size: 16px; font-weight: 800; line-height: 1.4; }
+.fg-m .fr-t p:not(.fk) { margin-top: 6px; font-size: 14.5px; line-height: 1.65; color: var(--body); }
+.fg-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+.fg-c { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.fg-c .shot-m { border-bottom: 1px solid var(--line); }
+.fg-c .shot-m img { max-height: 240px; }
+.fg-t { padding: 14px 16px 16px; }
+.fg-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 16px; }
+.fg-tag { padding: 1px 8px; border-radius: var(--pill); border: 1px solid var(--line-2); font-size: 12px; font-weight: 700; color: var(--muted); }
+.fg-t p:not(.fg-h) { margin-top: 8px; font-size: 14px; line-height: 1.6; color: var(--body); }
+.fg-t .fg-why { color: var(--muted); }
+.fg-btns { margin-top: 20px; }
 
 /* ⑤ 한눈에 보기 */
 .glance { border-top: 1px solid var(--line); }
@@ -204,6 +223,10 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
   .fe[style*="--shots:2"] .shot-m img { max-height: 280px; }
   .fe[style*="--shots:3"] .shot-m img, .fe[style*="--shots:4"] .shot-m img { max-height: 200px; }
   .flist li { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px; }
+  .rowshot .flist li { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto; }
+  .rowshot .fr-s:empty { display: block; }
+  .fg-m { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px; }
+  .fg-cards { grid-template-columns: 1fr 1fr; }
   .glance > li { grid-template-columns: 220px minmax(0, 1fr) 200px; gap: 32px; }
   .g-l { justify-content: flex-end; }
   .ct { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; }
@@ -279,11 +302,24 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
   .fe[style*="--shots:3"] .shot-m img, .fe[style*="--shots:4"] .shot-m img { max-height: 50mm; }
   .shot figcaption { padding: 4pt 8pt; font-size: 8.5pt; }
   .flist li { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10pt; padding: 8pt 10pt; }
+  .rowshot .flist li { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto; }
+  .rowshot .fr-s:empty { display: block; }
+  .rowshot .shot-m img { max-height: 48mm; }
   .flist h3 { font-size: 11pt; }
   .flist .fr-t p:not(.fk) { font-size: 9.5pt; }
   .fk { font-size: 7.5pt; }
   .pill { font-size: 8pt; padding: 3pt 8pt; }
   .shot.on, .flist li.on { box-shadow: none; background: none; border-color: var(--line); }
+  .fg-m { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10pt; margin-top: 8pt; padding: 8pt 10pt; break-inside: avoid; }
+  .fg-m h4 { font-size: 10.5pt; }
+  .fg-m .fr-t p:not(.fk) { font-size: 9pt; margin-top: 3pt; }
+  .fg-cards { grid-template-columns: 1fr 1fr; gap: 8pt; margin-top: 8pt; }
+  .fg-c { break-inside: avoid; }
+  .fg-c .shot-m img { max-height: 42mm; }
+  .fg-t { padding: 5pt 8pt 7pt; }
+  .fg-h { font-size: 10pt; }
+  .fg-tag { font-size: 7.5pt; }
+  .fg-t p:not(.fg-h) { font-size: 8.5pt; margin-top: 3pt; }
   .glance > li { grid-template-columns: 38mm minmax(0, 1fr) 34mm; gap: 10pt; padding: 8pt 0; }
   .g-t a { font-size: 11pt; }
   .g-b p { font-size: 9.5pt; }

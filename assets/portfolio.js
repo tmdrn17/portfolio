@@ -167,24 +167,51 @@
     return sec(`p-${p.id}`, no, p.title, PF.teamLabel(p.team), body, 'proj');
   }
 
-  // 기능 소개: 화면은 왼쪽(기능 번호와 함께), 기능 설명과 [발표 덱에서 보기]는 오른쪽 목록. 화면이 하나도 없으면 목록이 폭 전체
+  // 기능 소개: 기능마다 한 줄 — 화면(왼쪽) · 기능 설명 · [발표 덱에서 보기]. 화면이 하나도 없으면 화면 칸 없이
   function features(p, no, sec, btn) {
     const hl = (p.highlights || []).slice(0, 4);
     if (!hl.length) return '';
     const capText = (c) => (typeof c === 'string' ? c : c?.text || '');      // 그림 설명은 글 조각 또는 글자
+    if (hl.some((h) => Array.isArray(h.items) && h.items.length)) return sec(`p-${p.id}-core`, `${no} · ${t('page.features')}`, p.title, PF.teamLabel(p.team),
+      groupFeatures(p, hl, btn, capText), 'tint core');
     const shots = hl.map((h, i) => ({ h, i })).filter(({ h }) => h.image?.src);
-    const tiles = shots.map(({ h, i }) => {
+    const tile = ({ h, i }) => {
       const d = h.image.w && h.image.h ? ` width="${h.image.w}" height="${h.image.h}"` : '';
       return `<figure class="shot" data-fi="${i}"><div class="shot-m"><img src="${esc(PF.srcPath(p.id, h.image.src))}" alt="${esc(capText(h.image.caption) || h.title)}"${d}></div>
-        <figcaption><span class="n">${pad2(i + 1)}</span><span>${inline(capText(h.image.caption) || h.title)}</span></figcaption></figure>`;
-    }).join('');
-    const rows = hl.map((h, i) => `<li data-fi="${i}"><div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.what ? `<p>${inline(h.what)}</p>` : ''}</div>
+        <figcaption><span>${inline(capText(h.image.caption) || h.title)}</span></figcaption></figure>`;
+    };
+    // 화면은 그 기능과 같은 줄 왼쪽에(화면이 없는 기능은 빈 칸) — 그림이 다른 기능 옆으로 밀리지 않게
+    const rows = hl.map((h, i) => `<li data-fi="${i}">${shots.length ? `<div class="fr-s">${h.image?.src ? tile({ h, i }) : ''}</div>` : ''}<div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.what ? `<p>${inline(h.what)}</p>` : ''}</div>
       <div class="fr-a">${link({ href: PF.projectUrl(p.id, PF.deckSceneFor(p, h.section)), label: T('page.see-in-deck'), kind: 'page', cls: 'pill',
         attrs: `aria-label="${esc(PF.normTitle(h.title))} — ${T('page.see-in-deck')} (새 탭)"` })}</div></li>`).join('');
-    const body = `<div class="fe${shots.length ? '' : ' noshot'}" style="--shots:${shots.length}">${shots.length ? `<div class="shots">${tiles}</div>` : ''}
+    const body = `<div class="fe noshot${shots.length ? ' rowshot' : ''}">
       <div class="fe-r"><ol class="flist">${rows}</ol>
         <div class="btns end no-print">${btn(PF.projectUrl(p.id), T('page.deck-all'), 'page', 'btn primary')}${btn(PF.docUrl(p.id), T('name.doc'), 'page')}</div></div></div>`;
     return sec(`p-${p.id}-core`, `${no} · ${t('page.features')}`, p.title, PF.teamLabel(p.team), body, 'tint core');
+  }
+
+  // 묶음 기능(highlights[].items가 있을 때): 대단원 제목·설명 → 제작 방식(method) → 하위 항목 카드(화면 + 이름·구분·설명)
+  //   method: { label, title, text: [문장…], section } · items[]: { title, tag, what, why, image }  — 모든 글은 data 값 그대로
+  function groupFeatures(p, hl, btn, capText) {
+    const deck = (section, title) => link({ href: PF.projectUrl(p.id, PF.deckSceneFor(p, section)), label: T('page.see-in-deck'), kind: 'page', cls: 'pill',
+      attrs: `aria-label="${esc(PF.normTitle(title))} — ${T('page.see-in-deck')} (새 탭)"` });
+    const block = (h, i) => {
+      const head = `<ol class="flist"><li data-fi="${i}"><div class="fr-t"><p class="fk">${T('en.feature')} ${pad2(i + 1)}</p><h3>${inline(h.title)}</h3>${h.what ? `<p>${inline(h.what)}</p>` : ''}${h.how ? `<p>${inline(h.how)}</p>` : ''}</div>
+        <div class="fr-a">${deck(h.section, h.title)}</div></li></ol>`;
+      const m = h.method;
+      const method = m && (m.title || (m.text || []).length) ? `<div class="fg-m"><div class="fr-t">${m.label ? `<p class="fk">${inline(m.label)}</p>` : ''}${m.title ? `<h4>${inline(m.title)}</h4>` : ''}
+        ${(m.text || []).map((x) => `<p>${inline(x)}</p>`).join('')}</div>${m.section ? `<div class="fr-a">${deck(m.section, m.title || h.title)}</div>` : ''}</div>` : '';
+      const cards = (h.items || []).map((it, j) => {
+        const im = it.image?.src ? it.image : null;
+        const d = im && im.w && im.h ? ` width="${im.w}" height="${im.h}"` : '';
+        return `<li class="fg-c">${im ? `<div class="shot-m"><img src="${esc(PF.srcPath(p.id, im.src))}" alt="${esc(capText(im.caption) || it.title)}"${d} loading="lazy"></div>` : ''}
+          <div class="fg-t"><p class="fg-h"><span class="n">${pad2(j + 1)}</span><strong>${inline(it.title || '')}</strong>${it.tag ? `<span class="fg-tag">${inline(it.tag)}</span>` : ''}</p>
+          ${it.what ? `<p>${inline(it.what)}</p>` : ''}${it.why ? `<p class="fg-why">${inline(it.why)}</p>` : ''}</div></li>`;
+      }).join('');
+      return `<div class="fg">${head}${method}${cards ? `<ul class="fg-cards">${cards}</ul>` : ''}</div>`;
+    };
+    return `${hl.map(block).join('')}
+      <div class="btns end no-print fg-btns">${btn(PF.projectUrl(p.id), T('page.deck-all'), 'page', 'btn primary')}${btn(PF.docUrl(p.id), T('name.doc'), 'page')}</div>`;
   }
 
   function projLinks(p) {
