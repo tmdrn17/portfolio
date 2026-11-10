@@ -52,7 +52,12 @@
       "how": "대왕오징어는 촉수로 플레이어를 붙잡아 끌고 갔다가 놓아 주고, 갯가재는 펀치로 플레이어를 멀리 날려 버리며, 전기가오리는 감전시켜 잡고 있던 것을 놓치게 합니다. 해마는 손으로 잡으면 플레이어를 목적지까지 데려다 주어 대왕오징어의 납치에 대응하는 수단이 됩니다.",
       "why": "물고기를 잡고 버티는 기본 루프가 단조로워지지 않도록, 매번 다른 상황을 만드는 변수와 동료끼리 서로 도와야 하는 순간을 만들고 싶었습니다.",
       "section": "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를",
-      "image": null
+      "image": {
+        "src": "images/mantis_shrimp_card.gif",
+        "w": 480,
+        "h": 258,
+        "caption": "갯가재 — 펀치로 플레이어를 멀리 날려 버림"
+      }
     },
     {
       "title": "물고기 FSM에 특수 상태와 센서를 얹는 구조",
@@ -280,6 +285,82 @@
             "kind": "table",
             "n": 1,
             "fp": "물고기|그림|구분|동작|의도"
+          }
+        ]
+      },
+      {
+        "key": "fish-cards-1",
+        "chapter": "overview",
+        "layout": "screens",
+        "tab": "개요",
+        "title": {
+          "text": "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를",
+          "verbatim": true
+        },
+        "lead": null,
+        "sectionPath": [
+          "1. 개요",
+          "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/squid_card.gif",
+            "w": 480,
+            "h": 259,
+            "caption": {
+              "text": "대왕오징어 — 촉수로 플레이어를 붙잡아 끌고 갔다가 놓아 줌",
+              "verbatim": true
+            }
+          },
+          {
+            "kind": "image",
+            "src": "images/mantis_shrimp_card.gif",
+            "w": 480,
+            "h": 258,
+            "caption": {
+              "text": "갯가재 — 펀치로 플레이어를 멀리 날려 버림",
+              "verbatim": true
+            }
+          }
+        ]
+      },
+      {
+        "key": "fish-cards-2",
+        "chapter": "overview",
+        "layout": "screens",
+        "tab": "개요",
+        "title": {
+          "text": "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를",
+          "verbatim": true
+        },
+        "lead": null,
+        "sectionPath": [
+          "1. 개요",
+          "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/electric_ray_card.gif",
+            "w": 480,
+            "h": 259,
+            "caption": {
+              "text": "전기가오리 — 감전시켜 잡고 있던 것을 놓치게 하고 잠시 못 움직이게 함",
+              "verbatim": true
+            }
+          },
+          {
+            "kind": "image",
+            "src": "images/seahorse_card.gif",
+            "w": 480,
+            "h": 259,
+            "caption": {
+              "text": "해마 — 손으로 잡으면 플레이어를 목적지까지 데려다 줌",
+              "verbatim": true
+            }
           }
         ]
       },
