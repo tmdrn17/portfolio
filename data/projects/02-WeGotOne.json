@@ -4,7 +4,7 @@
   "doc": "기술문서.md",
   "title": "We Got One",
   "tagline": "잡기에 변수를 주고 협동을 끌어내는 특수 물고기 4종 — 세부 기획부터 구현까지",
-  "cover": "images/squid_card.gif",
+  "cover": "images/we_got_one_title.png",
   "team": {
     "type": "team",
     "size": "4인",

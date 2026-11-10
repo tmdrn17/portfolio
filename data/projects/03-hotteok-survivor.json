@@ -4,7 +4,7 @@
   "doc": "기술문서.md",
   "title": "호떡 서바이버",
   "tagline": "수많은 적과 탄환을 감당하기 위해 물리 엔진 대신 공간 분할 격자로 충돌을 직접 구현",
-  "cover": "images/gameplay.gif",
+  "cover": "images/hotteok_survivor_title.png",
   "team": {
     "type": "solo",
     "size": "개인",
@@ -66,7 +66,7 @@
       "title": "끝없는 맵",
       "what": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.",
       "how": "플레이어와 1.5칸 넘게 멀어진 타일을 반대편 끝(3칸 너비)으로 옮기고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.",
-      "why": "",
+      "why": "정적으로 커다란 맵보다 동적으로 계속 넓어지는 맵을 원했고, 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
       "section": "3.2 끝없는 맵과 늘어나는 호떡",
       "image": null
     }
@@ -88,6 +88,12 @@
       "w": 560,
       "h": 296,
       "caption": "레벨업 — 일반 · 팥 · 딸기 호떡 중 하나를 골라 획득 · 강화"
+    },
+    {
+      "src": "images/pat_hotteok.gif",
+      "w": 400,
+      "h": 225,
+      "caption": "팥 호떡 — 레벨업에서 골라 적을 관통"
     },
     {
       "src": "images/ddalgi_orbit.gif",
@@ -409,6 +415,16 @@
             "label": "",
             "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.",
             "verbatim": true
+          },
+          {
+            "label": "이유",
+            "text": "그래서 정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "이유",
+            "text": "또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
+            "verbatim": true
           }
         ],
         "visuals": [
@@ -448,7 +464,7 @@
       {
         "key": "ddalgi-orbit",
         "chapter": "features",
-        "layout": "visual",
+        "layout": "screens",
         "tab": "결과",
         "title": {
           "text": "호떡 3종",
@@ -461,12 +477,37 @@
         ],
         "points": [
           {
+            "label": "팥 호떡",
+            "text": "적을 관통. 이미 맞힌 적은 HashSet으로 걸러 다단히트 방지",
+            "verbatim": true
+          },
+          {
             "label": "딸기 호떡",
             "text": "플레이어 주위를 회전. 일정 시간 켜졌다 꺼지기를 반복하고, 다시 켜질 때 맞힌 기록을 비움",
             "verbatim": true
           }
         ],
         "visuals": [
+          {
+            "kind": "image",
+            "src": "images/pat_hotteok.gif",
+            "w": 400,
+            "h": 225,
+            "caption": {
+              "text": "팥 호떡 — 레벨업에서 골라 적을 관통",
+              "verbatim": true
+            }
+          },
+          {
+            "kind": "image",
+            "src": "images/ddalgi_hotteok.gif",
+            "w": 400,
+            "h": 225,
+            "caption": {
+              "text": "딸기 호떡 — 레벨업에서 골라 플레이어 주위를 회전",
+              "verbatim": true
+            }
+          },
           {
             "kind": "image",
             "src": "images/ddalgi_orbit.gif",

@@ -4,7 +4,7 @@
   "doc": "기술문서.md",
   "title": "애니멀 런 (가제)",
   "tagline": "수식 문을 골라 동물 무리를 늘리고, 무기로 적을 쓰러뜨리며 결승선까지 달리는 3D 크라우드 러너 — 개발 중",
-  "cover": "images/formula_gate.gif",
+  "cover": "images/animal_run_title.png",
   "team": {
     "type": "solo",
     "size": "1인",
@@ -472,6 +472,11 @@
           {
             "label": "",
             "text": "블렌더에서 만든 동물 모델은 에디터 툴(RunnerPrefabBuilder)이 머티리얼·애니메이터를 붙여 러너 프리팹으로 만들고, 미리보기 캡처까지 자동으로 처리합니다.",
+            "verbatim": true
+          },
+          {
+            "label": "이유",
+            "text": "데이터 테이블을 쓰면 동물·무기 같은 오브젝트를 관리하기 쉽고, 계속 추가하기도 쉬웠습니다.",
             "verbatim": true
           }
         ],
