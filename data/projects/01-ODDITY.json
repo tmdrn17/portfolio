@@ -42,7 +42,7 @@
     "extra": []
   },
   "intent": {
-    "text": "팀이 목표한 경험 — 염동력을 기반으로 여러 스킬을 활용해 보스를 상대하며, 보스 러시 장르 특유의 고난도 컨트롤을 경험하게 하고 싶었습니다.",
+    "text": "팀이 목표한 경험 — 염동력을 기반으로 여러 스킬을 활용해 보스를 상대하며, 보스 러시 장르 특유의 고난도 컨트롤을 경험하게 하고 싶었습니다.\n담당 기능 — 구르기, 피격 · 넉다운 반응, 3인칭 카메라, 미션 시스템, UI 입력 잠금 · 에디터 툴",
     "verbatim": true
   },
   "highlights": [
@@ -169,41 +169,11 @@
   },
   "deck": {
     "chapters": [
-      {
-        "key": "overview",
-        "title": "개요",
-        "sectionPath": [
-          "1. 개요"
-        ]
-      },
-      {
-        "key": "structure",
-        "title": "시스템 구조",
-        "sectionPath": [
-          "2. 시스템 구조"
-        ]
-      },
-      {
-        "key": "features",
-        "title": "핵심 기능",
-        "sectionPath": [
-          "3. 핵심 기능"
-        ]
-      },
-      {
-        "key": "tradeoffs",
-        "title": "고민과 선택",
-        "sectionPath": [
-          "4. 고민과 선택"
-        ]
-      },
-      {
-        "key": "retro-ch",
-        "title": "회고",
-        "sectionPath": [
-          "5. 회고"
-        ]
-      }
+      {"key": "overview", "title": "개요", "sectionPath": ["1. 개요"]},
+      {"key": "structure", "title": "시스템 구조", "sectionPath": ["2. 시스템 구조"]},
+      {"key": "features", "title": "핵심 기능", "sectionPath": ["3. 핵심 기능"]},
+      {"key": "tradeoffs", "title": "고민과 선택", "sectionPath": ["4. 고민과 선택"]},
+      {"key": "retro-ch", "title": "회고", "sectionPath": ["5. 회고"]}
     ],
     "slides": [
       {
@@ -211,43 +181,28 @@
         "chapter": "overview",
         "layout": "overview",
         "tab": "개요",
-        "title": {
-          "text": "1.2 왜 만들었나",
-          "verbatim": true
-        },
+        "title": {"text": "1.2 왜 만들었나", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "1. 개요",
-          "1.2 왜 만들었나"
-        ],
+        "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
         "points": [
           {
             "label": "팀이 목표한 경험",
             "text": "염동력을 기반으로 여러 스킬을 활용해 보스를 상대하며, 보스 러시 장르 특유의 고난도 컨트롤을 경험하게 하고 싶었습니다.",
             "verbatim": true
           },
-          {
-            "label": "담당 기능 의도",
-            "text": "보스의 공격을 구르기로 아슬아슬하게 피할 때의 쾌감을 플레이어가 느끼게 하고 싶었습니다.",
-            "verbatim": true
-          }
+          {"label": "담당 기능", "text": "구르기, 피격 · 넉다운 반응, 3인칭 카메라, 미션 시스템, UI 입력 잠금 · 에디터 툴", "verbatim": true}
         ],
-        "visuals": []
+        "visuals": [],
+        "edited": true
       },
       {
         "key": "why-parts",
         "chapter": "overview",
         "layout": "overview",
         "tab": "개요",
-        "title": {
-          "text": "1.2 왜 만들었나",
-          "verbatim": true
-        },
+        "title": {"text": "1.2 왜 만들었나", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "1. 개요",
-          "1.2 왜 만들었나"
-        ],
+        "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
         "points": [
           {
             "label": "구르기",
@@ -259,90 +214,67 @@
             "text": "쓰러진 채 무력하게 기다리는 시간을 줄여 플레이어가 빨리 다시 조작하도록 조기 기상을 넣고, 계속 쓰면 넉다운이 의미 없어지지 않도록 쿨타임을 두었습니다.",
             "verbatim": true
           },
+          {"label": "3인칭 카메라", "text": "달릴 때는 카메라가 뒤로 물러나 속도감을, 물체를 잡을 때는 다른 피벗 · 거리로 조준감을 주고 싶었습니다.", "verbatim": true}
+        ],
+        "visuals": [],
+        "edited": true
+      },
+      {
+        "key": "why-parts-2",
+        "chapter": "overview",
+        "layout": "overview",
+        "tab": "개요",
+        "title": {"text": "1.2 왜 만들었나", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+        "points": [
+          {"label": "미션 시스템", "text": "보스 러시 구조를 스킬인 증강칩 획득과 연결하기 위해 팀원들과 기획을 논의하며 만들었습니다.", "verbatim": true},
           {
-            "label": "3인칭 카메라",
-            "text": "달릴 때는 카메라가 뒤로 물러나 속도감을, 물체를 잡을 때는 다른 피벗 · 거리로 조준감을 주고 싶었습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "미션 시스템",
-            "text": "보스 러시 구조를 스킬인 증강칩 획득과 연결하기 위해 팀원들과 기획을 논의하며 만들었습니다.",
+            "label": "UI 입력 잠금 · 에디터 툴",
+            "text": "UI를 조작하는 중에 캐릭터가 움직이지 않도록 입력 잠금을 한 곳에 모았고, 미션 UI 조립 · 로비 배치 같은 반복 작업은 에디터 툴로 줄였습니다.",
             "verbatim": true
           }
         ],
-        "visuals": []
+        "visuals": [],
+        "edited": true
       },
       {
         "key": "loop",
         "chapter": "overview",
         "layout": "visual",
         "tab": "흐름",
-        "title": {
-          "text": "1.3 게임 루프",
-          "verbatim": true
-        },
+        "title": {"text": "1.3 게임 루프", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "1. 개요",
-          "1.3 게임 루프"
-        ],
+        "sectionPath": ["1. 개요", "1.3 게임 루프"],
         "points": [],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "flowchart LR"
-          }
-        ]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "player-arch",
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {
-          "text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다",
-          "verbatim": true
-        },
+        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"
-        ],
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
         "points": [
           {
             "label": "",
             "text": "Player는 스태미나와 애니메이션 종료 신호처럼 '판단'을, PlayerController는 이동·구르기·피격 모션처럼 '실행'을 맡도록 나눴습니다.",
             "verbatim": true
           },
-          {
-            "label": "",
-            "text": "UI가 열리면 UIManager 한 곳에서 입력을 잠그고, 이동·회전·구르기가 이 값을 확인합니다.",
-            "verbatim": true
-          }
+          {"label": "", "text": "UI가 열리면 UIManager 한 곳에서 입력을 잠그고, 이동·회전·구르기가 이 값을 확인합니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "flowchart LR"
-          }
-        ]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "anim-signal",
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {
-          "text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다",
-          "verbatim": true
-        },
+        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"
-        ],
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
         "points": [],
         "visuals": [
           {
@@ -350,10 +282,7 @@
             "src": "images/animator_event_sender.png",
             "w": 428,
             "h": 194,
-            "caption": {
-              "text": "AnimStateEventSender — 상태 진행률 0.95에서 EndHit 신호를 보냄",
-              "verbatim": true
-            }
+            "caption": {"text": "AnimStateEventSender — 상태 진행률 0.95에서 EndHit 신호를 보냄", "verbatim": true}
           }
         ]
       },
@@ -362,38 +291,20 @@
         "chapter": "structure",
         "layout": "full",
         "tab": "흐름",
-        "title": {
-          "text": "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다",
-          "verbatim": true
-        },
+        "title": {"text": "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다"
-        ],
+        "sectionPath": ["2. 시스템 구조", "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다"],
         "points": [],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "flowchart LR"
-          }
-        ]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "roll-demo",
         "chapter": "features",
         "layout": "visual",
         "tab": "결과",
-        "title": {
-          "text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기",
-          "verbatim": true
-        },
+        "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"
-        ],
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
         "points": [],
         "visuals": [
           {
@@ -401,10 +312,7 @@
             "src": "images/roll_dodge.gif",
             "w": 560,
             "h": 315,
-            "caption": {
-              "text": "보스의 공격 범위(빨간 표시)를 구르기로 빠져나와 회피",
-              "verbatim": true
-            }
+            "caption": {"text": "보스의 공격 범위(빨간 표시)를 구르기로 빠져나와 회피", "verbatim": true}
           }
         ]
       },
@@ -413,91 +321,50 @@
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기",
-          "verbatim": true
-        },
+        "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"
-        ],
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
         "points": [
           {
             "label": "끝나기 전에 먼저 멈춤",
             "text": "애니메이션이 끝나는 부분보다 조금 앞(기본 80%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다.",
             "verbatim": true
           },
-          {
-            "label": "거리와 속도 변화를 분리",
-            "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.",
-            "verbatim": true
-          },
+          {"label": "거리와 속도 변화를 분리", "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.", "verbatim": true},
           {
             "label": "블렌딩 중에도 정확한 진행도",
             "text": "다른 동작에서 구르기로 넘어가는 중에는 다음 상태의 진행도를 읽어, 시작 프레임이 끊기지 않게 했습니다.",
             "verbatim": true
           }
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "public float GetSpeedAt(float normalizedTime)"
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "public float GetSpeedAt(float normalizedTime)"}]
       },
       {
         "key": "hit-reaction",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응",
-          "verbatim": true
-        },
+        "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"
-        ],
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
         "points": [
           {
             "label": "모션 선택은 애니메이터에",
             "text": "코드는 '어떤 반응인지' 번호만 넘기고 실제 모션은 Blend Tree가 고릅니다. 피격 모션을 추가해도 코드 분기가 늘지 않습니다.",
             "verbatim": true
           },
-          {
-            "label": "내적 부호만으로 앞뒤 판정",
-            "text": "앞인지 뒤인지만 알면 되므로 각도를 계산하지 않고 내적의 부호만 봤습니다.",
-            "verbatim": true
-          }
+          {"label": "내적 부호만으로 앞뒤 판정", "text": "앞인지 뒤인지만 알면 되므로 각도를 계산하지 않고 내적의 부호만 봤습니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "int motionIndex;"
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "int motionIndex;"}]
       },
       {
         "key": "hit-animator",
         "chapter": "features",
         "layout": "visual",
         "tab": "구조",
-        "title": {
-          "text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"
-        ],
+        "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
+        "lead": {"text": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
         "points": [],
         "visuals": [
           {
@@ -505,20 +372,14 @@
             "src": "images/animator_hitreaction.png",
             "w": 1560,
             "h": 518,
-            "caption": {
-              "text": "HitReaction 상태 머신 — HitMotion 값에 따라 피격 모션 · Knockdown Blend Tree로 분기",
-              "verbatim": true
-            }
+            "caption": {"text": "HitReaction 상태 머신 — HitMotion 값에 따라 피격 모션 · Knockdown Blend Tree로 분기", "verbatim": true}
           },
           {
             "kind": "image",
             "src": "images/animator_knockdown_blendtree.png",
             "w": 1562,
             "h": 540,
-            "caption": {
-              "text": "Knockdown Blend Tree — HitDir 값(0 · 1)으로 앞 · 뒤 넉다운 모션 선택",
-              "verbatim": true
-            }
+            "caption": {"text": "Knockdown Blend Tree — HitDir 값(0 · 1)으로 앞 · 뒤 넉다운 모션 선택", "verbatim": true}
           }
         ]
       },
@@ -527,63 +388,30 @@
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "미션 UI 전체를 코드로 조립하는 MissionUIBuilder와 로비 자동 배치 툴도 AI(Claude)로 만들어 반복 작업을 줄였습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"
-        ],
+        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+        "lead": {"text": "미션 UI 전체를 코드로 조립하는 MissionUIBuilder와 로비 자동 배치 툴도 AI(Claude)로 만들어 반복 작업을 줄였습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
         "points": [
           {
             "label": "상황별 안내가 가능한 결과값",
             "text": "UI가 결과에 따라 '이미 수락한 미션', '목록이 가득 참' 같은 메시지를 골라 띄울 수 있습니다.",
             "verbatim": true
           },
-          {
-            "label": "목록 UI와 느슨한 연결",
-            "text": "수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.",
-            "verbatim": true
-          }
+          {"label": "목록 UI와 느슨한 연결", "text": "수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "public AddMissionResult AddMission(MissionDef missionDef)"
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "public AddMissionResult AddMission(MissionDef missionDef)"}]
       },
       {
         "key": "aim-zoom",
         "chapter": "features",
         "layout": "visual",
         "tab": "구현",
-        "title": {
-          "text": "3.4 상황에 따라 바뀌는 3인칭 카메라",
-          "verbatim": true
-        },
+        "title": {"text": "3.4 상황에 따라 바뀌는 3인칭 카메라", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.4 상황에 따라 바뀌는 3인칭 카메라"
-        ],
+        "sectionPath": ["3. 핵심 기능", "3.4 상황에 따라 바뀌는 3인칭 카메라"],
         "points": [
-          {
-            "label": "",
-            "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.",
-            "verbatim": true
-          },
-          {
-            "label": "",
-            "text": "카메라의 첫 버전은 AI(Claude)가 만든 초안이었습니다.",
-            "verbatim": true
-          }
+          {"label": "", "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.", "verbatim": true},
+          {"label": "", "text": "카메라의 첫 버전은 AI(Claude)가 만든 초안이었습니다.", "verbatim": true}
         ],
         "visuals": [
           {
@@ -591,10 +419,7 @@
             "src": "images/aim_zoom.gif",
             "w": 560,
             "h": 315,
-            "caption": {
-              "text": "물체를 조준하고 오른쪽 마우스를 누르는 동안 카메라 줌인",
-              "verbatim": true
-            }
+            "caption": {"text": "물체를 조준하고 오른쪽 마우스를 누르는 동안 카메라 줌인", "verbatim": true}
           }
         ]
       },
@@ -603,18 +428,9 @@
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "3.4 상황에 따라 바뀌는 3인칭 카메라",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했고, 필요한 기능이라고 판단해 남겼습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.4 상황에 따라 바뀌는 3인칭 카메라"
-        ],
+        "title": {"text": "3.4 상황에 따라 바뀌는 3인칭 카메라", "verbatim": true},
+        "lead": {"text": "검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했고, 필요한 기능이라고 판단해 남겼습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.4 상황에 따라 바뀌는 3인칭 카메라"],
         "points": [
           {
             "label": "선 대신 공으로 벽 검사",
@@ -632,104 +448,341 @@
             "verbatim": true
           }
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "private Vector3 UpdatePosition()"
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "private Vector3 UpdatePosition()"}]
       },
       {
         "key": "roll-choice",
         "chapter": "tradeoffs",
         "layout": "full",
         "tab": "선택",
-        "title": {
-          "text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "4. 고민과 선택",
-          "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"
-        ],
+        "title": {"text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
+        "lead": {"text": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
         "points": [],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "단계|방식|결과"
-          }
-        ]
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
       },
       {
         "key": "mission-data",
         "chapter": "tradeoffs",
         "layout": "full",
         "tab": "선택",
-        "title": {
-          "text": "4.2 미션 데이터를 무엇으로 관리할 것인가",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "4. 고민과 선택",
-          "4.2 미션 데이터를 무엇으로 관리할 것인가"
-        ],
+        "title": {"text": "4.2 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
+        "lead": {"text": "미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
         "points": [],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"
-          }
-        ]
+        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}]
       },
       {
         "key": "lesson",
         "chapter": "retro-ch",
         "layout": "overview",
         "tab": "결과",
-        "title": {
-          "text": "5.2 배운 점 — 판단은 상태를 가진 쪽이",
-          "verbatim": true
-        },
+        "title": {"text": "5.2 배운 점 — 판단은 상태를 가진 쪽이", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "5. 회고",
-          "5.2 배운 점 — 판단은 상태를 가진 쪽이"
-        ],
+        "sectionPath": ["5. 회고", "5.2 배운 점 — 판단은 상태를 가진 쪽이"],
         "points": [
-          {
-            "label": "문제",
-            "text": "처음에는 보스 공격 코드 안에서 플레이어가 무적인지를 직접 확인했습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "해결",
-            "text": "무적 조건이 늘 때마다 보스 코드를 고쳐야 했고, 이후 팀원이 이 판단을 맞는 쪽으로 옮기는 리팩터링을 진행했습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "배운 점",
-            "text": "이를 보며 의존 방향의 기준을 배웠습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "",
-            "text": "이 프로젝트에서는 데이터(TSV)로 시스템을 만들고, 애니메이터 설계와 에디터 툴로 작업을 자동화했습니다.",
-            "verbatim": true
-          }
+          {"label": "문제", "text": "처음에는 보스 공격 코드 안에서 플레이어가 무적인지를 직접 확인했습니다.", "verbatim": true},
+          {"label": "해결", "text": "무적 조건이 늘 때마다 보스 코드를 고쳐야 했고, 이후 팀원이 이 판단을 맞는 쪽으로 옮기는 리팩터링을 진행했습니다.", "verbatim": true},
+          {"label": "배운 점", "text": "이를 보며 의존 방향의 기준을 배웠습니다.", "verbatim": true},
+          {"label": "", "text": "이 프로젝트에서는 데이터(TSV)로 시스템을 만들고, 애니메이터 설계와 에디터 툴로 작업을 자동화했습니다.", "verbatim": true}
         ],
         "visuals": []
       }
-    ]
+    ],
+    "base": [
+      {
+        "key": "why",
+        "chapter": "overview",
+        "layout": "overview",
+        "tab": "개요",
+        "title": {"text": "1.2 왜 만들었나", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+        "points": [
+          {
+            "label": "팀이 목표한 경험",
+            "text": "염동력을 기반으로 여러 스킬을 활용해 보스를 상대하며, 보스 러시 장르 특유의 고난도 컨트롤을 경험하게 하고 싶었습니다.",
+            "verbatim": true
+          },
+          {"label": "담당 기능 의도", "text": "보스의 공격을 구르기로 아슬아슬하게 피할 때의 쾌감을 플레이어가 느끼게 하고 싶었습니다.", "verbatim": true}
+        ],
+        "visuals": []
+      },
+      {
+        "key": "why-parts",
+        "chapter": "overview",
+        "layout": "overview",
+        "tab": "개요",
+        "title": {"text": "1.2 왜 만들었나", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+        "points": [
+          {
+            "label": "구르기",
+            "text": "구르기 전후에 캐릭터가 미끄러지면 '피했다'는 느낌이 흐려지기 때문에, 애니메이션과 어긋나지 않고 입력한 만큼 정확히 굴러가는 조작을 목표로 했습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "피격 · 넉다운 반응",
+            "text": "쓰러진 채 무력하게 기다리는 시간을 줄여 플레이어가 빨리 다시 조작하도록 조기 기상을 넣고, 계속 쓰면 넉다운이 의미 없어지지 않도록 쿨타임을 두었습니다.",
+            "verbatim": true
+          },
+          {"label": "3인칭 카메라", "text": "달릴 때는 카메라가 뒤로 물러나 속도감을, 물체를 잡을 때는 다른 피벗 · 거리로 조준감을 주고 싶었습니다.", "verbatim": true},
+          {"label": "미션 시스템", "text": "보스 러시 구조를 스킬인 증강칩 획득과 연결하기 위해 팀원들과 기획을 논의하며 만들었습니다.", "verbatim": true}
+        ],
+        "visuals": []
+      },
+      {
+        "key": "loop",
+        "chapter": "overview",
+        "layout": "visual",
+        "tab": "흐름",
+        "title": {"text": "1.3 게임 루프", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.3 게임 루프"],
+        "points": [],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
+        "key": "player-arch",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
+        "points": [
+          {
+            "label": "",
+            "text": "Player는 스태미나와 애니메이션 종료 신호처럼 '판단'을, PlayerController는 이동·구르기·피격 모션처럼 '실행'을 맡도록 나눴습니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "UI가 열리면 UIManager 한 곳에서 입력을 잠그고, 이동·회전·구르기가 이 값을 확인합니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
+        "key": "anim-signal",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/animator_event_sender.png",
+            "w": 428,
+            "h": 194,
+            "caption": {"text": "AnimStateEventSender — 상태 진행률 0.95에서 EndHit 신호를 보냄", "verbatim": true}
+          }
+        ]
+      },
+      {
+        "key": "mission-flow",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "흐름",
+        "title": {"text": "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다"],
+        "points": [],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
+        "key": "roll-demo",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "결과",
+        "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/roll_dodge.gif",
+            "w": 560,
+            "h": 315,
+            "caption": {"text": "보스의 공격 범위(빨간 표시)를 구르기로 빠져나와 회피", "verbatim": true}
+          }
+        ]
+      },
+      {
+        "key": "roll-curve",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
+        "points": [
+          {
+            "label": "끝나기 전에 먼저 멈춤",
+            "text": "애니메이션이 끝나는 부분보다 조금 앞(기본 80%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다.",
+            "verbatim": true
+          },
+          {"label": "거리와 속도 변화를 분리", "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.", "verbatim": true},
+          {
+            "label": "블렌딩 중에도 정확한 진행도",
+            "text": "다른 동작에서 구르기로 넘어가는 중에는 다음 상태의 진행도를 읽어, 시작 프레임이 끊기지 않게 했습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "public float GetSpeedAt(float normalizedTime)"}]
+      },
+      {
+        "key": "hit-reaction",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
+        "points": [
+          {
+            "label": "모션 선택은 애니메이터에",
+            "text": "코드는 '어떤 반응인지' 번호만 넘기고 실제 모션은 Blend Tree가 고릅니다. 피격 모션을 추가해도 코드 분기가 늘지 않습니다.",
+            "verbatim": true
+          },
+          {"label": "내적 부호만으로 앞뒤 판정", "text": "앞인지 뒤인지만 알면 되므로 각도를 계산하지 않고 내적의 부호만 봤습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "int motionIndex;"}]
+      },
+      {
+        "key": "hit-animator",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
+        "lead": {"text": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/animator_hitreaction.png",
+            "w": 1560,
+            "h": 518,
+            "caption": {"text": "HitReaction 상태 머신 — HitMotion 값에 따라 피격 모션 · Knockdown Blend Tree로 분기", "verbatim": true}
+          },
+          {
+            "kind": "image",
+            "src": "images/animator_knockdown_blendtree.png",
+            "w": 1562,
+            "h": 540,
+            "caption": {"text": "Knockdown Blend Tree — HitDir 값(0 · 1)으로 앞 · 뒤 넉다운 모션 선택", "verbatim": true}
+          }
+        ]
+      },
+      {
+        "key": "mission-result",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+        "lead": {"text": "미션 UI 전체를 코드로 조립하는 MissionUIBuilder와 로비 자동 배치 툴도 AI(Claude)로 만들어 반복 작업을 줄였습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+        "points": [
+          {
+            "label": "상황별 안내가 가능한 결과값",
+            "text": "UI가 결과에 따라 '이미 수락한 미션', '목록이 가득 참' 같은 메시지를 골라 띄울 수 있습니다.",
+            "verbatim": true
+          },
+          {"label": "목록 UI와 느슨한 연결", "text": "수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "public AddMissionResult AddMission(MissionDef missionDef)"}]
+      },
+      {
+        "key": "aim-zoom",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "구현",
+        "title": {"text": "3.4 상황에 따라 바뀌는 3인칭 카메라", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.4 상황에 따라 바뀌는 3인칭 카메라"],
+        "points": [
+          {"label": "", "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.", "verbatim": true},
+          {"label": "", "text": "카메라의 첫 버전은 AI(Claude)가 만든 초안이었습니다.", "verbatim": true}
+        ],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/aim_zoom.gif",
+            "w": 560,
+            "h": 315,
+            "caption": {"text": "물체를 조준하고 오른쪽 마우스를 누르는 동안 카메라 줌인", "verbatim": true}
+          }
+        ]
+      },
+      {
+        "key": "camera-code",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.4 상황에 따라 바뀌는 3인칭 카메라", "verbatim": true},
+        "lead": {"text": "검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했고, 필요한 기능이라고 판단해 남겼습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.4 상황에 따라 바뀌는 3인칭 카메라"],
+        "points": [
+          {
+            "label": "선 대신 공으로 벽 검사",
+            "text": "SphereCast는 카메라 크기만큼의 공으로 검사해 이를 막고, 충돌 대상은 LayerMask로 지정합니다.",
+            "verbatim": true
+          },
+          {
+            "label": "상황별 카메라 전환",
+            "text": "물체를 잡고 있을 때는 다른 피벗 · 거리로, 달릴 때는 카메라가 더 뒤로 물러나도록 목표 값을 바꿉니다.",
+            "verbatim": true
+          },
+          {
+            "label": "FPS와 관계없는 보간",
+            "text": "1 - e^(-속도 × deltaTime)을 보간 비율로 써서, 프레임이 달라도 같은 빠르기로 목표에 다가갑니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "private Vector3 UpdatePosition()"}]
+      },
+      {
+        "key": "roll-choice",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
+        "lead": {"text": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
+      },
+      {
+        "key": "mission-data",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "4.2 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
+        "lead": {"text": "미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}]
+      },
+      {
+        "key": "lesson",
+        "chapter": "retro-ch",
+        "layout": "overview",
+        "tab": "결과",
+        "title": {"text": "5.2 배운 점 — 판단은 상태를 가진 쪽이", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["5. 회고", "5.2 배운 점 — 판단은 상태를 가진 쪽이"],
+        "points": [
+          {"label": "문제", "text": "처음에는 보스 공격 코드 안에서 플레이어가 무적인지를 직접 확인했습니다.", "verbatim": true},
+          {"label": "해결", "text": "무적 조건이 늘 때마다 보스 코드를 고쳐야 했고, 이후 팀원이 이 판단을 맞는 쪽으로 옮기는 리팩터링을 진행했습니다.", "verbatim": true},
+          {"label": "배운 점", "text": "이를 보며 의존 방향의 기준을 배웠습니다.", "verbatim": true},
+          {"label": "", "text": "이 프로젝트에서는 데이터(TSV)로 시스템을 만들고, 애니메이터 설계와 에디터 툴로 작업을 자동화했습니다.", "verbatim": true}
+        ],
+        "visuals": []
+      }
+    ],
+    "applied": "ad1120d56ec98b56"
   }
 }

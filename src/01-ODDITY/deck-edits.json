@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pin": [
+    {
+      "key": "why",
+      "chapter": "overview",
+      "layout": "overview",
+      "tab": "개요",
+      "title": {"text": "1.2 왜 만들었나", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+      "points": [
+        {
+          "label": "팀이 목표한 경험",
+          "text": "염동력을 기반으로 여러 스킬을 활용해 보스를 상대하며, 보스 러시 장르 특유의 고난도 컨트롤을 경험하게 하고 싶었습니다.",
+          "verbatim": true
+        },
+        {"label": "담당 기능", "text": "구르기, 피격 · 넉다운 반응, 3인칭 카메라, 미션 시스템, UI 입력 잠금 · 에디터 툴", "verbatim": true}
+      ],
+      "visuals": [],
+      "from": {"key": "why", "sectionPath": ["1. 개요", "1.2 왜 만들었나"], "sig": []}
+    },
+    {
+      "key": "why-parts",
+      "chapter": "overview",
+      "layout": "overview",
+      "tab": "개요",
+      "title": {"text": "1.2 왜 만들었나", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+      "points": [
+        {
+          "label": "구르기",
+          "text": "구르기 전후에 캐릭터가 미끄러지면 '피했다'는 느낌이 흐려지기 때문에, 애니메이션과 어긋나지 않고 입력한 만큼 정확히 굴러가는 조작을 목표로 했습니다.",
+          "verbatim": true
+        },
+        {
+          "label": "피격 · 넉다운 반응",
+          "text": "쓰러진 채 무력하게 기다리는 시간을 줄여 플레이어가 빨리 다시 조작하도록 조기 기상을 넣고, 계속 쓰면 넉다운이 의미 없어지지 않도록 쿨타임을 두었습니다.",
+          "verbatim": true
+        },
+        {"label": "3인칭 카메라", "text": "달릴 때는 카메라가 뒤로 물러나 속도감을, 물체를 잡을 때는 다른 피벗 · 거리로 조준감을 주고 싶었습니다.", "verbatim": true}
+      ],
+      "visuals": [],
+      "from": {"key": "why-parts", "sectionPath": ["1. 개요", "1.2 왜 만들었나"], "sig": []},
+      "group": "split-why-parts-2"
+    },
+    {
+      "key": "why-parts-2",
+      "chapter": "overview",
+      "layout": "overview",
+      "tab": "개요",
+      "title": {"text": "1.2 왜 만들었나", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["1. 개요", "1.2 왜 만들었나"],
+      "points": [
+        {"label": "미션 시스템", "text": "보스 러시 구조를 스킬인 증강칩 획득과 연결하기 위해 팀원들과 기획을 논의하며 만들었습니다.", "verbatim": true},
+        {
+          "label": "UI 입력 잠금 · 에디터 툴",
+          "text": "UI를 조작하는 중에 캐릭터가 움직이지 않도록 입력 잠금을 한 곳에 모았고, 미션 UI 조립 · 로비 배치 같은 반복 작업은 에디터 툴로 줄였습니다.",
+          "verbatim": true
+        }
+      ],
+      "visuals": [],
+      "after": "why-parts",
+      "group": "split-why-parts-2"
+    }
+  ],
+  "hide": []
+}
