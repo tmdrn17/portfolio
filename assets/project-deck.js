@@ -358,17 +358,39 @@
 
   // 장 표지: 장면이 적으면(4개 이하) 넉넉한 변형 — 목차 크기 목록 + 장면마다 도입(결정 I7). 안 들어가면 보통 → 촘촘
   const ROOMY_MAX = 4;
+  // 목차 묶기: 같은 번호 절(예: "3.1 …")에 속한 이웃 장면은 목차에서 한 줄로(결과 · 구현처럼 탭만 이어 붙임). 장면 자체는 그대로
+  const featureOf = (sl) => {
+    const sp = sl.sectionPath || [];
+    return sp.find((h) => /^\d+\.\d+[.\s]/.test(String(h).trim())) || sp[sp.length - 1] || txt(sl.title) || '';
+  };
+  function tocGroups(slides) {
+    const out = [];
+    for (const x of slides) {
+      const k = PF.normTitle(featureOf(x.sl));
+      const last = out[out.length - 1];
+      if (last && k && last.k === k) { last.items.push(x); continue; }
+      out.push({ k, items: [x] });
+    }
+    return out.map((g) => {
+      const first = g.items[0];
+      const head = featureOf(first.sl);
+      const title = g.items.length > 1 && head ? head : txt(first.sl.title) || head;
+      const tabs = [...new Set(g.items.map((x) => PF.tab(x.sl.tab)).filter(Boolean))].join(' · ');
+      return { title, tabs, ref: first.scenes[0].id, lead: txt(first.sl.lead) };
+    });
+  }
   function chapterScene(c, ci, chId, slides, foot, auto, ptitle) {
+    const groups = tocGroups(slides);
     const make = (mode) => {
       const s = PF.scene({ id: chId, tpl: 'CH', kind: 'bare', cls: mode === 'compact' ? 'compact' : '', foot, sec: c.title, group: c.title, stitle: c.title });
       const roomy = mode === 'roomy';
-      const list = slides.map((x, i) => item(String(i + 1), txt(x.sl.title) || c.title, PF.tab(x.sl.tab), x.scenes[0].id, roomy ? txt(x.sl.lead) : '')).join('');
-      PF.body(s).innerHTML = `<div class="toprow"><span class="pf-eyebrow long">${esc(ptitle)}</span><span class="rl">${esc(PF.t('deck.ch-count', { n: slides.length }))}</span></div>
+      const list = groups.map((g, i) => item(String(i + 1), g.title || c.title, g.tabs, g.ref, roomy ? g.lead : '')).join('');
+      PF.body(s).innerHTML = `<div class="toprow"><span class="pf-eyebrow long">${esc(ptitle)}</span><span class="rl">${esc(PF.t('deck.ch-count', { n: groups.length }))}</span></div>
         <div class="ch-mid"><div><p class="ch-no">${esc(PF.t('en.chapter'))} ${String(ci + 1).padStart(2, '0')}</p><h2 class="ch-t">${esc(c.title)}</h2>${DOT}</div>
         <div class="ch-list t-P2${mode === 'normal' ? '' : ' ' + mode}"><ol class="toc-list${roomy ? '' : ' sub'}">${list}</ol></div></div>`;
       return band(s, auto);
     };
-    const modes = slides.length <= ROOMY_MAX ? ['roomy', 'normal', 'compact'] : ['normal', 'compact'];
+    const modes = groups.length <= ROOMY_MAX ?['roomy', 'normal', 'compact'] : ['normal', 'compact'];
     for (const m of modes) { const s = make(m); if (PF.fitsM(s)) return s; }
     return PF.shrinkOrClip(make('compact'), PFScene.refUrl(chId), info.overflow);
   }
