@@ -3,7 +3,7 @@
   "id": "02-WeGotOne",
   "doc": "기술문서.md",
   "title": "We Got One",
-  "tagline": "잡기에 변수를 주고 협동을 끌어내는 특수 물고기 4종 — 세부 기획부터 구현까지",
+  "tagline": "손을 이용해 물고기와 판자를 잡아 다리를 짓는 2D 협동 게임",
   "cover": "images/we_got_one_title.png",
   "team": {
     "type": "team",
