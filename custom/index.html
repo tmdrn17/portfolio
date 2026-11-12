@@ -75,6 +75,15 @@
   .photo-empty b { color: var(--ink); font-size: 13px; }
   .photo:has(.photo-empty) { border: 0; }
 
+  /* 시연 영상 탭: 프로젝트마다 [풀영상] [쇼츠] 버튼. 준비 안 된 쪽은 흐리게(누를 수 없음) */
+  .vbtn { display: inline-flex; align-items: center; padding: 3px 10px; border: 1px solid var(--line-2); border-radius: var(--pill); font-size: 12.5px; font-weight: 700;
+          color: var(--accent); background: var(--bg); white-space: nowrap; cursor: pointer; transition: background .15s, border-color .15s, color .15s; }
+  .vbtn:hover:not(:disabled) { border-color: var(--accent); }
+  .vbtn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .vbtn:disabled { color: var(--muted); border-style: dashed; opacity: .7; cursor: default; }
+  .vbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  li.row[aria-current="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+
   .fade { animation: fade .25s ease-out; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 </style>
@@ -186,81 +195,94 @@ function Ext({ href, children, className = "" }) {
 
 // 영상 주소 → 페이지에서 바로 틀 수 있는 형태
 //  · 레포 안 영상(…/src/<폴더>/….mp4)은 상대경로로(로컬 미리보기·GitHub Pages 둘 다 열림)
-//  · YouTube는 embed 주소로
+//  · YouTube는 embed 주소로(일반·youtu.be·embed·Shorts 주소 모두)
 function videoSource(url) {
   if (!url) return null;
   const local = url.match(/\/(src\/[^?#]+\.(?:mp4|webm|mov))(?:[?#].*)?$/i);
   if (local) return { kind: "file", src: "../" + local[1] };
   if (/\.(mp4|webm|mov)(?:[?#].*)?$/i.test(url)) return { kind: "file", src: url };
-  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{11})/);
   if (yt) return { kind: "youtube", src: `https://www.youtube.com/embed/${yt[1]}` };
   return null;
 }
 
-// 테스트용 영상(시연 영상 탭 맨 아래 버튼). 프로젝트 데이터가 아니라 이 페이지에만 있음 — 다 보면 이 상수와 LinksPanel의 테스트 줄을 지우면 됨
+// 프로젝트 영상 두 가지: 풀영상 = links.video, 쇼츠 = links.extra 중 라벨이 "쇼츠"(또는 Shorts 주소)인 것
+// (쇼츠는 기술 문서 링크 줄에 [쇼츠](주소)로 적으면 /portfolio-build가 extra로 옮김)
+const VIDEO_KINDS = [{ id: "full", label: "풀영상" }, { id: "shorts", label: "쇼츠" }];
+const isShortsLink = x => x && x.url && (/쇼츠|shorts/i.test(x.label || "") || /youtube\.com\/shorts\//i.test(x.url));
+const videoUrl = (p, kind) => kind === "shorts" ? ((p.links?.extra || []).find(isShortsLink)?.url || "") : (p.links?.video || "");
+// 선택 상태(videoId) = "<폴더>" 또는 "<폴더>|shorts"
+const videoSel = v => { if (!v) return { id: null, kind: "full" }; const [id, k] = v.split("|"); return { id, kind: k === "shorts" ? "shorts" : "full" }; };
+const videoKey = (id, kind) => kind === "shorts" ? id + "|shorts" : id;
+
+// 테스트용 영상(시연 영상 탭 맨 아래 줄). 프로젝트 데이터가 아니라 이 페이지에만 있음 — 다 보면 이 상수와 LinksPanel의 TEST_VIDEO를 지우면 됨
 const TEST_VIDEO = { id: "test-video", title: "테스트 영상", isTest: true, links: { video: "https://youtu.be/w2vGxG9N4sY?si=CE2lUtO3Zn2UYv7M" } };
 
-// ── 오른쪽: 시연 영상 ──
-function VideoDetail({ p, S, onProject }) {
-  const v = videoSource(p.links?.video);
+// ── 오른쪽: 시연 영상(풀영상·쇼츠 중 고른 것) ──
+function VideoDetail({ p, kind, S, onProject, setVideoId }) {
+  const url = videoUrl(p, kind), v = videoSource(url), shorts = kind === "shorts";
+  const kindLabel = VIDEO_KINDS.find(k => k.id === kind).label;
+  const frame = shorts
+    ? { className: "mt-5 mx-auto block rounded-[var(--radius)] border line bg-black", style: { height: "min(72vh, 640px)", aspectRatio: "9 / 16", maxWidth: "100%" } }
+    : { className: "mt-5 w-full aspect-video rounded-[var(--radius)] border line bg-black" };
   return (
-    <article className="fade" id={"v-" + p.id}>
-      <p className="eyebrow">{S["name.video"]}</p>
+    <article className="fade" id={(shorts ? "s-" : "v-") + p.id}>
+      <p className="eyebrow">{S["name.video"]} · {kindLabel}</p>
       <h2 className="text-2xl font-extrabold mt-2">{p.title}</h2>
       {p.tagline && <p className="mt-2 leading-relaxed">{p.tagline}</p>}
+      <div className="mt-4 flex gap-2" role="group" aria-label="영상 종류">
+        {VIDEO_KINDS.map(k => {
+          const has = !!videoUrl(p, k.id);
+          return <button key={k.id} type="button" className="vbtn" aria-pressed={kind === k.id} disabled={!has}
+            onClick={() => setVideoId(videoKey(p.id, k.id))}>{has ? "▶ " + k.label : k.label + " 준비 중"}</button>;
+        })}
+      </div>
       {v?.kind === "file" && (
         <video key={v.src} src={v.src} controls playsInline preload="metadata"
-          poster={p.cover ? img(p.id, p.cover) : undefined}
-          className="mt-5 w-full aspect-video rounded-[var(--radius)] border line bg-black" />
+          poster={!shorts && p.cover ? img(p.id, p.cover) : undefined} {...frame} />
       )}
       {v?.kind === "youtube" && (
-        <iframe key={v.src} src={v.src} title={p.title + " " + S["name.video"]} allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          className="mt-5 w-full aspect-video rounded-[var(--radius)] border line" />
+        <iframe key={v.src} src={v.src} title={`${p.title} ${kindLabel}`} allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" {...frame} />
       )}
-      {!v && <p className="mt-5 panel p-5 muted">{p.links?.video ? "이 영상은 페이지 안에서 재생할 수 없어 새 창으로 엽니다." : "등록된 시연 영상이 없습니다."}</p>}
+      {!v && <p className="mt-5 panel p-5 muted">{url ? "이 영상은 페이지 안에서 재생할 수 없어 새 창으로 엽니다." : "준비 중인 영상입니다."}</p>}
       <div className="mt-5 flex flex-wrap gap-2">
         {!p.isTest && <button onClick={() => onProject(p.id)} className="btn primary">{S["page.nav-projects"]} 자세히</button>}
-        {p.links?.video && <a href={p.links.video} target="_blank" rel="noopener" className="btn">새 창에서 영상 열기 ↗</a>}
+        {url && <a href={url} target="_blank" rel="noopener" className="btn">새 창에서 영상 열기 ↗</a>}
         {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn">GitHub ↗</a>}
       </div>
     </article>
   );
 }
 
-// ── 패널: 시연 영상 (프로젝트 줄을 누르면 오른쪽에 영상. 개인 링크는 오른쪽 위 프로필에) ──
+// ── 패널: 시연 영상 (프로젝트마다 [풀영상] [쇼츠] 버튼 → 오른쪽에 영상. 개인 링크는 오른쪽 위 프로필에) ──
 function LinksPanel({ projects, videoId, setVideoId, S }) {
-  const rows = projects.map(p => {
+  const sel = videoSel(videoId);
+  const rows = [...projects, TEST_VIDEO].map(p => {
     const items = [];
     if (p.links?.github) items.push({ label: "GitHub", url: p.links.github });
-    if (p.links?.video) items.push({ label: S["name.video"], url: p.links.video });
-    (p.links?.extra || []).forEach(x => x && x.url && items.push({ label: x.label || x.url, url: x.url }));
-    return { p, items };
-  }).filter(r => r.items.length);
+    (p.links?.extra || []).forEach(x => x && x.url && !isShortsLink(x) && items.push({ label: x.label || x.url, url: x.url }));
+    return { p, items, has: VIDEO_KINDS.some(k => videoUrl(p, k.id)) };
+  }).filter(r => r.has || r.items.length);
   return (
     <div className="fade">
       <ul className="divide-y line border-y">
         {rows.map(({ p, items }) => (
-          <li key={p.id} className="line">
-            <button onClick={() => setVideoId(videoId === p.id ? null : p.id)} aria-expanded={videoId === p.id}
-              className="row w-full text-left px-3 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-              <span className="ink font-bold sm:w-48 shrink-0">{p.title}</span>
-              <span className="flex flex-wrap gap-x-6 gap-y-1 flex-1 muted text-[15px]">
-                {items.filter(l => l.url !== p.links?.video).map(l => <span key={l.url}>{l.label}</span>)}
-              </span>
-              <span className="chip self-start sm:self-auto">{p.links?.video ? "▶ " + S["name.video"] : "링크 보기"}</span>
-            </button>
+          <li key={p.id} className={"line row px-3 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6"} aria-current={sel.id === p.id || undefined}>
+            <span className="ink font-bold sm:w-48 shrink-0">{p.title}</span>
+            <span className="flex flex-wrap gap-x-6 gap-y-1 flex-1 muted text-[15px]">
+              {items.map(l => <span key={l.url}>{l.label}</span>)}
+            </span>
+            <span className="flex gap-2 self-start sm:self-auto">
+              {VIDEO_KINDS.map(k => {
+                const has = !!videoUrl(p, k.id), on = sel.id === p.id && sel.kind === k.id;
+                return <button key={k.id} type="button" className="vbtn" aria-pressed={on} disabled={!has}
+                  title={has ? `${p.title} ${k.label} 보기` : `${k.label} 영상은 준비 중입니다`}
+                  onClick={() => setVideoId(on ? null : videoKey(p.id, k.id))}>{has ? "▶ " + k.label : k.label + " 준비 중"}</button>;
+              })}
+            </span>
           </li>
         ))}
-        {/* 테스트: YouTube 링크가 오른쪽에서 재생되는지 보는 버튼 */}
-        <li className="line">
-          <button onClick={() => setVideoId(videoId === TEST_VIDEO.id ? null : TEST_VIDEO.id)} aria-expanded={videoId === TEST_VIDEO.id}
-            className="row w-full text-left px-3 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-            <span className="ink font-bold sm:w-48 shrink-0">{TEST_VIDEO.title}</span>
-            <span className="flex-1 muted text-[15px]">YouTube</span>
-            <span className="chip self-start sm:self-auto">▶ {S["name.video"]}</span>
-          </button>
-        </li>
       </ul>
     </div>
   );
@@ -447,12 +469,13 @@ function App() {
         const projects = await Promise.all((pf.projects || []).map(id => fetch(`../data/projects/${id}.json`).then(r => r.json())));
         document.title = [pf.profile?.name, S["name.portfolio"]].filter(Boolean).join(" · ");
         setData({ pf, projects, S });
-        // 주소(#links · #stack · #projects · #p-<폴더> · #v-<폴더>)로 바로 열기
+        // 주소(#links · #stack · #projects · #p-<폴더> · #v-<폴더> 풀영상 · #s-<폴더> 쇼츠)로 바로 열기
         const fromHash = () => {
           const h = decodeURIComponent(location.hash.slice(1));
           const id = h.slice(2), known = projects.some(p => p.id === id);
           if (h.startsWith("p-") && known) { setTab("projects"); setOpenId(id); }
           else if (h.startsWith("v-") && (known || id === TEST_VIDEO.id)) { setTab("links"); setVideoId(id); }
+          else if (h.startsWith("s-") && known) { setTab("links"); setVideoId(videoKey(id, "shorts")); }
           else if (["links", "stack", "projects"].includes(h)) { setTab(h); setOpenId(null); setVideoId(null); }
         };
         fromHash();
@@ -462,8 +485,9 @@ function App() {
   }, []);
 
   // 지금 오른쪽에 보일 것: 프로젝트 칸 → 프로젝트 자세히, 링크 칸 → 시연 영상
-  const selId = tab === "projects" ? openId : tab === "links" ? videoId : null;
-  const selKey = selId ? (tab === "projects" ? "p-" : "v-") + selId : null;
+  const vSel = videoSel(videoId);
+  const selId = tab === "projects" ? openId : tab === "links" ? vSel.id : null;
+  const selKey = selId ? (tab === "projects" ? "p-" : vSel.kind === "shorts" ? "s-" : "v-") + selId : null;
 
   useEffect(() => {
     if (!data) return;
@@ -568,7 +592,7 @@ function App() {
               <div className="px-5 sm:px-10 py-10" key={selKey}>
                 {tab === "projects"
                   ? <ProjectDetail p={selProject} S={S} />
-                  : <VideoDetail p={selProject} S={S} onProject={goProject} />}
+                  : <VideoDetail p={selProject} kind={vSel.kind} S={S} onProject={goProject} setVideoId={setVideoId} />}
               </div>
             ) : (tab === "projects" || tab === "links") && (
               <p className="px-5 sm:px-10 py-10 muted text-[15px] leading-relaxed">
