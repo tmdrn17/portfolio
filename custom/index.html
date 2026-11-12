@@ -197,6 +197,9 @@ function videoSource(url) {
   return null;
 }
 
+// 테스트용 영상(시연 영상 탭 맨 아래 버튼). 프로젝트 데이터가 아니라 이 페이지에만 있음 — 다 보면 이 상수와 LinksPanel의 테스트 줄을 지우면 됨
+const TEST_VIDEO = { id: "test-video", title: "테스트 영상", isTest: true, links: { video: "https://youtu.be/w2vGxG9N4sY?si=CE2lUtO3Zn2UYv7M" } };
+
 // ── 오른쪽: 시연 영상 ──
 function VideoDetail({ p, S, onProject }) {
   const v = videoSource(p.links?.video);
@@ -217,7 +220,7 @@ function VideoDetail({ p, S, onProject }) {
       )}
       {!v && <p className="mt-5 panel p-5 muted">{p.links?.video ? "이 영상은 페이지 안에서 재생할 수 없어 새 창으로 엽니다." : "등록된 시연 영상이 없습니다."}</p>}
       <div className="mt-5 flex flex-wrap gap-2">
-        <button onClick={() => onProject(p.id)} className="btn primary">{S["page.nav-projects"]} 자세히</button>
+        {!p.isTest && <button onClick={() => onProject(p.id)} className="btn primary">{S["page.nav-projects"]} 자세히</button>}
         {p.links?.video && <a href={p.links.video} target="_blank" rel="noopener" className="btn">새 창에서 영상 열기 ↗</a>}
         {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn">GitHub ↗</a>}
       </div>
@@ -249,6 +252,15 @@ function LinksPanel({ projects, videoId, setVideoId, S }) {
             </button>
           </li>
         ))}
+        {/* 테스트: YouTube 링크가 오른쪽에서 재생되는지 보는 버튼 */}
+        <li className="line">
+          <button onClick={() => setVideoId(videoId === TEST_VIDEO.id ? null : TEST_VIDEO.id)} aria-expanded={videoId === TEST_VIDEO.id}
+            className="row w-full text-left px-3 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+            <span className="ink font-bold sm:w-48 shrink-0">{TEST_VIDEO.title}</span>
+            <span className="flex-1 muted text-[15px]">YouTube</span>
+            <span className="chip self-start sm:self-auto">▶ {S["name.video"]}</span>
+          </button>
+        </li>
       </ul>
     </div>
   );
@@ -440,7 +452,7 @@ function App() {
           const h = decodeURIComponent(location.hash.slice(1));
           const id = h.slice(2), known = projects.some(p => p.id === id);
           if (h.startsWith("p-") && known) { setTab("projects"); setOpenId(id); }
-          else if (h.startsWith("v-") && known) { setTab("links"); setVideoId(id); }
+          else if (h.startsWith("v-") && (known || id === TEST_VIDEO.id)) { setTab("links"); setVideoId(id); }
           else if (["links", "stack", "projects"].includes(h)) { setTab(h); setOpenId(null); setVideoId(null); }
         };
         fromHash();
@@ -486,7 +498,7 @@ function App() {
     ...(profile.links || []).filter(l => l && l.url).map(l => ({ label: l.label || l.url, url: l.url })),
   ];
   const goProject = id => { setTab("projects"); setOpenId(id); };
-  const selProject = selId && projects.find(p => p.id === selId);
+  const selProject = selId && (projects.find(p => p.id === selId) || (tab === "links" && selId === TEST_VIDEO.id ? TEST_VIDEO : null));
 
   return (
     // 두 단 × 두 줄: [이름·탭 | 연락처] / [고른 칸의 목록 | 고른 항목 자세히·영상]
