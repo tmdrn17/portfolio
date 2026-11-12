@@ -6,6 +6,13 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "4600"],
       "port": 4600
+    },
+    {
+      "name": "portfolio-4601",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "4601"],
+      "port": 4601,
+      "autoPort": false
     }
   ]
 }
