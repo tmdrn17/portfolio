@@ -49,8 +49,10 @@
   .pf-hud button[aria-pressed="true"], .pf-hud button[aria-expanded="true"] { background: var(--accent-soft, #101A31); border-color: var(--accent-ink, #6D9AF1); color: var(--accent-ink, #6D9AF1); }
   .pf-hud .pf-hud-count { flex: none; min-width: 66px; padding: 0; font-weight: 800; font-size: 14px; color: var(--ink, #F4F4F6); font-variant-numeric: tabular-nums; text-align: left; }
   .pf-hud .pf-hud-sec { flex: 0 1 auto; min-width: 0; max-width: 30vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted, #9A9AA6); }
-  .pf-hud .pf-hud-prog { flex: 1 1 80px; min-width: 40px; height: 5px; border-radius: 3px; background: var(--line, #24242C); overflow: hidden; }
-  .pf-hud .pf-hud-prog > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent, #2F6FEB), var(--accent-2, #8C2FEB)); transition: width .2s; }
+  .pf-hud .pf-hud-prog { flex: 1 1 80px; min-width: 40px; padding: 10px 0; cursor: pointer; touch-action: none; user-select: none; }   /* 위아래 여백 = 누르기 쉬운 자리 */
+  .pf-hud .pf-hud-prog > .t { display: block; height: 5px; border-radius: 3px; background: var(--line, #24242C); overflow: hidden; transition: height .15s; }
+  .pf-hud .pf-hud-prog:hover > .t { height: 8px; }
+  .pf-hud .pf-hud-prog > .t > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent, #2F6FEB), var(--accent-2, #8C2FEB)); transition: width .2s; }
   .pf-hud .pf-hud-note { flex: none; font-size: 12px; font-weight: 500; color: var(--muted, #9A9AA6); white-space: nowrap; }
   .pf-hud .pf-print small { display: inline; font-size: 12px; font-weight: 600; color: var(--muted, #9A9AA6); opacity: 1; }
   .pf-hud .s { display: none; }
@@ -122,7 +124,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     html[data-view="deck"] .pf-deck > .pf-scene.pf-enter { animation: none; }
-    .pf-hud .pf-hud-prog > span { transition: none; }
+    .pf-hud .pf-hud-prog > .t, .pf-hud .pf-hud-prog > .t > span { transition: none; }
   }
 }
 

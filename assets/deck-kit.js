@@ -412,7 +412,7 @@
       <button type="button" data-a="next" aria-label="다음 슬라이드" title="${LH('ui.next')}">›</button>
       <span class="pf-hud-count" aria-hidden="true"></span>
       <span class="pf-hud-sec" aria-hidden="true"></span>
-      <span class="pf-hud-prog" aria-hidden="true"><span></span></span>
+      <span class="pf-hud-prog" aria-hidden="true"><span class="t"><span></span></span></span>
       <span class="pf-hud-note">${LH('ui.newtab')}</span>
       <button type="button" data-a="overview" aria-haspopup="dialog" title="${LH('ui.overview-tip')}"><span aria-hidden="true">▦</span> <span class="l">${LH('ui.overview')}</span></button>
       ${opts.scope && hasDoc ? '<button type="button" data-a="scope" aria-pressed="false" title="PDF에서 부록 빼기"><span class="l">요약만</span><span class="s">요약</span></button>' : ''}
@@ -439,6 +439,25 @@
       else if (a === 'view') setView(view === 'deck' ? 'scroll' : 'deck');
       else if (a === 'anyway') PF.printAnyway();
     });
+    // 진행 게이지: 누르거나 끌면 그 위치의 장면으로 이동(키보드·화면 읽기 프로그램은 ‹ › 버튼·전체 보기로 같은 일을 함)
+    const prog = hud.querySelector('.pf-hud-prog');
+    const progAt = (e) => { const r = prog.getBoundingClientRect(); return r.width ? Math.max(0, Math.min(scenes.length - 1, Math.floor(((e.clientX - r.left) / r.width) * scenes.length))) : cur; };
+    let dragging = false;
+    prog.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 || !scenes.length) return;
+      e.preventDefault(); dragging = true;
+      try { prog.setPointerCapture(e.pointerId); } catch { /* */ }
+      const i = progAt(e); if (i !== cur) go(i, { focus: false });
+    });
+    prog.addEventListener('pointermove', (e) => {
+      if (!scenes.length) return;
+      const i = progAt(e), s = scenes[i];
+      prog.title = `${pad2(i + 1)} / ${pad2(scenes.length)}${s?.dataset.sec ? ` · ${s.dataset.sec}` : ''}`;
+      if (dragging && i !== cur) go(i, { focus: false, announce: false });
+    });
+    const endDrag = () => { if (dragging) { dragging = false; say(cur); } };
+    prog.addEventListener('pointerup', endDrag);
+    prog.addEventListener('pointercancel', endDrag);
     deck.before(skip, hud);                                   // DOM 순서: 건너뛰기 → HUD → 덱
   }
   let msg = '';
@@ -448,7 +467,7 @@
     const N = scenes.length, s = scenes[cur];
     hud.querySelector('.pf-hud-count').textContent = `${pad2(cur + 1)} / ${pad2(N)}`;
     hud.querySelector('.pf-hud-sec').textContent = s?.dataset.sec || '';
-    hud.querySelector('.pf-hud-prog > span').style.width = `${N ? ((cur + 1) / N) * 100 : 0}%`;
+    hud.querySelector('.pf-hud-prog .t > span').style.width = `${N ? ((cur + 1) / N) * 100 : 0}%`;
     hud.querySelector('[data-a=prev]').setAttribute('aria-disabled', String(cur <= 0));
     hud.querySelector('[data-a=next]').setAttribute('aria-disabled', String(cur >= N - 1));
     const vb = hud.querySelector('[data-a=view]');
