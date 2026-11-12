@@ -66,3 +66,45 @@
 
 /* 포트폴리오 문서 · 기술 스택 절 오른쪽 문구("근거 프로젝트와 함께") 숨기기 — 수강생 요청 (2026-11-10) */
 #stack .sec-r { display: none; }
+
+/* ── 발표 덱 전용 모양 — 기술문서_포트폴리오_김승구.pdf처럼 (수강생 요청 2026-11-12) ──
+   .pf-scene(장면)은 발표 덱(project.html)에만 있어 포트폴리오 문서·상세 문서·custom 페이지는 바뀌지 않습니다.
+   라이트 모드에만 적용(다크 모드 덱은 그대로). 색만 바꿉니다 — 크기·여백·글꼴은 그대로라 장면 배치 점검에 영향 없음.
+   되돌리려면 이 주석부터 파일 끝까지 지우면 됩니다. */
+
+/* ① 본문 장면: 흰 카드 + 얇은 테두리, 짙은 초록 번호 배지, 밝은 회녹색 코드 판 */
+:root:not([data-mode="dark"]) .pf-scene {
+  --card: #FFFFFF;
+  --paper: #FFFFFF;
+  --glow: #0B3D2E;
+  --code-bg: #F3F5F4;
+}
+:root:not([data-mode="dark"]) .pf-scene .fit-in pre code,
+:root:not([data-mode="dark"]) .pf-scene .msg-b pre { color: #222222; }
+:root:not([data-mode="dark"]) .pf-scene .fit-in pre code [class*="hljs-"] { color: inherit; font-style: normal; font-weight: inherit; }
+:root:not([data-mode="dark"]) .pf-scene .fit-in pre code .hljs-comment { color: #2E6B57; font-weight: 700; }
+
+/* ② 프로젝트 표지·장 표지·맺음: 짙은 초록 바탕 + 흰 제목 + 민트 보조 글자 */
+:root:not([data-mode="dark"]) .pf-scene:is(.t-P1, .t-CH, .t-EN) {
+  --bg: #0B3D2E;
+  --ink: #FFFFFF;
+  --muted: #B7CFC4;
+  --faint: #8FB3A4;
+  --line: #2E6B57;
+  --line-2: #4F8A75;
+  --card: #0F4636;
+  --paper: #0F4636;
+  --accent: #B7CFC4;
+  --accent-ink: #B7CFC4;
+  --accent-fill: #1F5446;
+  --accent-soft: #1F5446;
+  --glow: #1F5446;
+  --grad: linear-gradient(#B7CFC4, #B7CFC4);
+  --shadow: rgb(0 0 0 / .35);
+  color-scheme: dark;
+}
+:root:not([data-mode="dark"]) .pf-scene:is(.t-P1, .t-CH, .t-EN) .tags li { background: #1F5446; }
+
+/* ③ 모든 발표 덱 표지: 오른쪽 글 상자(장르·기간·인원·환경·역할 · 개발 의도 · 태그)를 세로 가운데로 (수강생 요청 2026-11-12)
+   한 프로젝트에만 걸려면 앞에 [data-pf-project="<폴더 이름>"]을 붙임(발표 덱이 붙이는 폴더 이름). 크기는 그대로라 배치 점검에 영향 없음 */
+.pf-scene.t-P1 .pi-right { justify-content: center; }
