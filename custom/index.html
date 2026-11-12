@@ -396,7 +396,7 @@ function App() {
   return (
     <div className="min-h-screen">
       <header className="border-b line">
-        <div className="grid md:grid-cols-[1fr_minmax(16rem,32%)]">
+        <div className="grid md:grid-cols-[1fr_minmax(16rem,32%)] max-w-[1600px] mx-auto">
           {/* 왼쪽: 이름 + 탭 */}
           <div className="md:border-r line flex flex-col">
             <div className="px-5 sm:px-10 pt-10 pb-8 flex-1">
@@ -427,7 +427,7 @@ function App() {
       </header>
 
       {/* 아래 빈 공간: 고른 항목이 여기에 */}
-      <main className="px-5 sm:px-10 py-12 max-w-7xl">
+      <main className="px-5 sm:px-10 py-12 max-w-[1600px] mx-auto">
         {tab === null && <p className="muted">위에서 항목을 골라 주세요.</p>}
         {tab === "links" && <LinksPanel profile={profile} projects={projects} S={S} />}
         {tab === "stack" && <StackPanel skills={pf.skills || []} titles={titles} onProject={goProject} S={S} />}
