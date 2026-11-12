@@ -105,6 +105,10 @@
 }
 :root:not([data-mode="dark"]) .pf-scene:is(.t-P1, .t-CH, .t-EN) .tags li { background: #1F5446; }
 
-/* ③ 모든 발표 덱 표지: 오른쪽 글 상자(장르·기간·인원·환경·역할 · 개발 의도 · 태그)를 세로 가운데로 (수강생 요청 2026-11-12)
-   한 프로젝트에만 걸려면 앞에 [data-pf-project="<폴더 이름>"]을 붙임(발표 덱이 붙이는 폴더 이름). 크기는 그대로라 배치 점검에 영향 없음 */
-.pf-scene.t-P1 .pi-right { justify-content: center; }
+/* ③ 모든 발표 덱 표지 (수강생 요청 2026-11-12)
+   - 왼쪽: 대표 이미지를 맨 위로, 프로젝트 이름·한 줄 설명은 이미지 아래로(순서만 바꿈 — 크기는 그대로라 배치 점검에 영향 없음)
+   - 왼쪽 대표 이미지와 오른쪽 글 상자(장르·기간… 첫 줄)의 위쪽을 같은 높이에서 시작
+   대표 이미지가 없는 표지(잘자요 등)는 이름·설명이 그대로 맨 위.
+   한 프로젝트에만 걸려면 앞에 [data-pf-project="<폴더 이름>"]을 붙임(발표 덱이 붙이는 폴더 이름) */
+.pf-scene.t-P1 .pi-left > .pi-cover { order: -1; }
+.pf-scene.t-P1 .pi-right { justify-content: flex-start; }
