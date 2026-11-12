@@ -113,7 +113,7 @@
   document.getElementById('glance').open = !matchMedia('(max-width: 719.98px)').matches;
 
   const zoom = lightbox();
-  try { await renderDoc(); ready(); }
+  try { await renderDoc(); oneLineDoc(); ready(); }
   catch (err) {                                                       // 그리다 멈추면 "불러오는 중…"에 머물지 않게 이유를 보이고 준비 신호는 냄
     errors.push(String(err && err.stack || err));
     console.error('[doc] 기술 문서를 그리지 못함:', err);
@@ -121,6 +121,40 @@
     if (doc?.querySelector('.loading')) doc.innerHTML = `<p class="error">기술 문서를 그리지 못했습니다 (${esc(err && err.message || err)}).</p>`;
   }
   done();
+
+  // ── 한 줄 지키기(수강생 요청 2026-11-12): 제목처럼 한 줄이어야 할 글이 조금 넘쳐 꺾이면 글자를 줄여 한 줄로 ──
+  //   같은 무리(같은 단계의 제목 등)는 같은 배율로 줄여 크기가 서로 어긋나지 않게. 0.8배보다 더 줄여야 하는 긴 문장은 그대로 둠(원래 여러 줄인 글).
+  //   글자 하한 14px. 화면 폭이 바뀌면 다시 계산. 인쇄 때는 인쇄 크기 규칙을 따르도록 잠시 풀었다가 인쇄 뒤 다시 맞춤
+  function oneLineDoc() {
+    const MIN = 0.8, FLOOR_PX = 14;
+    const GROUPS = ['.doc-intro h1', '.doc-intro .tagline, .doc-intro .lead', '.md h1', '.md h2', '.md h3', '.md h4', '.md th', '.toc a'];
+    const reset = () => document.querySelectorAll('[data-pf-oneline]').forEach((e) => { e.style.fontSize = ''; delete e.dataset.pfOneline; });
+    const need = (e) => {
+      const cs = getComputedStyle(e), fs = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight) || fs * 1.35;
+      if (!e.getClientRects().length || e.offsetHeight < lh * 1.5) return 1;
+      const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      const avail = e.clientWidth - pad;
+      const prev = e.style.whiteSpace; e.style.whiteSpace = 'nowrap';
+      const full = Math.max(e.scrollWidth, e.getBoundingClientRect().width) - pad;
+      e.style.whiteSpace = prev;
+      return full > 0 && avail > 0 ? avail / full : 1;
+    };
+    const run = () => {
+      reset();
+      GROUPS.forEach((sel) => {
+        const els = [...document.querySelectorAll(sel)];
+        let k = 1;
+        els.forEach((e) => { const r = need(e), fs = parseFloat(getComputedStyle(e).fontSize); if (r < 1 && r >= MIN && fs * r >= FLOOR_PX) k = Math.min(k, r * 0.985); });
+        if (k < 1) els.forEach((e) => { const fs = parseFloat(getComputedStyle(e).fontSize); e.style.fontSize = `${(fs * k).toFixed(2)}px`; e.dataset.pfOneline = k.toFixed(3); });
+      });
+    };
+    run();
+    let t = 0;
+    window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(run, 150); });
+    window.addEventListener('beforeprint', reset);
+    window.addEventListener('afterprint', run);
+    document.fonts?.addEventListener('loadingdone', run);
+  }
 
   // ───────────────────────────────────────────────────────────────
   async function renderDoc() {

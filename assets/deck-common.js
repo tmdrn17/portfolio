@@ -405,6 +405,105 @@
     return sl.chapter && has(`ch-${sl.chapter}`) ? `ch-${sl.chapter}` : '';
   }
 
-  Object.assign(PF, { sleep, loadFonts, imageSize, measureRoot, dropMeasure, scene, body, fitsScene, fitsM, pack, shrinkOrClip, guard, msgScene, DOT, imgTag, extLinks, refitOnLateFont,
+  // ── 꽉 채우기(수강생 요청 2026-11-12): 맞추기가 끝난 요약 장면(.pf-sum)의 칸이 본문 상자를 다 쓰도록 늘림 ──
+  //   글자 크기는 그대로. 그림·다이어그램·코드 판은 맞춘 크기에서 남는 자리만큼 커지고(맞춘 크기 비율대로), 카드·흐름 상자는 높이를 나눠 가짐(.pf-stretch CSS).
+  //   표는 그대로(글자 배율을 맞춰 둔 것이라). 늘린 뒤 감사에 걸리면 원래대로 되돌림 → 넘침이 새로 생기지 않음
+  function stretchScene(s) {
+    if (!s.classList.contains('pf-sum') || s.querySelector('.pf-zoomwrap, .pf-clipped')) return s;
+    const M = measureRoot(); const wasIn = s.isConnected; if (!wasIn) M.appendChild(s);
+    const touched = [...s.querySelectorAll('.vis > .vbox[data-kind]')];
+    const saved = touched.flatMap((b) => [b, b.querySelector(':scope > .vmedia'), b.querySelector(':scope > .vmedia > .fit-in'), b.querySelector(':scope > .vmedia table')])
+      .filter(Boolean).map((e) => [e, e.getAttribute('style')]);
+    const sz = touched.map((b) => { const m = b.querySelector(':scope > .vmedia'); return { b, m, bw: b.offsetWidth, bh: b.offsetHeight, mh: m ? m.offsetHeight : 0 }; });
+    s.classList.add('pf-stretch');
+    sz.forEach(({ b, m, bw, bh, mh }) => {
+      if (!m) return;
+      if (b.parentElement.dataset.arr === 'row') Object.assign(b.style, { width: '', flex: `${bw} 1 ${bw}px`, minWidth: `${bw}px`, alignSelf: 'stretch' });
+      else Object.assign(b.style, { width: '', flex: `${bh} 1 ${bh}px`, minHeight: `${bh}px`, alignSelf: 'stretch' });
+      Object.assign(m.style, { width: '100%', height: '', flex: `1 1 ${mh}px`, minHeight: `${mh}px` });
+    });
+    // 표: 늘어난 칸 높이만큼 행 높이를 나눠 가짐(글자 배율은 그대로)
+    sz.forEach(({ b, m }) => {
+      if (b.dataset.kind !== 'table' || !m) return;
+      const fin = m.querySelector(':scope > .fit-in'), tb = m.querySelector('table');
+      if (!fin || !tb) return;
+      const z = +fin.dataset.pfFz || 1;
+      fin.style.height = `${Math.floor(m.clientHeight / z)}px`;
+      tb.style.height = '100%';
+    });
+    if (!fitsScene(s)) {
+      s.classList.remove('pf-stretch');
+      saved.forEach(([e, v]) => (v == null ? e.removeAttribute('style') : e.setAttribute('style', v)));
+    }
+    if (!wasIn) s.remove();
+    return s;
+  }
+
+  // ── 한 줄 지키기(수강생 요청 2026-11-12): 제목·라벨처럼 한 줄이어야 할 글이 조금 넘쳐 꺾이면 글자를 줄여 한 줄로 ──
+  //   같은 무리(선택자 하나)는 같은 배율로 줄여 서로 크기가 어긋나지 않게. min배보다 더 줄여야 하는 긴 문장은 원래 여러 줄인 글이라 그대로 둠.
+  //   글자 하한(FLOOR: 본문 14 · 라벨 11px) 아래로는 줄이지 않음
+  function oneLineNeed(e) {
+    const cs = getComputedStyle(e);
+    const fs = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight) || fs * 1.35;
+    if (e.offsetHeight < lh * 1.5) return 1;                            // 이미 한 줄
+    const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+    const avail = e.clientWidth - pad;
+    const prev = e.style.whiteSpace; e.style.whiteSpace = 'nowrap';
+    const full = Math.max(e.scrollWidth, e.getBoundingClientRect().width) - pad;
+    e.style.whiteSpace = prev;
+    return full > 0 && avail > 0 ? avail / full : 1;
+  }
+  const floorOf = (e) => (e.closest(LABEL_SEL) ? FLOOR.label : FLOOR.body);
+  function oneLineK(els, min) {
+    let k = 1;
+    els.forEach((e) => {
+      if (!e.getClientRects().length) return;
+      const r = oneLineNeed(e), fs = parseFloat(getComputedStyle(e).fontSize);
+      if (r < 1 && r >= min && fs * r >= floorOf(e)) k = Math.min(k, r * 0.985);
+    });
+    return k;
+  }
+  const scaleFont = (els, k) => els.forEach((e) => { const fs = parseFloat(getComputedStyle(e).fontSize); e.style.fontSize = `${(fs * k).toFixed(2)}px`; e.dataset.pfOneline = k.toFixed(3); });
+  //   deckSel: 덱 전체가 한 무리(장면 제목처럼 장면마다 크기가 같아야 하는 것) · sceneSel: 장면마다 한 무리
+  function oneLine(scenes, { deckSel = [], sceneSel = [], min = 0.8 } = {}) {
+    const M = measureRoot();
+    const inM = (s, fn) => { const was = s.isConnected; if (!was) M.appendChild(s); try { return fn(); } finally { if (!was) s.remove(); } };
+    deckSel.forEach((sel) => {
+      const k = Math.min(1, ...scenes.map((s) => inM(s, () => oneLineK([...s.querySelectorAll(sel)], min))));
+      if (k < 1) scenes.forEach((s) => inM(s, () => scaleFont([...s.querySelectorAll(sel)], k)));
+    });
+    scenes.forEach((s) => inM(s, () => sceneSel.forEach((sel) => {
+      const els = [...s.querySelectorAll(sel)];
+      const k = oneLineK(els, min);
+      if (k < 1) scaleFont(els, k);
+    })));
+  }
+
+  // ── 글만 있는 장면의 글 키우기(수강생 요청 2026-11-12): 카드 글을 덱 전체 같은 배율로(최대 max배) 넘치지 않는 데까지 키움 ──
+  //   장면마다 따로 키우면 장면끼리 글자 크기가 달라지므로, 모든 글 장면에 들어가는 가장 작은 배율 하나를 씀(덱마다 하나)
+  function growText(scenes, sels, max = 1.6) {
+    if (!scenes.length) return 1;
+    const M = measureRoot();
+    const sel = sels.join(', ');
+    const at = (s, k) => {
+      s.querySelectorAll(sel).forEach((e) => {
+        if (e.dataset.pfFs0 === undefined) e.dataset.pfFs0 = parseFloat(getComputedStyle(e).fontSize);
+        e.style.fontSize = `${(+e.dataset.pfFs0 * k).toFixed(2)}px`;
+      });
+    };
+    let k = max;
+    for (const s of scenes) {
+      const was = s.isConnected; if (!was) M.appendChild(s);
+      let lo = 1, hi = k;
+      at(s, hi);
+      if (!fitsScene(s)) { for (let i = 0; i < 7; i++) { const m = (lo + hi) / 2; at(s, m); if (fitsScene(s)) lo = m; else hi = m; } k = Math.min(k, lo); }
+      if (!was) s.remove();
+    }
+    k = Math.floor(k * 100) / 100;
+    scenes.forEach((s) => { const was = s.isConnected; if (!was) M.appendChild(s); at(s, k); if (!was) s.remove(); });
+    return k;
+  }
+
+  Object.assign(PF, { stretchScene, oneLine, growText, oneLineK, scaleFont, sleep, loadFonts, imageSize, measureRoot, dropMeasure, scene, body, fitsScene, fitsM, pack, shrinkOrClip, guard, msgScene, DOT, imgTag, extLinks, refitOnLateFont,
                       projectIntro, note, fillOf, noteFill, vband, fitVisuals, visScore, minFonts, deckSceneNear, FLOOR, extEn });
 })();

@@ -173,6 +173,23 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .pf-fill { margin-block: auto; width: 100%; flex: none; }
 .pf-sizing .pf-fill { flex: 1 1 auto; min-height: 0; margin-block: 0; display: flex; flex-direction: column; }
 .pf-sizing .pf-fill > * { flex: 1 1 auto; min-height: 0; }
+/* ── 꽉 채우기(수강생 요청 2026-11-12, PF.stretchScene): 맞추기가 끝난 요약 장면의 칸을 본문 상자 끝까지 늘림. 글자 크기는 그대로 ──
+     본문 = 칸 격자(옆 배치는 그림 칸 | 카드 칸, 위아래 배치는 그림 칸 / 카드 줄). 그림·다이어그램·코드 판이 칸을 채우고(그림은 비율 유지),
+     카드·흐름 상자는 남는 높이를 고르게 나눠 가짐(글은 상자 안 세로 가운데). 늘려서 넘치면 PF.stretchScene이 되돌림 */
+.pf-stretch .pf-fill { flex: 1 1 auto; min-height: 0; margin-block: 0; display: flex; flex-direction: column; }
+.pf-stretch .pf-fill > * { flex: 1 1 auto; min-height: 0; }
+.pf-stretch .dk-side { align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+.pf-stretch .dk-stack { grid-template-rows: minmax(0, 1fr) auto; }
+.pf-stretch .dk-text { align-content: stretch; }
+.pf-stretch .scr-row { align-items: stretch; }
+.pf-stretch .fe-card .vis { flex: 1 1 auto; }
+.pf-stretch :is(.dk-side, .dk-text) > :is(.cards, .flow) { align-content: stretch; height: 100%; }
+.pf-stretch .flow.col, .pf-stretch .cards:not(.row) { grid-auto-rows: auto; }
+.pf-stretch .ncard { align-content: center; }
+.pf-stretch .fstep { justify-content: center; }
+.pf-stretch .vbox[data-kind="image"] .vmedia img { width: 100%; height: 100%; object-fit: contain; }
+.pf-stretch .vbox[data-kind="code"] .vmedia { display: flex; align-items: center; }
+.pf-stretch table.md-table td { vertical-align: middle; }
 
 /* ── 프로젝트 소개(발표 덱 표지, 결정 G4) ── */
 .t-P1 .pf-body { display: flex; flex-direction: column; }

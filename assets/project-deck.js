@@ -291,6 +291,7 @@
     const name = pf.profile?.name || '';
     const foot = `${name ? name + ' · ' : ''}${p.title}`;
     info.meta = { title: p.title, name };                               // PPTX 파일 이름·작성자(assets/deck-pptx.js)
+    document.documentElement.dataset.pfProject = p.id;                 // 프로젝트별 모양 규칙용(theme.css의 [data-pf-project="<폴더>"]) — 수강생 요청 2026-11-12
     document.title = `${p.title} · ${PF.t('name.deck')}${name ? ' · ' + name : ''}`;
     info.fonts = await PF.loadFonts();
     mark('fonts');
@@ -335,6 +336,15 @@
     const end = endScene(p, foot, ext, auto);
     const toc = tocScene(p, foot, tocItems, retro, auto);
     const all = [cover, toc, ...chapterScenes, ...retro, end];
+    // 글 장면 글 키우기 → 한 줄 지키기 → 꽉 채우기(수강생 요청 2026-11-12, deck-common.js). 모두 넘침 검사를 거치므로 넘침이 새로 생기지 않음
+    info.textGrow = PF.growText(all.filter((s) => s.classList.contains('pf-sum') && s.querySelector('.dk-text') && !s.querySelector('.pf-zoomwrap, .pf-clipped')),
+      ['.dk-text .ncard p', '.dk-text .ncard .lb', '.dk-text .ncard .num', '.dk-text .fstep p', '.dk-text .fstep .labelchip']);
+    PF.oneLine(all, {
+      deckSel: ['.pf-title'],
+      sceneSel: ['.pf-lead', '.pi-t', '.pi-head .tagline', '.pi-meta dd', '.lcard .lc-t', '.ch-t', '.en-t', '.toc-list .t', '.toc-list .d',
+                 '.ncard .lb', '.ncard p', '.fstep p', '.fe-card h3', '.fe-card p', '.vbox .cap'],
+    });
+    all.forEach(PF.stretchScene);
     PF.noteFill(all, { fill: !auto });                                  // 예전 데이터 자동 구성은 채움률 참고를 내지 않음(다시 빌드 안내 1건만)
     if (auto) PF.note('cover', 'auto-mode', 1, '예전 데이터로 자동 구성(다시 빌드하면 발표 덱)');
     else if (all.length > 30) PF.note('cover', 'many-scenes', all.length, `장면 ${all.length}장(권장 15~30장)`);
