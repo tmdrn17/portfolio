@@ -13,6 +13,15 @@
 <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 <!-- 기존 페이지(index.html)와 같은 테마: theme/theme.css의 손잡이(--t-*)를 그대로 씀 -->
 <link rel="stylesheet" href="../theme/theme.css">
+<!-- 라이트/다크 모드: 다른 페이지와 같은 스크립트·같은 기억(theme.css의 두 블록 중 고름). 그리기 전에 실어 깜빡임 없음 — 수강생 요청 2026-11-12 -->
+<script src="../assets/mode.js"></script>
+<style>
+  /* 라이트/다크 전환 버튼(오른쪽 위). 아이콘은 mode.js가 채움 */
+  .mode-btn { position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; display: grid; place-items: center;
+              border-radius: 999px; border: 1px solid var(--line-2); background: var(--bg); color: var(--ink); cursor: pointer; z-index: 5; }
+  .mode-btn:hover { border-color: var(--accent); }
+  .mode-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
 <style>
   :root {
     --bg: var(--t-bg, #fff); --surface: var(--t-surface, #F3F5F4);
@@ -462,7 +471,8 @@ function App() {
         style={{ "--side": selProject ? "minmax(24rem,46%)" : "minmax(16rem,32%)" }}>
           {/* 왼쪽 위: 이름 + 탭 */}
           <header className="md:border-r border-b line flex flex-col">
-            <div className="px-5 sm:px-10 pt-10 pb-8 flex-1">
+            <div className="px-5 sm:px-10 pt-10 pb-8 flex-1 relative">
+              <button type="button" className="mode-btn" data-mode-toggle></button>
               <p className="eyebrow">{S["en.portfolio"]}</p>
               <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mt-2">{profile.name}</h1>
               {profile.nameEn && <p className="mt-2 text-lg accent" style={{ fontFamily: "var(--display)", fontWeight: 800 }}>{profile.nameEn}</p>}
