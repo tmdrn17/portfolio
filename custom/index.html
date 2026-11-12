@@ -67,6 +67,14 @@
   .media a { display: contents; }
   figure figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
 
+  /* 프로필 사진(3:4). 사진이 없을 때의 점선 자리는 미리보기에서만 보임 */
+  .photo { flex: none; width: 128px; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+  .photo-empty { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
+                 border: 2px dashed var(--line-2); border-radius: inherit; color: var(--muted); font-size: 12px; line-height: 1.4; padding: 8px; }
+  .photo-empty b { color: var(--ink); font-size: 13px; }
+  .photo:has(.photo-empty) { border: 0; }
+
   .fade { animation: fade .25s ease-out; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 </style>
@@ -151,6 +159,23 @@ function Media({ id, m }) {
       </div>
       {m.caption && <figcaption>{m.caption}</figcaption>}
     </figure>
+  );
+}
+
+// ── 프로필 사진: custom/images/profile.jpg(또는 .png·.webp)를 넣으면 프로필 칸에 보임 ──
+// 사진이 없으면 미리보기(localhost)에서만 점선 "사진 자리"를 보이고, 배포된 페이지에서는 칸 자체를 숨김
+const PHOTO_SRCS = ["images/profile.jpg", "images/profile.png", "images/profile.webp"];
+const IS_LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+function ProfilePhoto({ name }) {
+  const [i, setI] = useState(0);
+  const missing = i >= PHOTO_SRCS.length;
+  if (missing && !IS_LOCAL) return null;
+  return (
+    <div className="photo">
+      {missing
+        ? <div className="photo-empty"><b>사진 자리</b><span>custom/images/<br />profile.jpg</span></div>
+        : <img src={PHOTO_SRCS[i]} alt={name ? `${name} 사진` : "프로필 사진"} onError={() => setI(i + 1)} />}
+    </div>
   );
 }
 
@@ -491,7 +516,9 @@ function App() {
           <aside className="px-5 sm:px-10 py-10 border-b line">
             <p className="eyebrow">PROFILE</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">프로필</h2>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 text-[15px]">
+            <div className="mt-6 flex flex-wrap gap-6 items-start">
+            <ProfilePhoto name={profile.name} />
+            <div className="flex-1 min-w-[12rem] grid gap-6 sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 text-[15px]">
               <section>
                 <h3 className="text-sm font-bold border-b line pb-1.5 mb-3">{S["page.nav-contact"]}</h3>
                 <dl className="space-y-3">
@@ -510,6 +537,7 @@ function App() {
                   </ul>
                 ) : <p className="muted text-sm">등록된 링크가 없습니다.</p>}
               </section>
+            </div>
             </div>
           </aside>
 
