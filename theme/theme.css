@@ -1,7 +1,8 @@
 /* ─────────────────────────────────────────────────────────────
-   테마 (theme/theme.css) — 2026-11-09
+   테마 (theme/theme.css) — 2026-11-09 · 2026-11-12 밝은 파스텔 초록으로 (수강생 요청)
    참고한 화면: 내 기술문서 발표 자료(기술문서_포트폴리오_김승구.pptx)
    뽑은 인상: 흰 바탕 · 짙은 숲 초록 제목 · 초록 라벨 · 연한 회녹색 판과 얇은 테두리 · 단정한 모서리 · 평평함(광채 없음)
+   → 같은 초록 계열을 밝게: 아주 연한 민트빛 바탕 · 파스텔 초록 판·라벨·배지 · 덱 표지도 밝은 파스텔 초록(짙은 글자)
    값을 고쳐도 됩니다(저장 → 새로고침). 손잡이 설명: .claude/skills/portfolio-theme/rules.md
    이 파일은 /portfolio-update가 건드리지 않습니다. 기본 테마로 되돌리기: /portfolio-theme 되돌리기
 
@@ -13,18 +14,18 @@
 :root {
   /* ① 바탕과 글자 */
   --t-scheme: light;
-  --t-bg: #FFFFFF;              /* 슬라이드 바탕 */
-  --t-surface: #F3F5F4;         /* 회녹색 판(코드·소개 카드) */
-  --t-ink: #0B3D2E;             /* 짙은 숲 초록 제목 */
-  --t-body: #222222;            /* 본문 */
-  --t-muted: #5F6670;           /* 보조 글자(쪽 번호·캡션) */
-  --t-line: #D7DED9;            /* 카드 테두리 */
-  --t-line-2: #B7CFC4;          /* 태그 테두리 */
+  --t-bg: #F6FBF8;              /* 아주 연한 민트빛 바탕 */
+  --t-surface: #FFFFFF;         /* 흰 카드 */
+  --t-ink: #0F382C;             /* 짙은 초록 제목(읽히게 진하게 둠) */
+  --t-body: #2B3632;            /* 본문(초록빛 도는 짙은 회색) */
+  --t-muted: #5B6B65;           /* 보조 글자(쪽 번호·캡션) */
+  --t-line: #D6EBE1;            /* 카드 테두리(파스텔) */
+  --t-line-2: #A9D8C3;          /* 태그 테두리(파스텔) */
 
-  /* ② 강조색 — 한 색(라벨 초록) */
-  --t-accent: #2E6B57;
-  --t-accent-2: #2E6B57;
-  --t-accent-3: #2E6B57;
+  /* ② 강조색 — 한 색(파스텔 초록). 글자·칠 대비는 페이지가 바탕에 맞춰 자동으로 맞춤 */
+  --t-accent: #6FC3A0;
+  --t-accent-2: #6FC3A0;
+  --t-accent-3: #6FC3A0;
 
   /* ③ 모양 */
   --t-radius: 12px;
@@ -41,8 +42,8 @@
   --t-mark: 0;
 
   /* ⑥ 코드·다이어그램 판 */
-  --t-code-bg: #1F2A26;         /* PPT 코드 글자색(짙은 녹흑) */
-  --t-diagram: #F3F5F4;
+  --t-code-bg: #22302B;         /* 코드 판(문서) — 코드 강조색이 어두운 판 기준이라 어둡게 둠 */
+  --t-diagram: #F1F8F4;
 }
 
 :root[data-mode="dark"] {
@@ -72,45 +73,38 @@
    라이트 모드에만 적용(다크 모드 덱은 그대로). 색만 바꿉니다 — 크기·여백·글꼴은 그대로라 장면 배치 점검에 영향 없음.
    되돌리려면 이 주석부터 파일 끝까지 지우면 됩니다. */
 
-/* 덱 전용 색 단계(--pj-*): 기본은 밝은 초록. ④의 프로젝트별 블록이 이 값을 프로젝트 색으로 바꿈 */
-html {
-  --pj-cover-bg: #C6F1E2; --pj-cover-card: #E2F9F1; --pj-cover-ink: #0E392B; --pj-cover-muted: #285D4B; --pj-cover-faint: #447E6B;
-  --pj-cover-line: #97D8C2; --pj-cover-line2: #69BFA2; --pj-cover-accent: #186249;
-  --pj-badge: #A2EBD3; --pj-badge-ink: #0E392B; --pj-code: #F0FAF6; --pj-comment: #1C6E53;
-}
-
-/* ① 본문 장면: 흰 카드 + 얇은 테두리, 밝은 번호 배지(짙은 글자), 밝은 코드 판 */
+/* ① 본문 장면: 흰 카드 + 얇은 테두리, 파스텔 초록 번호 배지(짙은 숫자), 밝은 민트 코드 판 */
 :root:not([data-mode="dark"]) .pf-scene {
   --card: #FFFFFF;
   --paper: #FFFFFF;
-  --glow: var(--pj-badge);
-  --code-bg: var(--pj-code);
+  --glow: #A8DCC4;
+  --code-bg: #EFF8F3;
 }
-:root:not([data-mode="dark"]) .pf-scene :is(.ncard .num, .toc-list .n) { color: var(--pj-badge-ink); }
+:root:not([data-mode="dark"]) .pf-scene :is(.ncard .num, .toc-list .n) { color: #123F32; }
 :root:not([data-mode="dark"]) .pf-scene .fit-in pre code,
 :root:not([data-mode="dark"]) .pf-scene .msg-b pre { color: #222222; }
 :root:not([data-mode="dark"]) .pf-scene .fit-in pre code [class*="hljs-"] { color: inherit; font-style: normal; font-weight: inherit; }
-:root:not([data-mode="dark"]) .pf-scene .fit-in pre code .hljs-comment { color: var(--pj-comment); font-weight: 700; }
+:root:not([data-mode="dark"]) .pf-scene .fit-in pre code .hljs-comment { color: #2A6A54; font-weight: 700; }
 
-/* ② 프로젝트 표지·장 표지·맺음: 밝은 프로젝트 색 바탕 + 짙은 글자 */
+/* ② 프로젝트 표지·장 표지·맺음: 밝은 파스텔 초록 바탕 + 짙은 초록 글자 */
 :root:not([data-mode="dark"]) .pf-scene:is(.t-P1, .t-CH, .t-EN) {
-  --bg: var(--pj-cover-bg);
-  --ink: var(--pj-cover-ink);
-  --muted: var(--pj-cover-muted);
-  --faint: var(--pj-cover-faint);
-  --line: var(--pj-cover-line);
-  --line-2: var(--pj-cover-line2);
-  --card: var(--pj-cover-card);
-  --paper: var(--pj-cover-card);
-  --accent: var(--pj-cover-accent);
-  --accent-ink: var(--pj-cover-accent);
-  --accent-fill: var(--pj-cover-accent);
-  --accent-soft: var(--pj-cover-card);
-  --glow: var(--pj-badge);
-  --grad: linear-gradient(var(--pj-cover-accent), var(--pj-cover-accent));
+  --bg: #CDEBDD;
+  --ink: #123F32;
+  --muted: #3B6455;
+  --faint: #5A8172;
+  --line: #A6D6C0;
+  --line-2: #82C3A7;
+  --card: #E6F5EE;
+  --paper: #E6F5EE;
+  --accent: #2A6A54;
+  --accent-ink: #2A6A54;
+  --accent-fill: #2A6A54;
+  --accent-soft: #E6F5EE;
+  --glow: #A8DCC4;
+  --grad: linear-gradient(#2A6A54, #2A6A54);
   --shadow: rgb(20 22 30 / .12);
 }
-:root:not([data-mode="dark"]) .pf-scene:is(.t-P1, .t-CH, .t-EN) .tags li { background: var(--pj-cover-card); }
+:root:not([data-mode="dark"]) .pf-scene:is(.t-P1, .t-CH, .t-EN) .tags li { background: #E6F5EE; }
 
 /* ③ 모든 발표 덱 표지 (수강생 요청 2026-11-12)
    - 왼쪽: 대표 이미지를 맨 위로, 프로젝트 이름·한 줄 설명은 이미지 아래로(순서만 바꿈 — 크기는 그대로라 배치 점검에 영향 없음)
@@ -119,99 +113,3 @@ html {
    한 프로젝트에만 걸려면 앞에 [data-pf-project="<폴더 이름>"]을 붙임(발표 덱이 붙이는 폴더 이름) */
 .pf-scene.t-P1 .pi-left > .pi-cover { order: -1; }
 .pf-scene.t-P1 .pi-right { justify-content: flex-start; }
-
-/* ── ④ 프로젝트별 색 (수강생 요청 2026-11-12 — 밝은 톤) ──
-   발표 덱(project.html?p=…)·상세 문서(doc.html?p=…)를 열면 그 프로젝트 색으로 바뀝니다.
-   프로젝트마다 색상만 다르고 밝기 단계는 같음(표지·장 표지는 밝은 프로젝트 색, 본문은 흰 카드 + 밝은 배지).
-   포트폴리오 문서(index.html)·custom 페이지는 프로젝트를 고른 페이지가 아니라 기본 초록 그대로.
-   [data-pf-project]는 덱·상세 문서가 html에 붙이는 폴더 이름. 프로젝트를 빼려면 그 프로젝트의 세 블록을 지우면 기본으로 돌아감 */
-
-/* 01-ODDITY — 대표 이미지의 검은 바탕 위 푸른 홀로그램 → 하늘색 (색상 205°) */
-:root[data-pf-project="01-ODDITY"]:not([data-mode="dark"]) {
-  --t-bg: #FBFDFE; --t-surface: #EFF6FA; --t-ink: #0D2435; --t-line: #D4E2ED; --t-line-2: #AECBE0;
-  --t-accent: #4798D1; --t-accent-2: #4798D1; --t-accent-3: #4798D1;
-  --t-code-bg: #1D2830; --t-diagram: #EFF6FA;
-}
-:root[data-pf-project="01-ODDITY"][data-mode="dark"] {
-  --t-bg: #0B1C28; --t-surface: #142634; --t-ink: #F2F5F8; --t-body: #D4DCE2; --t-muted: #A6BBC9;
-  --t-line: #1F3647; --t-line-2: #2E526B;
-  --t-accent: #70AFDB; --t-accent-2: #70AFDB; --t-accent-3: #70AFDB;
-  --t-code-bg: #081117; --t-diagram: #EFF6FA;
-}
-:root[data-pf-project="01-ODDITY"] {
-  --pj-cover-bg: #C6DFF1; --pj-cover-card: #E2EFF9; --pj-cover-ink: #0E2739; --pj-cover-muted: #28475D; --pj-cover-faint: #44667E;
-  --pj-cover-line: #97BDD8; --pj-cover-line2: #699BBF; --pj-cover-accent: #184362;
-  --pj-badge: #A2CDEB; --pj-badge-ink: #0E2739; --pj-code: #F0F6FA; --pj-comment: #1C4C6E;
-}
-
-/* 02-WeGotOne — 바닷가 다리·물고기 협동 게임 → 바다 청록 (색상 180°) */
-:root[data-pf-project="02-WeGotOne"]:not([data-mode="dark"]) {
-  --t-bg: #FBFEFE; --t-surface: #EFFAFA; --t-ink: #0D3535; --t-line: #D4EDED; --t-line-2: #AEE0E0;
-  --t-accent: #47D1D1; --t-accent-2: #47D1D1; --t-accent-3: #47D1D1;
-  --t-code-bg: #1D3030; --t-diagram: #EFFAFA;
-}
-:root[data-pf-project="02-WeGotOne"][data-mode="dark"] {
-  --t-bg: #0B2828; --t-surface: #143434; --t-ink: #F2F8F8; --t-body: #D4E2E2; --t-muted: #A6C9C9;
-  --t-line: #1F4747; --t-line-2: #2E6B6B;
-  --t-accent: #70DBDB; --t-accent-2: #70DBDB; --t-accent-3: #70DBDB;
-  --t-code-bg: #081717; --t-diagram: #EFFAFA;
-}
-:root[data-pf-project="02-WeGotOne"] {
-  --pj-cover-bg: #C6F1F1; --pj-cover-card: #E2F9F9; --pj-cover-ink: #0E3939; --pj-cover-muted: #285D5D; --pj-cover-faint: #447E7E;
-  --pj-cover-line: #97D8D8; --pj-cover-line2: #69BFBF; --pj-cover-accent: #186262;
-  --pj-badge: #A2EBEB; --pj-badge-ink: #0E3939; --pj-code: #F0FAFA; --pj-comment: #1C6E6E;
-}
-
-/* 03-hotteok-survivor — 호떡·나무 수레의 따뜻한 갈색 → 살구·호박색 (색상 32°) */
-:root[data-pf-project="03-hotteok-survivor"]:not([data-mode="dark"]) {
-  --t-bg: #FEFDFB; --t-surface: #FAF5EF; --t-ink: #35220D; --t-line: #EDE1D4; --t-line-2: #E0C9AE;
-  --t-accent: #D19147; --t-accent-2: #D19147; --t-accent-3: #D19147;
-  --t-code-bg: #30271D; --t-diagram: #FAF5EF;
-}
-:root[data-pf-project="03-hotteok-survivor"][data-mode="dark"] {
-  --t-bg: #281A0B; --t-surface: #342514; --t-ink: #F8F5F2; --t-body: #E2DCD4; --t-muted: #C9B9A6;
-  --t-line: #47341F; --t-line-2: #6B4F2E;
-  --t-accent: #DBA970; --t-accent-2: #DBA970; --t-accent-3: #DBA970;
-  --t-code-bg: #171008; --t-diagram: #FAF5EF;
-}
-:root[data-pf-project="03-hotteok-survivor"] {
-  --pj-cover-bg: #F1DDC6; --pj-cover-card: #F9EEE2; --pj-cover-ink: #39250E; --pj-cover-muted: #5D4428; --pj-cover-faint: #7E6344;
-  --pj-cover-line: #D8BA97; --pj-cover-line2: #BF9769; --pj-cover-accent: #624018;
-  --pj-badge: #EBC9A2; --pj-badge-ink: #39250E; --pj-code: #FAF5F0; --pj-comment: #6E481C;
-}
-
-/* 04-jaljayo — 대표 이미지 없음 — 제목 "잘자요"의 밤 느낌 → 라벤더 (색상 255°) */
-:root[data-pf-project="04-jaljayo"]:not([data-mode="dark"]) {
-  --t-bg: #FCFBFE; --t-surface: #F2EFFA; --t-ink: #170D35; --t-line: #DAD4ED; --t-line-2: #BAAEE0;
-  --t-accent: #6A47D1; --t-accent-2: #6A47D1; --t-accent-3: #6A47D1;
-  --t-code-bg: #211D30; --t-diagram: #F2EFFA;
-}
-:root[data-pf-project="04-jaljayo"][data-mode="dark"] {
-  --t-bg: #120B28; --t-surface: #1C1434; --t-ink: #F3F2F8; --t-body: #D8D4E2; --t-muted: #AFA6C9;
-  --t-line: #291F47; --t-line-2: #3D2E6B;
-  --t-accent: #8B70DB; --t-accent-2: #8B70DB; --t-accent-3: #8B70DB;
-  --t-code-bg: #0B0817; --t-diagram: #F2EFFA;
-}
-:root[data-pf-project="04-jaljayo"] {
-  --pj-cover-bg: #D1C6F1; --pj-cover-card: #E7E2F9; --pj-cover-ink: #190E39; --pj-cover-muted: #35285D; --pj-cover-faint: #52447E;
-  --pj-cover-line: #A897D8; --pj-cover-line2: #7E69BF; --pj-cover-accent: #2B1862;
-  --pj-badge: #B5A2EB; --pj-badge-ink: #190E39; --pj-code: #F2F0FA; --pj-comment: #301C6E;
-}
-
-/* 05-AnimalRun — 대표 이미지의 분홍 버튼 → 산호 분홍 (색상 348°) */
-:root[data-pf-project="05-AnimalRun"]:not([data-mode="dark"]) {
-  --t-bg: #FEFBFC; --t-surface: #FAEFF1; --t-ink: #350D15; --t-line: #EDD4D9; --t-line-2: #E0AEB8;
-  --t-accent: #D14763; --t-accent-2: #D14763; --t-accent-3: #D14763;
-  --t-code-bg: #301D21; --t-diagram: #FAEFF1;
-}
-:root[data-pf-project="05-AnimalRun"][data-mode="dark"] {
-  --t-bg: #280B11; --t-surface: #34141A; --t-ink: #F8F2F3; --t-body: #E2D4D7; --t-muted: #C9A6AD;
-  --t-line: #471F27; --t-line-2: #6B2E3A;
-  --t-accent: #DB7086; --t-accent-2: #DB7086; --t-accent-3: #DB7086;
-  --t-code-bg: #17080B; --t-diagram: #FAEFF1;
-}
-:root[data-pf-project="05-AnimalRun"] {
-  --pj-cover-bg: #F1C6CE; --pj-cover-card: #F9E2E6; --pj-cover-ink: #390E17; --pj-cover-muted: #5D2832; --pj-cover-faint: #7E444F;
-  --pj-cover-line: #D897A4; --pj-cover-line2: #BF697A; --pj-cover-accent: #621827;
-  --pj-badge: #EBA2B1; --pj-badge-ink: #390E17; --pj-code: #FAF0F2; --pj-comment: #6E1C2C;
-}

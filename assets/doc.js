@@ -42,7 +42,6 @@
 
   if (!id) { errors.push('no-project: 주소에 ?p=<폴더 이름>이 없습니다'); PF.notice(root, '프로젝트를 고르세요', `<p>주소 끝에 <code>?p=폴더이름</code>을 붙여 주세요.</p>${back}`); return done(); }
   const [pf] = await Promise.all([PF.loadJSON('data/portfolio.json').catch(() => ({})), PF.loadStrings()]);
-  document.documentElement.dataset.pfProject = id;                   // 프로젝트별 색(theme.css ④ [data-pf-project], 수강생 요청 2026-11-12) — 강조색 계산 전에 붙임
   PF.applyTheme(pf.settings?.accent);
   document.querySelector('.skip-link')?.replaceChildren(PF.t('ui.skip'));
   let p;

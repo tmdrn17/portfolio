@@ -51,7 +51,6 @@
     const back = `<p>${link({ href: 'index.html', label: '← 포트폴리오로', kind: 'page' })}</p>`;
     if (!id) { info.errors.push('no-project: 주소에 ?p=<폴더 이름>이 없습니다'); deck.replaceChildren(PF.msgScene({ title: '프로젝트를 고르세요', html: `<p>주소 끝에 <code>?p=폴더이름</code>을 붙여 주세요.</p>${back}` })); return; }
     const pf = await PF.loadJSON('data/portfolio.json').catch(() => ({}));
-    document.documentElement.dataset.pfProject = id;                   // 프로젝트별 색(theme.css ④ [data-pf-project]) — 강조색 계산 전에 붙임
     PF.applyTheme(pf.settings?.accent);
     let p;
     try { p = await PF.loadJSON(`data/projects/${encodeURIComponent(id)}.json`); }
