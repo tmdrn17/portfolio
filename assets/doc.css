@@ -139,6 +139,15 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
 .md > h2:first-of-type { margin-top: 12px; }
 .md h3 { font-size: 19px; font-weight: 800; margin: 36px 0 10px; }
 .md h4 { font-size: 16px; font-weight: 800; margin: 24px 0 8px; }
+/* 절 접기(수강생 요청 2026-11-19, doc.js setupFold): h2·h3 맨 앞 버튼. 펼침 = ⌄, 접힘 = ›(돌림). 숨김은 화면에서만 — 인쇄는 모두 펼침 */
+.md .fold-btn { display: inline-flex; align-items: center; justify-content: center; width: 1.15em; height: 1.15em; margin: 0 .3em 0 -.1em; padding: 0; vertical-align: -.12em;
+                border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: .85em; cursor: pointer; transition: transform .15s, color .15s, background .15s; }
+.md .fold-btn:hover { color: var(--accent-ink, var(--ink)); background: color-mix(in srgb, var(--muted) 14%, transparent); }
+.md .fold-btn:focus-visible { outline: 2px solid var(--accent-ink, currentColor); outline-offset: 2px; }
+.md .folded > .fold-btn { transform: rotate(-90deg); }
+.md .foldable.folded { color: var(--muted); }
+@media screen { .md:not(.fold-print) .fold-hidden { display: none !important; } }
+@media print { .md .fold-btn { display: none !important; } .md .foldable.folded { color: inherit; } }
 .md :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 24px; }
 .md p, .md li { font-size: 16px; color: var(--body); }
 .md p { margin: 12px 0; }

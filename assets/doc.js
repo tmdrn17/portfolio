@@ -289,6 +289,9 @@
     const deckAbs = new URL(deckUrl(), location.href).href;
     document.querySelector('.print-urls').innerHTML = `<p>${T('doc.print-web')}: ${esc(here.href)}</p><p>${T('name.deck')}: ${esc(deckAbs)}</p>`;
 
+    // ⑨-2 절 접기(수강생 요청 2026-11-19): 1단계·2단계 제목(h2·h3) 왼쪽 ›/⌄ 버튼으로 그 절을 접고 폄. 화면에서만(인쇄는 모두 펼친 채)
+    setupFold(doc, headings.filter((h) => h.tagName === 'H2' || h.tagName === 'H3'));
+
     // ⑩ 목차 현재 위치(스크롤 기준) + 레일 "지금 읽는 절"
     trackSection(headings.filter((h) => h.tagName === 'H2' || h.tagName === 'H3'));
 
@@ -304,6 +307,60 @@
     const pres = [...doc.querySelectorAll('pre')].filter((x) => !x.closest('.mmd-src'));
     pres.forEach((pre) => { fade(pre); pre.addEventListener('scroll', () => fade(pre), { passive: true }); });
     addEventListener('resize', () => pres.forEach(fade));
+  }
+
+  // 절 접기: 제목 안 맨 앞에 버튼. 접힌 제목 아래(다음 같은·윗단계 제목 전까지)의 본문 요소에 .fold-hidden(화면에서만 숨김 — doc.css).
+  //   DOM 구조는 바꾸지 않음(제목 id·목차·#sec= 딥링크·슬라이드에서 오는 주소가 그대로 동작). 접힌 곳으로 가는 목차·앵커는 먼저 그 절을 폄
+  function setupFold(doc, heads) {
+    if (!heads.length) return;
+    const lv = (el) => (/^H[1-6]$/.test(el.tagName) ? +el.tagName[1] : 0);
+    const folded = new Set();
+    const ICON = '<svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    const apply = () => {
+      const stack = [];                                                  // 지금 위치를 감싼 제목들 { 단계, 접힘 }
+      for (const el of doc.children) {
+        const l = lv(el);
+        if (l) while (stack.length && stack[stack.length - 1].l >= l) stack.pop();
+        el.classList.toggle('fold-hidden', stack.some((s) => s.f));
+        if (l) stack.push({ l, f: folded.has(el) });
+      }
+      heads.forEach((h) => {
+        const f = folded.has(h), b = h.querySelector(':scope > .fold-btn');
+        h.classList.toggle('folded', f);
+        b.setAttribute('aria-expanded', String(!f));
+        b.setAttribute('aria-label', `${htext(h)} — ${f ? '펼치기' : '접기'}`);
+        b.title = f ? '펼치기' : '접기';
+      });
+    };
+    heads.forEach((h) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'fold-btn'; b.innerHTML = ICON;
+      b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); folded.has(h) ? folded.delete(h) : folded.add(h); apply(); });
+      h.prepend(b);
+      h.classList.add('foldable');
+    });
+    // 접힌 절 안의 요소로 갈 때: 그 요소를 감싼 접힌 제목을 모두 폄
+    const reveal = (target) => {
+      const kids = [...doc.children];
+      const top = kids.find((k) => k === target || k.contains(target));
+      if (!top || !top.classList.contains('fold-hidden')) return;
+      let need = lv(top) || 7;
+      for (let i = kids.indexOf(top) - 1; i >= 0; i--) {
+        const l = lv(kids[i]);
+        if (l && l < need) { folded.delete(kids[i]); need = l; }
+      }
+      apply();
+    };
+    document.addEventListener('click', (e) => {                       // 목차·본문 앵커(같은 문서 안 #…)
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      let el = null; try { el = document.getElementById(decodeURIComponent(a.hash.slice(1))); } catch { /* */ }
+      if (el && doc.contains(el)) reveal(el);
+    }, true);
+    addEventListener('beforeprint', () => doc.classList.add('fold-print'));
+    addEventListener('afterprint', () => doc.classList.remove('fold-print'));
+    window.PFDoc = Object.assign(window.PFDoc || {}, { revealFold: reveal, foldAll: (on = true) => { heads.forEach((h) => (on ? folded.add(h) : folded.delete(h))); apply(); } });
+    apply();
   }
 
   function classifyMdLink(a, isRelative, decode) {
@@ -333,7 +390,7 @@
     const update = () => {
       t = 0;
       let c = null;
-      for (const h of list) { if (h.getBoundingClientRect().top <= 120) c = h; else break; }
+      for (const h of list) { if (h.classList.contains('fold-hidden')) continue; if (h.getBoundingClientRect().top <= 120) c = h; else break; }   // 접혀 숨은 제목은 건너뜀
       if (c === cur && cur !== undefined) return;
       cur = c;
       links.forEach((a) => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
@@ -392,6 +449,7 @@
     // 딥링크: #sec=<절 제목> → 정규 앵커 #<slug>로 바꾸고 도착 강조, 그냥 #<slug>(슬라이드·옛 주소)도 도착 강조
     const flash = (el) => { el.classList.add('arrive'); setTimeout(() => el.classList.remove('arrive'), 2100); };
     const arrive = (el) => {
+      window.PFDoc?.revealFold?.(el);                                  // 접힌 절 안이면 먼저 폄
       el.scrollIntoView({ block: 'start', behavior: 'instant' });
       flash(el); hold(el);
     };
@@ -405,7 +463,11 @@
       if (el) arrive(el); else if (raw !== 'top') console.warn('[doc] 조각에 맞는 제목이 없음 → 맨 위:', raw);
     }
     // 같은 문서 안 이동(목차·앵커): 브라우저가 옮긴 뒤 도착 강조 + 붙잡기
-    addEventListener('hashchange', () => { const el = document.getElementById(hashText()); if (el && el.matches('h1,h2,h3,h4,h5,h6')) { flash(el); hold(el); } });
+    addEventListener('hashchange', () => {
+      const el = document.getElementById(hashText());
+      if (el && el.closest('.fold-hidden')) { window.PFDoc?.revealFold?.(el); el.scrollIntoView({ block: 'start', behavior: 'instant' }); }   // 접힌 절 안(주소창에 직접 친 경우 등)
+      if (el && el.matches('h1,h2,h3,h4,h5,h6')) { flash(el); hold(el); }
+    });
   }
 
   // 도착한 제목 붙잡기 — md 그림에는 크기 정보가 없어서, 제목에 도착한 뒤 위쪽 그림이 늦게 들어오면 제목이 화면 아래로 밀립니다
