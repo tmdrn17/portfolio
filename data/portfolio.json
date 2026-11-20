@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20",
+  "generatedAt": "2026-11-21",
   "profile": {
     "name": "김승구",
     "nameEn": "",
@@ -24,10 +24,6 @@
         {
           "text": "Unity 2023.1로 3D 크라우드 러너를 혼자 제작·리팩터링",
           "project": "05-AnimalRun"
-        },
-        {
-          "text": "Unity 2020.3 졸업 작품을 지금의 코딩 스타일로 리팩터링",
-          "project": "04-jaljayo"
         }
       ]
     },
@@ -58,10 +54,6 @@
         {
           "text": "delegate 생성기 목록으로 수식 문 유형을 고르는 전략 패턴",
           "project": "05-AnimalRun"
-        },
-        {
-          "text": "제네릭 싱글톤 부모·템플릿 메서드로 중복 코드를 묶음",
-          "project": "04-jaljayo"
         }
       ]
     },
@@ -153,10 +145,6 @@
         {
           "text": "동물 프리팹 파이프라인과 맵 테마 청크·적 대량 제작에 Claude 사용",
           "project": "05-AnimalRun"
-        },
-        {
-          "text": "스크립트 72개 리팩터링을 Opus·Sonnet·Haiku로 나눠 맡김",
-          "project": "04-jaljayo"
         }
       ]
     }
@@ -165,7 +153,6 @@
     "01-ODDITY",
     "02-WeGotOne",
     "03-hotteok-survivor",
-    "04-jaljayo",
     "05-AnimalRun"
   ]
 }
