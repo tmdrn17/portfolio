@@ -79,7 +79,7 @@
     {
       "title": "게임 시작 시 동물 · 무기 선택",
       "what": "게임을 시작할 때 동물 3개와 무기 3개를 선택지로 줍니다. 고른 동물과 무기로 한 판을 진행합니다.",
-      "how": "AnimalTable · WeaponTable의 전체 목록에서 뽑은 항목은 목록에서 빼기 때문에, 한 화면에 같은 선택지가 두 번 나오지 않습니다.",
+      "how": "AnimalTable · WeaponTable에서 ID를 무작위로 뽑고, 이미 뽑은 것과 겹치면 다시 뽑기 때문에 한 화면에 같은 선택지가 두 번 나오지 않습니다.",
       "why": "코인을 판 밖의 상점이 아니라 판 안에서 증강을 고르는 데 쓰게 하고 싶었습니다. 한 판 단위로 끝나는 단발성 루프로 중독성을 더하려는 것입니다.",
       "section": "3.5 게임 시작 시 동물 · 무기 선택",
       "image": {
@@ -563,7 +563,7 @@
         "points": [
           {
             "label": "",
-            "text": "AnimalTable · WeaponTable의 전체 목록에서 뽑은 항목은 목록에서 빼기 때문에, 한 화면에 같은 선택지가 두 번 나오지 않습니다.",
+            "text": "AnimalTable · WeaponTable에서 ID를 무작위로 뽑고, 이미 뽑은 것과 겹치면 다시 뽑기 때문에 한 화면에 같은 선택지가 두 번 나오지 않습니다.",
             "verbatim": true
           }
         ],
@@ -571,7 +571,7 @@
           {
             "kind": "code",
             "n": 1,
-            "fp": "List<AnimalDef> allAnimalDefs = dataManager.animalTable.All."
+            "fp": "private static void PickRandomUnique<T>(List<T> result, int "
           }
         ]
       },
@@ -595,7 +595,7 @@
         "points": [
           {
             "label": "고른 무기에 맞는 증강만",
-            "text": "폭발 범위 증강은 폭발하는 무기(Rocket, Grenade)를 골랐을 때만 나옵니다.",
+            "text": "폭발 범위 증강은 폭발하는 무기(Rocket, Grenade)를 골랐을 때만 나옵니다. 무기는 한 판에 한 번만 고르므로, 무기를 고를 때 후보 목록을 한 번 채워 두고 레벨업마다 다시 씁니다.",
             "verbatim": true
           },
           {
@@ -607,7 +607,7 @@
         "visuals": [
           {
             "kind": "code",
-            "n": 1,
+            "n": 2,
             "fp": "private void ShowAugments()"
           }
         ]
