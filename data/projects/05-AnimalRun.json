@@ -99,6 +99,24 @@
       "result": "판마다 플레이 시간이 고르게 됩니다.",
       "lesson": "",
       "section": "3.1 목표 플레이 시간에 맞춘 레벨 생성"
+    },
+    {
+      "title": "Synty 적의 번쩍임이 안 보이는 문제",
+      "problem": "적을 Synty 캐릭터로 바꾸자 크기 펀치만 되고 번쩍임이 보이지 않았습니다.",
+      "cause": "Synty 셰이더는 _BaseColor를 텍스처에 곱하는데 그 값이 흰색이라, 흰색으로 바꿔도 변화가 없었습니다.",
+      "solution": "Synty 셰이더일 때는 번쩍이는 동안 발광(Emission)을 켜도록 바꿨습니다.",
+      "result": "",
+      "lesson": "",
+      "section": "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
+    },
+    {
+      "title": "재사용된 러너가 무적·회색으로 나오는 문제",
+      "problem": "러너를 풀에서 다시 꺼내 쓰자, 한 번 죽은 러너가 무적이 되거나 회색인 채로 나오고 무기가 켜지지 않았습니다.",
+      "cause": "",
+      "solution": "러너가 켜질 때 isDead와 원래 머티리얼을 되돌리고, 무기 오브젝트가 꺼져 있으면 다시 켜도록 고쳤습니다.",
+      "result": "",
+      "lesson": "",
+      "section": "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
     }
   ],
   "screenshots": [
@@ -699,6 +717,45 @@
         ]
       },
       {
+        "key": "hit-flash",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {
+          "text": "Synty 적의 번쩍임이 안 보이는 문제",
+          "verbatim": false
+        },
+        "lead": null,
+        "sectionPath": [
+          "3. 핵심 기능",
+          "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
+        ],
+        "points": [
+          {
+            "label": "문제",
+            "text": "적을 Synty 캐릭터로 바꾸자 크기 펀치만 되고 번쩍임이 보이지 않았습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "원인",
+            "text": "Synty 셰이더는 _BaseColor를 텍스처에 곱하는데 그 값이 흰색이라, 흰색으로 바꿔도 변화가 없었습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "해결",
+            "text": "Synty 셰이더일 때는 번쩍이는 동안 발광(Emission)을 켜도록 바꿨습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "code",
+            "n": 1,
+            "fp": "// Synty 셰이더는 _BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"
+          }
+        ]
+      },
+      {
         "key": "collision-choice",
         "chapter": "tradeoffs",
         "layout": "full",
@@ -751,31 +808,55 @@
         ]
       },
       {
+        "key": "collision-change",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {
+          "text": "4.3 리팩터링으로 바뀐 충돌 판정",
+          "verbatim": true
+        },
+        "lead": {
+          "text": "다섯 가지 판정을 모두 거리로 바꿨습니다.",
+          "verbatim": true
+        },
+        "sectionPath": [
+          "4. 고민과 선택",
+          "4.3 리팩터링으로 바뀐 충돌 판정"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 1,
+            "fp": "판정|2023 원형|2026 지금"
+          }
+        ]
+      },
+      {
         "key": "ai-collab",
         "chapter": "ai",
-        "layout": "overview",
+        "layout": "full",
         "tab": "",
         "title": {
           "text": "AI 협업",
           "verbatim": true
         },
-        "lead": null,
+        "lead": {
+          "text": "이번 업데이트(맵 테마 · 연출)에서 Claude Code를 썼고, 커밋마다 AI가 작성한 부분과 직접 작성한 부분을 나눠 적었습니다.",
+          "verbatim": true
+        },
         "sectionPath": [
           "AI 협업"
         ],
-        "points": [
+        "points": [],
+        "visuals": [
           {
-            "label": "맡긴 것",
-            "text": "레벨 생성 일부 수정, 동물 에셋 제작 파이프라인(Blender), 맵 테마(청크 · 적 · 테마 구조) 제작에 Claude를 썼습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "직접 판단한 것",
-            "text": "맵 테마는 AI에게 제작을 맡기면서 ScriptableObject로 만들어졌는데, 이후 TSV와 직접 비교해 이 방식을 유지했습니다(4.2).",
-            "verbatim": true
+            "kind": "table",
+            "n": 1,
+            "fp": "작업|AI에게 맡긴 것|직접 한 것|AI를 쓴 이유"
           }
-        ],
-        "visuals": []
+        ]
       }
     ]
   }

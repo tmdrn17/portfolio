@@ -29,7 +29,12 @@ const PF = (() => {
   const projectUrl = (id, sid = '') => `project.html?p=${encodeURIComponent(id)}${sid ? `#s=${sid}` : ''}`;
   const docUrl = (id, anchor = '') => `doc.html?p=${encodeURIComponent(id)}${anchor ? `#${anchor}` : ''}`;
   // 보이는 주소(PDF에서 그대로 칠 수 있게): 지금 사이트 주소 + 상대경로. 조각(#…)은 넣지 않음(portfolio-structure §5-4)
-  const siteBase = () => `${location.host}${location.pathname.replace(/[^/]*$/, '')}`;
+  // 보이는 주소의 바탕. PDF 도구(tools/make-pdf.py)가 ?pdf-base=<배포 주소>를 붙여 열면 그 주소로(PDF에 임시 주소 127.0.0.1이 찍히지 않게)
+  const siteBase = () => {
+    const pb = new URLSearchParams(location.search).get('pdf-base');
+    if (pb && /^https?:\/\//i.test(pb)) return pb.replace(/^https?:\/\//i, '').replace(/[^/]*$/, '');
+    return `${location.host}${location.pathname.replace(/[^/]*$/, '')}`;
+  };
   const visibleUrl = (rel) => { let u = siteBase() + String(rel).replace(/#.*$/, ''); try { u = decodeURI(u); } catch { /* 그대로 */ } return u; };
 
   const metaValue = (p, label) => (p.meta || []).find((m) => m.label === label)?.value || '';
