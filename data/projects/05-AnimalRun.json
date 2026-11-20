@@ -165,6 +165,13 @@
         "sectionPath": [
           "4. 고민과 선택"
         ]
+      },
+      {
+        "key": "ai",
+        "title": "AI 협업",
+        "sectionPath": [
+          "AI 협업"
+        ]
       }
     ],
     "slides": [
@@ -174,13 +181,13 @@
         "layout": "overview",
         "tab": "개요",
         "title": {
-          "text": "1.1 무엇을 만들었나",
+          "text": "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너",
           "verbatim": true
         },
         "lead": null,
         "sectionPath": [
           "1. 개요",
-          "1.1 무엇을 만들었나"
+          "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너"
         ],
         "points": [
           {
@@ -202,13 +209,13 @@
         "layout": "overview",
         "tab": "개요",
         "title": {
-          "text": "1.2 왜 만들었나",
+          "text": "1.2 빠르게 만들어 스토어에 올리기 위한 하이퍼 캐주얼",
           "verbatim": true
         },
         "lead": null,
         "sectionPath": [
           "1. 개요",
-          "1.2 왜 만들었나"
+          "1.2 빠르게 만들어 스토어에 올리기 위한 하이퍼 캐주얼"
         ],
         "points": [
           {
@@ -465,7 +472,7 @@
           },
           {
             "label": "선택한 이유",
-            "text": "데이터 테이블을 쓰면 동물·무기 같은 오브젝트를 관리하기 쉽고, 계속 추가하기도 쉬웠습니다.",
+            "text": "4.2에 정리했습니다(동물 · 무기는 TSV, 맵 테마는 ScriptableObject로 나눈 이유).",
             "verbatim": true
           }
         ],
@@ -742,6 +749,33 @@
             "fp": "|TSV 테이블|ScriptableObject"
           }
         ]
+      },
+      {
+        "key": "ai-collab",
+        "chapter": "ai",
+        "layout": "overview",
+        "tab": "",
+        "title": {
+          "text": "AI 협업",
+          "verbatim": true
+        },
+        "lead": null,
+        "sectionPath": [
+          "AI 협업"
+        ],
+        "points": [
+          {
+            "label": "맡긴 것",
+            "text": "레벨 생성 일부 수정, 동물 에셋 제작 파이프라인(Blender), 맵 테마(청크 · 적 · 테마 구조) 제작에 Claude를 썼습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "직접 판단한 것",
+            "text": "맵 테마는 AI에게 제작을 맡기면서 ScriptableObject로 만들어졌는데, 이후 TSV와 직접 비교해 이 방식을 유지했습니다(4.2).",
+            "verbatim": true
+          }
+        ],
+        "visuals": []
       }
     ]
   }
