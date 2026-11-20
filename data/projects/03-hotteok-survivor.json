@@ -51,7 +51,7 @@
       "what": "화면 전체가 아니라 가까운 9칸에 있는 소수의 적과만 거리를 계산합니다.",
       "how": "칸 좌표(Vector2Int)를 키로, 그 칸의 오브젝트 목록을 값으로 둡니다. 적은 칸이 바뀔 때만 다시 등록합니다. 실제 거리 대신 제곱 거리로 비교해 매 프레임 제곱근 계산을 피했습니다.",
       "why": "뱀서류는 적과 탄환이 대량으로 몰려나오기 때문에, 문제가 생기기 전에 미리 예상하고 물리 엔진 대신 격자 방향을 택했습니다.",
-      "section": "3.1 주변 9칸만 확인하는 공간 분할 격자",
+      "section": "2.1 격자를 중심으로 모이는 충돌 판정",
       "image": null
     },
     {
@@ -67,7 +67,7 @@
       "what": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.",
       "how": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.",
       "why": "정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다. 또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
-      "section": "3.2 끝없는 맵과 늘어나는 호떡",
+      "section": "3.1 끝없는 맵과 늘어나는 호떡",
       "image": null
     }
   ],
@@ -315,47 +315,18 @@
         ]
       },
       {
-        "key": "weapons",
+        "key": "grid-search",
         "chapter": "structure",
-        "layout": "visual",
-        "tab": "구조",
+        "layout": "code",
+        "tab": "구현",
         "title": {
-          "text": "2.2 추상 클래스로 늘어나는 무기",
+          "text": "2.1 격자를 중심으로 모이는 충돌 판정",
           "verbatim": true
         },
         "lead": null,
         "sectionPath": [
           "2. 시스템 구조",
-          "2.2 추상 클래스로 늘어나는 무기"
-        ],
-        "points": [
-          {
-            "label": "",
-            "text": "탐색·충돌·사거리처럼 모든 호떡에 공통인 부분은 추상 클래스가 맡고, 각 호떡은 이동(Move)과 피해(SendDamage)만 구현합니다.",
-            "verbatim": true
-          }
-        ],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "classDiagram"
-          }
-        ]
-      },
-      {
-        "key": "grid-search",
-        "chapter": "features",
-        "layout": "code",
-        "tab": "구현",
-        "title": {
-          "text": "3.1 주변 9칸만 확인하는 공간 분할 격자",
-          "verbatim": true
-        },
-        "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.1 주변 9칸만 확인하는 공간 분할 격자"
+          "2.1 격자를 중심으로 모이는 충돌 판정"
         ],
         "points": [
           {
@@ -392,18 +363,47 @@
         ]
       },
       {
+        "key": "weapons",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {
+          "text": "2.2 추상 클래스로 늘어나는 무기",
+          "verbatim": true
+        },
+        "lead": null,
+        "sectionPath": [
+          "2. 시스템 구조",
+          "2.2 추상 클래스로 늘어나는 무기"
+        ],
+        "points": [
+          {
+            "label": "",
+            "text": "탐색·충돌·사거리처럼 모든 호떡에 공통인 부분은 추상 클래스가 맡고, 각 호떡은 이동(Move)과 피해(SendDamage)만 구현합니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "mermaid",
+            "n": 1,
+            "fp": "classDiagram"
+          }
+        ]
+      },
+      {
         "key": "infinite-map",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
         "title": {
-          "text": "3.2 끝없는 맵과 늘어나는 호떡",
+          "text": "3.1 끝없는 맵과 늘어나는 호떡",
           "verbatim": true
         },
         "lead": null,
         "sectionPath": [
           "3. 핵심 기능",
-          "3.2 끝없는 맵과 늘어나는 호떡"
+          "3.1 끝없는 맵과 늘어나는 호떡"
         ],
         "points": [
           {
@@ -449,7 +449,7 @@
           "verbatim": true
         },
         "sectionPath": [
-          "3.2 끝없는 맵과 늘어나는 호떡",
+          "3.1 끝없는 맵과 늘어나는 호떡",
           "호떡 3종"
         ],
         "points": [],
@@ -472,7 +472,7 @@
         },
         "lead": null,
         "sectionPath": [
-          "3.2 끝없는 맵과 늘어나는 호떡",
+          "3.1 끝없는 맵과 늘어나는 호떡",
           "호떡 3종"
         ],
         "points": [
