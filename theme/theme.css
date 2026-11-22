@@ -113,3 +113,7 @@
    한 프로젝트에만 걸려면 앞에 [data-pf-project="<폴더 이름>"]을 붙임(발표 덱이 붙이는 폴더 이름) */
 .pf-scene.t-P1 .pi-left > .pi-cover { order: -1; }
 .pf-scene.t-P1 .pi-right { justify-content: flex-start; }
+
+/* 표 첫 칸(자료형·필드 이름 같은 낱말)이 글자 중간에서 줄바뀌지 않게 — 2026-11-22 수강생 요청
+   (예: 슬라이드 ODDITY §3.3 표의 "MissionDTO"가 "MissionDT / O"로 끊기던 것) */
+table.md-table td:first-child { overflow-wrap: normal; }

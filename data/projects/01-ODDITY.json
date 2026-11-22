@@ -127,6 +127,12 @@
   ],
   "screenshots": [
     {
+      "src": "images/roll_speed_curve_inspector.png",
+      "w": 408,
+      "h": 175,
+      "caption": "구르기 인스펙터 — Roll Distance · Move End Time · Speed Curve를 인스펙터에서 조절"
+    },
+    {
       "src": "images/animator_hitreaction.png",
       "w": 1560,
       "h": 518,
@@ -340,6 +346,34 @@
         "visuals": [{"kind": "code", "n": 1, "fp": "public float GetSpeedAt(float normalizedTime)"}]
       },
       {
+        "key": "roll-inspector",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "구현",
+        "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
+        "points": [
+          {
+            "label": "거리와 속도 변화를 분리",
+            "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다. 커브를 바꿔도 거리는 같습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/roll_speed_curve_inspector.png",
+            "w": 408,
+            "h": 175,
+            "caption": {
+              "text": "구르기 인스펙터 — Roll Distance(총 거리) · Move End Time(이동을 멈출 진행도) · Speed Curve(구간별 속도 배율)를 인스펙터에서 조절",
+              "verbatim": true
+            }
+          }
+        ]
+      },
+      {
         "key": "hit-reaction",
         "chapter": "features",
         "layout": "code",
@@ -400,6 +434,28 @@
           {"label": "목록 UI와 느슨한 연결", "text": "수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "public AddMissionResult AddMission(MissionDef missionDef)"}]
+      },
+      {
+        "key": "mission-enum",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+        "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다. 값마다 UI가 다른 안내 문구를 띄웁니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+        "points": [],
+        "visuals": [{"kind": "code", "n": 2, "fp": "public enum AddMissionResult"}]
+      },
+      {
+        "key": "mission-types",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "구조",
+        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "자료형|역할"}, {"kind": "table", "n": 2, "fp": "필드|MissionDTO|MissionDef|뜻"}]
       },
       {
         "key": "aim-zoom",
@@ -655,6 +711,34 @@
         "visuals": [{"kind": "code", "n": 1, "fp": "public float GetSpeedAt(float normalizedTime)"}]
       },
       {
+        "key": "roll-inspector",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "구현",
+        "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
+        "points": [
+          {
+            "label": "거리와 속도 변화를 분리",
+            "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다. 커브를 바꿔도 거리는 같습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/roll_speed_curve_inspector.png",
+            "w": 408,
+            "h": 175,
+            "caption": {
+              "text": "구르기 인스펙터 — Roll Distance(총 거리) · Move End Time(이동을 멈출 진행도) · Speed Curve(구간별 속도 배율)를 인스펙터에서 조절",
+              "verbatim": true
+            }
+          }
+        ]
+      },
+      {
         "key": "hit-reaction",
         "chapter": "features",
         "layout": "code",
@@ -715,6 +799,28 @@
           {"label": "목록 UI와 느슨한 연결", "text": "수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "public AddMissionResult AddMission(MissionDef missionDef)"}]
+      },
+      {
+        "key": "mission-enum",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+        "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다. 값마다 UI가 다른 안내 문구를 띄웁니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+        "points": [],
+        "visuals": [{"kind": "code", "n": 2, "fp": "public enum AddMissionResult"}]
+      },
+      {
+        "key": "mission-types",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "구조",
+        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "자료형|역할"}, {"kind": "table", "n": 2, "fp": "필드|MissionDTO|MissionDef|뜻"}]
       },
       {
         "key": "aim-zoom",
@@ -826,6 +932,6 @@
         "visuals": []
       }
     ],
-    "applied": "a1feb558c4bbdff8"
+    "applied": "fa4b4850ab71f1d5"
   }
 }
