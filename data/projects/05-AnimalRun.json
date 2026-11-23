@@ -39,8 +39,13 @@
   ],
   "links": {
     "github": "",
-    "video": "https://tmdrn17.github.io/portfolio/src/05-AnimalRun/video/animal-run.mp4",
-    "extra": []
+    "video": "https://youtu.be/vwFRyeQ6Njk",
+    "extra": [
+      {
+        "label": "쇼츠",
+        "url": "https://youtube.com/shorts/lrA1PyblqnI"
+      }
+    ]
   },
   "intent": {
     "text": "빠르게 제작해 스토어에 올리기 위해 만들었습니다. 하이퍼 캐주얼 장르는 반복성이 있고, 에셋을 비교적 저렴한 비용으로 구매할 수 있습니다.",

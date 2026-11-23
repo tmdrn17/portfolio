@@ -38,8 +38,13 @@
   ],
   "links": {
     "github": "",
-    "video": "https://tmdrn17.github.io/portfolio/src/03-hotteok-survivor/video/hotteok-survivor.mp4",
-    "extra": []
+    "video": "https://youtu.be/JJOqmqxmZzc",
+    "extra": [
+      {
+        "label": "쇼츠",
+        "url": "https://youtu.be/U7DGuq-M4d4"
+      }
+    ]
   },
   "intent": {
     "text": "최적화를 직접 공부해 보고 싶었습니다. 뱀서류는 적과 탄환이 화면 가득 몰려나오는 장르라, 처음부터 많은 오브젝트를 어떻게 가볍게 처리할지를 중심에 두고 설계했습니다.",
