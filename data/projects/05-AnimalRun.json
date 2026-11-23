@@ -64,7 +64,7 @@
       "image": {
         "src": "images/formula_gate.gif",
         "w": 300,
-        "h": 533,
+        "h": 540,
         "caption": "수식 문을 지나며 무리가 늘어나는 장면"
       }
     },
@@ -85,7 +85,7 @@
       "image": {
         "src": "images/start_select.gif",
         "w": 300,
-        "h": 533,
+        "h": 540,
         "caption": "시작 시 동물 · 무기 선택"
       }
     }
@@ -123,20 +123,32 @@
     {
       "src": "images/start_select.gif",
       "w": 300,
-      "h": 533,
+      "h": 540,
       "caption": "시작 시 동물 · 무기 선택"
     },
     {
       "src": "images/augment_select.gif",
       "w": 300,
-      "h": 533,
+      "h": 540,
       "caption": "레벨업 증강 선택"
     },
     {
       "src": "images/formula_gate.gif",
       "w": 300,
-      "h": 533,
+      "h": 540,
       "caption": "수식 문을 지나며 무리가 늘어나는 장면"
+    },
+    {
+      "src": "images/map_theme.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "판마다 바뀌는 맵 테마 — 두 판의 다른 테마"
+    },
+    {
+      "src": "images/runner_feedback.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "증원 빛기둥과 디졸브 사망"
     }
   ],
   "retro": {
@@ -413,7 +425,7 @@
             "kind": "image",
             "src": "images/formula_gate.gif",
             "w": 300,
-            "h": 533,
+            "h": 540,
             "caption": {
               "text": "수식 문을 지나며 무리가 늘어나는 장면",
               "verbatim": true
@@ -535,7 +547,7 @@
             "kind": "image",
             "src": "images/start_select.gif",
             "w": 300,
-            "h": 533,
+            "h": 540,
             "caption": {
               "text": "시작 시 동물 · 무기 선택",
               "verbatim": true
@@ -643,7 +655,7 @@
             "kind": "image",
             "src": "images/augment_select.gif",
             "w": 300,
-            "h": 533,
+            "h": 540,
             "caption": {
               "text": "레벨업 증강 선택",
               "verbatim": true
@@ -690,6 +702,13 @@
             "kind": "code",
             "n": 1,
             "fp": "// 이번 판의 테마로 청크 · 적 · 조명을 바꿔 끼운다."
+          },
+          {
+            "kind": "image",
+            "src": "images/map_theme.gif",
+            "w": 300,
+            "h": 540,
+            "caption": "판마다 바뀌는 맵 테마 — 두 판의 다른 테마"
           }
         ]
       },
@@ -713,6 +732,13 @@
             "kind": "table",
             "n": 1,
             "fp": "언제|연출"
+          },
+          {
+            "kind": "image",
+            "src": "images/runner_feedback.gif",
+            "w": 300,
+            "h": 540,
+            "caption": "증원 빛기둥과 디졸브 사망"
           }
         ]
       },
