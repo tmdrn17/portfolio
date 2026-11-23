@@ -15,13 +15,12 @@
 <link rel="stylesheet" href="../theme/theme.css">
 <!-- 라이트/다크 모드: 다른 페이지와 같은 스크립트·같은 기억(theme.css의 두 블록 중 고름). 그리기 전에 실어 깜빡임 없음 — 수강생 요청 2026-11-12 -->
 <script src="../assets/mode.js"></script>
-<style>
-  /* 라이트/다크 전환 버튼(오른쪽 위). 아이콘은 mode.js가 채움 */
-  .mode-btn { position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; display: grid; place-items: center;
-              border-radius: 999px; border: 1px solid var(--line-2); background: var(--bg); color: var(--ink); cursor: pointer; z-index: 5; }
-  .mode-btn:hover { border-color: var(--accent); }
-  .mode-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-</style>
+<!--
+  배치: theme/layout.json (2026-11-23, /portfolio-layout)
+  · 머리 막대 고정 — 왼쪽 GitHub·유튜브 재생목록 아이콘, 오른쪽 탭(프로젝트·시연 영상·기술 스택·프로필)
+  · 프로젝트 탭 = 프로젝트마다 화면 하나를 채우는 장면, 세로 스크롤 스냅, 아래 띠로 장면 고르기
+  · 색·톤은 예전 그대로(theme.css 손잡이 + 라이트/다크)
+-->
 <style>
   :root {
     --bg: var(--t-bg, #fff); --surface: var(--t-surface, #F3F5F4);
@@ -30,6 +29,7 @@
     --accent: var(--t-accent, #2E6B57);
     --radius: var(--t-radius, 12px); --pill: var(--t-pill, 8px);
     --display: var(--t-display, 'Montserrat'), 'Pretendard', sans-serif;
+    --bar: 64px;
   }
   html, body { background: var(--bg); color: var(--body); font-family: Pretendard, system-ui, sans-serif; word-break: keep-all; }
   body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
@@ -39,24 +39,91 @@
   .line { border-color: var(--line); }
   .eyebrow { font-family: var(--display); font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
 
-  /* 탭 */
-  .tab { color: var(--ink); transition: background .15s; }
-  .tab:hover { background: var(--surface); }
-  .tab[aria-selected="true"] { background: var(--accent) !important; color: #fff; }
-  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+  /* ── 머리 막대 ── */
+  .topbar { position: fixed; inset: 0 0 auto 0; height: var(--bar); z-index: 30; display: flex; align-items: center; gap: 12px; padding: 0 16px;
+            background: var(--bg); border-bottom: 0; color: var(--ink); transition: background .2s, border-color .2s; }
+  .topbar.over { background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,0)); border-color: transparent; color: #fff; }
+  @media (min-width: 768px) { .topbar { padding: 0 28px; } }
+  .icon-btn { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 999px; border: 1px solid var(--line-2); color: inherit; background: transparent; cursor: pointer; transition: border-color .15s, background .15s; }
+  .icon-btn:hover { border-color: var(--accent); }
+  .topbar.over .icon-btn { border-color: rgba(255,255,255,.45); }
+  .topbar.over .icon-btn:hover { border-color: #fff; background: rgba(255,255,255,.12); }
+  .icon-btn:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; padding: 8px 10px; font-size: 14px; font-weight: 700; color: inherit; opacity: .72; border-bottom: 2px solid transparent; transition: opacity .15s, border-color .15s; }
+  @media (min-width: 768px) { .tab { padding: 8px 16px; font-size: 15px; } }
+  .tab:hover { opacity: 1; }
+  .tab[aria-selected="true"] { opacity: 1; border-color: var(--accent); }
+  .topbar.over .tab[aria-selected="true"] { border-color: #fff; }
 
-  /* 카드 · 버튼 · 태그 */
-  .card { display: block; width: 100%; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .15s, border-color .15s; }
-  .card:hover { transform: translateY(-2px); border-color: var(--line-2); }
-  .card[aria-expanded="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  /* ── 프로젝트 장면 ── */
+  .scenes { position: fixed; inset: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; background: #000; }
+  .scenes::-webkit-scrollbar { display: none; }
+  .scene { position: relative; height: 100vh; height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always; overflow: hidden; color: #fff; }
+  .scene .bg, .scene .bg > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .scene .bg img.fill, .scene .bg video { object-fit: cover; }
+  .scene .bg img.blur { object-fit: cover; filter: blur(28px) brightness(.7); transform: scale(1.15); }
+  .scene .bg img.fit { object-fit: contain; }
+  .scene .shade { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55) 45%, rgba(0,0,0,.85)); }
+  .scene .eyebrow { color: rgba(255,255,255,.78); }
+  .scene h2 { color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.5); }
+  .play { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 800; font-size: 15px;
+          border: 1px solid rgba(255,255,255,.25); box-shadow: 0 8px 28px rgba(0,0,0,.35); transition: transform .15s, filter .15s; }
+  .play:hover { transform: translateY(-2px); filter: brightness(1.12); }
+  .play svg { width: 22px; height: 22px; }
+  .ghost { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--pill); border: 1px solid rgba(255,255,255,.4); color: #fff; font-weight: 700; font-size: 13.5px;
+           background: rgba(0,0,0,.25); backdrop-filter: blur(4px); transition: border-color .15s, background .15s; }
+  .ghost:hover { border-color: #fff; background: rgba(255,255,255,.12); }
+  .ghost svg { width: 16px; height: 16px; }
+  .play:focus-visible, .ghost:focus-visible, .dot:focus-visible, .next:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  /* 아래 띠: 장면 고르기 */
+  .scenebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 0 16px 18px; pointer-events: none; }
+  .scenebar ol { position: relative; display: flex; justify-content: center; gap: clamp(18px, 6vw, 88px); pointer-events: auto; }
+  .scenebar ol::before { content: ""; position: absolute; left: 10%; right: 10%; top: 28px; height: 1px; background: rgba(255,255,255,.25); }
+  .dot { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,.7); font-size: 12.5px; font-weight: 700; }
+  .dot .mark { width: 56px; height: 56px; display: grid; place-items: center; }
+  .dot .mark i { width: 9px; height: 9px; border-radius: 999px; background: rgba(255,255,255,.75); transition: transform .15s; }
+  .dot:hover .mark i { transform: scale(1.4); }
+  .dot .thumb { width: 56px; height: 56px; border-radius: 999px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 0 0 3px var(--accent), 0 6px 20px rgba(0,0,0,.4); background: #111; }
+  .dot .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .dot .thumb span { display: grid; place-items: center; height: 100%; font-family: var(--display); font-weight: 800; font-size: 14px; }
+  .dot[aria-current="true"] { color: #fff; }
+  .dot .label { white-space: nowrap; }
+  @media (max-width: 639px) { .dot .label { display: none; } .scenebar ol { gap: 14px; } .dot .mark, .dot .thumb { width: 44px; height: 44px; } .scenebar ol::before { top: 22px; } }
+  /* 오른쪽 위·아래 화살표: 처음엔 ↓만, 끝엔 ↑만, 가운데는 둘 다 */
+  .next { position: fixed; left: 50%; transform: translateX(-50%); z-index: 20; width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center;
+          border: 2px solid rgba(255,255,255,.8); color: #fff; font-size: 22px; background: rgba(0,0,0,.25); transition: background .15s; }
+  .next:hover { background: rgba(255,255,255,.15); }
+  .next.up { top: calc(var(--bar) + 4px); }        /* 머리 막대 바로 아래 가운데 */
+  .next.down { bottom: 132px; }                    /* 장면 고르기 띠 바로 위 가운데 */
+  @media (max-width: 639px) { .next { display: none; } }
+  /* 장면 고르기 버튼 오른쪽: 스크롤도 된다는 표시 */
+  .scenebar .wrap { position: relative; width: fit-content; max-width: 100%; margin: 0 auto; pointer-events: auto; }
+  .scrollhint { position: absolute; left: 100%; top: 0; height: 56px; margin-left: clamp(18px, 4vw, 56px); display: flex; align-items: center; gap: 8px;
+                color: rgba(255,255,255,.75); font-family: var(--display); font-size: 11px; font-weight: 800; letter-spacing: .16em; white-space: nowrap; }
+  .scrollhint .mouse { width: 22px; height: 34px; border: 2px solid rgba(255,255,255,.8); border-radius: 12px; position: relative; flex: none; }
+  .scrollhint .mouse i { position: absolute; left: 50%; top: 6px; width: 4px; height: 7px; margin-left: -2px; border-radius: 2px; background: #fff; animation: wheel 1.6s ease-in-out infinite; }
+  @keyframes wheel { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(10px); opacity: 0; } 100% { transform: translateY(0); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .scrollhint .mouse i { animation: none; } }
+  @media (max-width: 639px) { .scrollhint { height: 44px; margin-left: 14px; } .scrollhint span { display: none; } }
+
+  /* ── 덮개(영상 보기 · 프로젝트 자세히) ── */
+  .overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.78); display: flex; align-items: center; justify-content: center; padding: 16px; animation: fade .2s ease-out; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(760px, 100%); z-index: 51; background: var(--bg); overflow-y: auto; box-shadow: -12px 0 40px rgba(0,0,0,.3); animation: slide .25s ease-out; }
+  .close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; font-size: 20px; border: 1px solid var(--line-2); color: var(--ink); background: var(--bg); z-index: 2; }
+  .overlay .close { position: fixed; color: #fff; background: transparent; border-color: rgba(255,255,255,.5); }
+  @keyframes slide { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* ── 카드 · 버튼 · 태그 (다른 탭·자세히) ── */
   .row { transition: background .15s; }
   .row:hover { background: var(--surface); }
-  .row[aria-expanded="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
-  .btn { display: inline-flex; align-items: center; padding: 9px 16px; border-radius: var(--pill); font-weight: 700; font-size: 14px; border: 1px solid var(--line-2); color: var(--ink); background: var(--bg); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: var(--pill); font-weight: 700; font-size: 14px; border: 1px solid var(--line-2); color: var(--ink); background: var(--bg); }
   .btn:hover { border-color: var(--accent); }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .chip { display: inline-block; padding: 1px 8px; border: 1px solid var(--line-2); border-radius: var(--pill); font-size: 12px; font-weight: 700; color: var(--accent); white-space: nowrap; }
-  .chip:hover { border-color: var(--accent); }
+  .btn svg { width: 16px; height: 16px; }
   .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
   .ext { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-2); color: var(--ink); }
   .ext:hover { color: var(--accent); text-decoration-color: var(--accent); }
@@ -68,7 +135,7 @@
   figure figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
 
   /* 프로필 사진(3:4). 사진이 없을 때의 점선 자리는 미리보기에서만 보임 */
-  .photo { flex: none; width: 128px; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+  .photo { flex: none; width: 100%; max-width: 260px; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
   .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
   .photo-empty { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
                  border: 2px dashed var(--line-2); border-radius: inherit; color: var(--muted); font-size: 12px; line-height: 1.4; padding: 8px; }
@@ -91,7 +158,7 @@
 <body>
 <div id="root"></div>
 <script type="text/babel" data-presets="react">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 // ── 문구 표(theme/strings.tsv): 맨 끝 "내 문구" 칸이 있으면 그 문구, 없으면 기본 문구 ──
 const DEFAULTS = {
@@ -126,7 +193,22 @@ async function loadStrings() {
 
 const img = (id, src) => `../src/${id}/${src}`;
 
-// 프로젝트 카드에만 쓰는 이미지(대표 이미지가 카드 틀에서 잘리는 프로젝트). 경로는 custom/ 기준
+// ── 장면 배경 영상: 파일을 넣은 프로젝트만 적음(경로는 src/<폴더>/ 기준). 없으면 대표 이미지가 배경 ──
+//    예: "01-ODDITY": "images/bg.mp4"  — 소리 없음·10~20초 반복·10MB 안팎
+//    아래 bg.mp4는 Play Video/의 "<프로젝트>_자막없음.mp4"를 소리 없이 720p로 줄인 것
+const BG_VIDEOS = {
+  "01-ODDITY": "video/bg.mp4",
+  "02-WeGotOne": "video/bg.mp4",
+  "03-hotteok-survivor": "video/bg.mp4",
+  "05-AnimalRun": "video/bg.mp4",
+};
+
+// ── 아래 띠의 프로젝트 버튼 그림(로고). 경로는 src/<폴더>/ 기준. 없으면 CARD_IMAGE → 대표 이미지 ──
+//    예: "01-ODDITY": "images/logo.png"
+const LOGOS = {
+};
+
+// 프로젝트 카드·버튼에만 쓰는 이미지(대표 이미지가 작은 틀에서 잘리는 프로젝트). 경로는 custom/ 기준
 const CARD_IMAGE = {
   "05-AnimalRun": { src: "images/animal_run_icon.jpg", position: "50% 30%" },
 };
@@ -143,6 +225,14 @@ const FEATURE_IMAGES = {
 
 // 아래 그림 모음을 보이지 않을 프로젝트(그림은 기능 소개 안에서만)
 const NO_GALLERY = new Set(["02-WeGotOne"]);
+
+// ── 대표 아이콘(GitHub · YouTube) ──
+const GitHubIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+);
+const YouTubeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+);
 
 // 기능의 그림 목록: 기능 그림 + 덧붙인 그림(같은 src는 한 번만)
 function featureImages(p, h) {
@@ -188,11 +278,6 @@ function ProfilePhoto({ name }) {
   );
 }
 
-function Ext({ href, children, className = "" }) {
-  if (!href) return null;
-  return <a href={href} target="_blank" rel="noopener" className={"ext inline-flex items-center gap-1 " + className}>{children}<span aria-hidden="true">↗</span></a>;
-}
-
 // 영상 주소 → 페이지에서 바로 틀 수 있는 형태
 //  · 레포 안 영상(…/src/<폴더>/….mp4)은 상대경로로(로컬 미리보기·GitHub Pages 둘 다 열림)
 //  · YouTube는 embed 주소로(일반·youtu.be·embed·Shorts 주소 모두)
@@ -215,16 +300,25 @@ const videoUrl = (p, kind) => kind === "shorts" ? ((p.links?.extra || []).find(i
 const videoSel = v => { if (!v) return { id: null, kind: "full" }; const [id, k] = v.split("|"); return { id, kind: k === "shorts" ? "shorts" : "full" }; };
 const videoKey = (id, kind) => kind === "shorts" ? id + "|shorts" : id;
 
-
-// ── 오른쪽: 시연 영상(풀영상·쇼츠 중 고른 것) ──
-function VideoDetail({ p, kind, S, onProject, setVideoId }) {
+// 영상 틀: 쇼츠는 세로, 풀영상은 16:9
+function VideoFrame({ p, kind, className = "", autoplay = false }) {
   const url = videoUrl(p, kind), v = videoSource(url), shorts = kind === "shorts";
-  const kindLabel = VIDEO_KINDS.find(k => k.id === kind).label;
+  const label = VIDEO_KINDS.find(k => k.id === kind).label;
   const frame = shorts
-    ? { className: "mt-5 mx-auto block rounded-[var(--radius)] border line bg-black", style: { height: "min(72vh, 640px)", aspectRatio: "9 / 16", maxWidth: "100%" } }
-    : { className: "mt-5 w-full aspect-video rounded-[var(--radius)] border line bg-black" };
+    ? { className: "mx-auto block rounded-[var(--radius)] bg-black " + className, style: { height: "min(78vh, 720px)", aspectRatio: "9 / 16", maxWidth: "100%" } }
+    : { className: "w-full aspect-video rounded-[var(--radius)] bg-black " + className };
+  if (v?.kind === "file") return <video key={v.src} src={v.src} controls playsInline autoPlay={autoplay} preload="metadata" poster={!shorts && p.cover ? img(p.id, p.cover) : undefined} {...frame} />;
+  if (v?.kind === "youtube") return <iframe key={v.src} src={v.src + (autoplay ? "?autoplay=1" : "")} title={`${p.title} ${label}`} allowFullScreen
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" {...frame} />;
+  return <p className="panel p-5 muted">{url ? "이 영상은 페이지 안에서 재생할 수 없어 새 창으로 엽니다." : "준비 중인 영상입니다."}</p>;
+}
+
+// ── 시연 영상 탭 오른쪽: 고른 영상 ──
+function VideoDetail({ p, kind, S, onProject, setVideoId }) {
+  const url = videoUrl(p, kind);
+  const kindLabel = VIDEO_KINDS.find(k => k.id === kind).label;
   return (
-    <article className="fade" id={(shorts ? "s-" : "v-") + p.id}>
+    <article className="fade" id={(kind === "shorts" ? "s-" : "v-") + p.id}>
       <p className="eyebrow">{S["name.video"]} · {kindLabel}</p>
       <h2 className="text-2xl font-extrabold mt-2">{p.title}</h2>
       {p.tagline && <p className="mt-2 leading-relaxed">{p.tagline}</p>}
@@ -235,74 +329,55 @@ function VideoDetail({ p, kind, S, onProject, setVideoId }) {
             onClick={() => setVideoId(videoKey(p.id, k.id))}>{has ? "▶ " + k.label : k.label + " 준비 중"}</button>;
         })}
       </div>
-      {v?.kind === "file" && (
-        <video key={v.src} src={v.src} controls playsInline preload="metadata"
-          poster={!shorts && p.cover ? img(p.id, p.cover) : undefined} {...frame} />
-      )}
-      {v?.kind === "youtube" && (
-        <iframe key={v.src} src={v.src} title={`${p.title} ${kindLabel}`} allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" {...frame} />
-      )}
-      {!v && <p className="mt-5 panel p-5 muted">{url ? "이 영상은 페이지 안에서 재생할 수 없어 새 창으로 엽니다." : "준비 중인 영상입니다."}</p>}
+      <div className="mt-5"><VideoFrame p={p} kind={kind} className="border line" /></div>
       <div className="mt-5 flex flex-wrap gap-2">
         <button onClick={() => onProject(p.id)} className="btn primary">{S["page.nav-projects"]} 자세히</button>
-        {url && <a href={url} target="_blank" rel="noopener" className="btn">새 창에서 영상 열기 ↗</a>}
-        {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn">GitHub ↗</a>}
+        {url && <a href={url} target="_blank" rel="noopener" className="btn" aria-label="YouTube에서 열기" title="YouTube에서 열기"><YouTubeIcon /></a>}
+        {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn" aria-label="GitHub" title="GitHub"><GitHubIcon /></a>}
       </div>
     </article>
   );
 }
 
-// ── 패널: 시연 영상 (프로젝트마다 [풀영상] [쇼츠] 버튼 → 오른쪽에 영상. 개인 링크는 오른쪽 위 프로필에) ──
-function LinksPanel({ projects, videoId, setVideoId, S }) {
+// ── 시연 영상 탭 왼쪽: 프로젝트마다 [풀영상] [쇼츠] ──
+function LinksPanel({ projects, videoId, setVideoId }) {
   const sel = videoSel(videoId);
-  const rows = projects.map(p => {
-    const items = [];
-    if (p.links?.github) items.push({ label: "GitHub", url: p.links.github });
-    (p.links?.extra || []).forEach(x => x && x.url && !isShortsLink(x) && items.push({ label: x.label || x.url, url: x.url }));
-    return { p, items, has: VIDEO_KINDS.some(k => videoUrl(p, k.id)) };
-  }).filter(r => r.has || r.items.length);
+  const rows = projects.filter(p => VIDEO_KINDS.some(k => videoUrl(p, k.id)));
   return (
-    <div className="fade">
-      <ul className="divide-y line border-y">
-        {rows.map(({ p, items }) => (
-          <li key={p.id} className={"line row px-3 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6"} aria-current={sel.id === p.id || undefined}>
-            <span className="ink font-bold sm:w-48 shrink-0">{p.title}</span>
-            <span className="flex flex-wrap gap-x-6 gap-y-1 flex-1 muted text-[15px]">
-              {items.map(l => <span key={l.url}>{l.label}</span>)}
-            </span>
-            <span className="flex gap-2 self-start sm:self-auto">
-              {VIDEO_KINDS.map(k => {
-                const has = !!videoUrl(p, k.id), on = sel.id === p.id && sel.kind === k.id;
-                return <button key={k.id} type="button" className="vbtn" aria-pressed={on} disabled={!has}
-                  title={has ? `${p.title} ${k.label} 보기` : `${k.label} 영상은 준비 중입니다`}
-                  onClick={() => setVideoId(on ? null : videoKey(p.id, k.id))}>{has ? "▶ " + k.label : k.label + " 준비 중"}</button>;
-              })}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="divide-y line border-y fade">
+      {rows.map(p => (
+        <li key={p.id} className="line row px-3 py-4 flex flex-wrap items-center gap-3 justify-between" aria-current={sel.id === p.id || undefined}>
+          <span className="ink font-bold">{p.title}</span>
+          <span className="flex gap-2">
+            {VIDEO_KINDS.map(k => {
+              const has = !!videoUrl(p, k.id), on = sel.id === p.id && sel.kind === k.id;
+              return <button key={k.id} type="button" className="vbtn" aria-pressed={on} disabled={!has}
+                title={has ? `${p.title} ${k.label} 보기` : `${k.label} 영상은 준비 중입니다`}
+                onClick={() => setVideoId(on ? null : videoKey(p.id, k.id))}>{has ? "▶ " + k.label : k.label + " 준비 중"}</button>;
+            })}
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
-// ── 패널: 기술 스택 ──
-function StackPanel({ skills, titles, onProject, S }) {
+// ── 기술 스택 탭: 묶음마다 카드(4열) ──
+function StackPanel({ skills, S }) {
   return (
     <div className="fade">
-      <div className="flex items-baseline justify-between gap-4 mb-6">
-        <p className="eyebrow">{S["en.skills"]}</p>
-      </div>
+      <p className="eyebrow">{S["en.skills"]}</p>
+      <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{S["page.stack"]}</h2>
       {/* 묶음 + 세부 키워드만 — 근거 문장·근거 프로젝트는 숨김(데이터의 evidence는 그대로), 2026-11-23 수강생 요청.
           기술 이름 「묶음 · 키워드 · 키워드 …」에서 첫 낱말이 묶음, 나머지가 키워드 */}
-      <ul className="border-t line">
+      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {skills.map(s => {
           const [group, ...keys] = s.name.split(" · ");
           return (
-            <li key={s.name} className="border-b line py-4 grid gap-3 md:grid-cols-[140px_1fr] md:items-center">
-              <h3 className="font-bold text-lg">{group}</h3>
-              <ul className="flex flex-wrap gap-2">
-                {keys.map(k => <li key={k} className="border line rounded-full px-3 py-1 text-[15px]">{k}</li>)}
+            <li key={s.name} className="panel p-5">
+              <h3 className="font-extrabold text-xl">{group}</h3>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {keys.map(k => <li key={k} className="border line rounded-full px-3 py-1 text-[14.5px]" style={{ background: "var(--bg)" }}>{k}</li>)}
               </ul>
             </li>
           );
@@ -312,7 +387,37 @@ function StackPanel({ skills, titles, onProject, S }) {
   );
 }
 
-// ── 패널: 프로젝트 (목록 → 누르면 아래에 자세히) ──
+// ── 프로필 탭: 사진 | 이름·연락처·개인 링크 (35:65) ──
+function ProfilePanel({ profile, ownLinks, S }) {
+  return (
+    <div className="fade grid gap-10 md:grid-cols-[35fr_65fr] items-start">
+      <ProfilePhoto name={profile.name} />
+      <div>
+        <p className="eyebrow">PROFILE</p>
+        <h2 className="text-5xl sm:text-6xl font-extrabold tracking-tight mt-2">{profile.name}</h2>
+        {profile.nameEn && <p className="mt-2 text-lg accent" style={{ fontFamily: "var(--display)", fontWeight: 800 }}>{profile.nameEn}</p>}
+        {profile.headline && <p className="mt-4 text-lg">{profile.headline}</p>}
+        {profile.intro && <p className="mt-4 leading-relaxed max-w-2xl whitespace-pre-line">{profile.intro}</p>}
+        <dl className="mt-8 border-t line text-[15px]">
+          {profile.email && (
+            <div className="grid grid-cols-[6rem_1fr] gap-4 py-4 border-b line">
+              <dt className="muted">{S["page.print-email"]}</dt>
+              <dd><a href={"mailto:" + profile.email} className="ext break-all">{profile.email}</a></dd>
+            </div>
+          )}
+          {ownLinks.map(l => (
+            <div key={l.url} className="grid grid-cols-[6rem_1fr] gap-4 py-4 border-b line items-center">
+              <dt className="muted">{l.label}</dt>
+              <dd><a href={l.url} target="_blank" rel="noopener" className="btn" aria-label={l.label} title={l.label}>{l.icon === "youtube" ? <YouTubeIcon /> : l.icon === "github" ? <GitHubIcon /> : "열기 ↗"}</a></dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+// ── 프로젝트 자세히(오른쪽에서 열리는 칸): 개발 의도 · 정보 · 기능 소개 · 그림 ──
 function ProjectDetail({ p, S }) {
   const team = p.team ? (p.team.type === "solo" ? S["name.solo"] : S["name.team"]) : "";
   const ratio = mediaRatio(p);
@@ -321,28 +426,18 @@ function ProjectDetail({ p, S }) {
   const used = new Set((p.highlights || []).flatMap(h => [...featureImages(p, h), ...(h.items || []).map(it => it.image).filter(Boolean)].map(m => m.src)));
   const gallery = NO_GALLERY.has(p.id) ? [] : (p.screenshots || []).filter(s => !used.has(s.src));
   return (
-    <article className="fade" id={"p-" + p.id} style={{ "--media-ratio": ratio }}>
-      <div className="grid gap-6 items-start">
-        {p.cover && (
-          <div className="media" style={{ "--media-ratio": "16 / 9" }}>
-            <img src={img(p.id, p.cover)} alt={p.title} />
-          </div>
-        )}
-        <div>
-          <p className="eyebrow">{team}</p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold mt-2">{p.title}</h2>
-          <p className="mt-3 leading-relaxed">{p.tagline}</p>
-          <dl className="panel mt-6 p-5 grid grid-cols-[4.5rem_1fr] gap-y-2 text-[15px]">
-            {(p.meta || []).map(m => (<React.Fragment key={m.label}><dt className="muted">{m.label}</dt><dd className="ink">{m.value}</dd></React.Fragment>))}
-            {p.team?.role && <><dt className="muted">{S["name.role"]}</dt><dd className="ink">{p.team.role}</dd></>}
-          </dl>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <a href={`../project.html?p=${encodeURIComponent(p.id)}`} className="btn primary">{S["name.deck"]}</a>
-            <a href={`../doc.html?p=${encodeURIComponent(p.id)}`} className="btn">{S["name.doc"]}</a>
-            {p.links?.video && <a href={p.links.video} target="_blank" rel="noopener" className="btn">{S["name.video"]}</a>}
-            {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn">GitHub</a>}
-          </div>
-        </div>
+    <article className="fade" style={{ "--media-ratio": ratio }}>
+      <p className="eyebrow">{team}</p>
+      <h2 className="text-2xl sm:text-3xl font-extrabold mt-2">{p.title}</h2>
+      <p className="mt-3 leading-relaxed">{p.tagline}</p>
+      <dl className="panel mt-6 p-5 grid grid-cols-[4.5rem_1fr] gap-y-2 text-[15px]">
+        {(p.meta || []).map(m => (<React.Fragment key={m.label}><dt className="muted">{m.label}</dt><dd className="ink">{m.value}</dd></React.Fragment>))}
+        {p.team?.role && <><dt className="muted">{S["name.role"]}</dt><dd className="ink">{p.team.role}</dd></>}
+      </dl>
+      <div className="mt-6 flex flex-wrap gap-2">
+        <a href={`../doc.html?p=${encodeURIComponent(p.id)}`} className="btn primary">{S["name.doc"]}</a>
+        <a href={`../project.html?p=${encodeURIComponent(p.id)}`} className="btn">{S["name.deck"]}</a>
+        {p.links?.github && <a href={p.links.github} target="_blank" rel="noopener" className="btn" aria-label="GitHub" title="GitHub"><GitHubIcon /></a>}
       </div>
 
       {p.intent?.text && (
@@ -382,7 +477,7 @@ function ProjectDetail({ p, S }) {
                   </div>
                 )}
                 {(h.items || []).length > 0 && (
-                  <ul className="grid gap-5 xl:grid-cols-2">
+                  <ul className="grid gap-5 sm:grid-cols-2">
                     {h.items.map((it, j) => (
                       <li key={j} className="rounded-[var(--radius)] border line overflow-hidden" style={{ background: "var(--bg)" }}>
                         {it.image && (
@@ -422,28 +517,108 @@ function ProjectDetail({ p, S }) {
   );
 }
 
-function ProjectsPanel({ projects, openId, setOpenId, S }) {
+// ── 장면 배경: 영상(있으면) → 대표 이미지. 세로 그림은 가운데 두고 양옆을 같은 그림 흐리게 ──
+function SceneBackground({ p, active }) {
+  const vRef = useRef(null);
+  const [portrait, setPortrait] = useState(false);
+  const cover = p.cover ? img(p.id, p.cover) : "";
+  const video = BG_VIDEOS[p.id] ? img(p.id, BG_VIDEOS[p.id]) : "";
+  useEffect(() => {   // 화면에 보이는 장면의 영상만 재생
+    const v = vRef.current; if (!v) return;
+    if (active) v.play().catch(() => {}); else v.pause();
+  }, [active]);
+  if (video) return <div className="bg"><video ref={vRef} src={video} poster={cover || undefined} muted loop playsInline preload={active ? "auto" : "metadata"} /></div>;
+  if (!cover) return <div className="bg" style={{ background: "var(--accent)" }} />;
   return (
-    <div className="fade">
-      <ul className={"grid gap-6 sm:grid-cols-2 " + (openId ? "" : "lg:grid-cols-4")}>
-        {projects.map((p, i) => {
-          const ci = CARD_IMAGE[p.id];
-          const src = ci ? ci.src : (p.cover ? img(p.id, p.cover) : "");
-          return (
-            <li key={p.id}>
-              <button onClick={() => setOpenId(openId === p.id ? null : p.id)} aria-expanded={openId === p.id} className="card">
-                {src && <img src={src} alt="" className="w-full aspect-video object-cover border-b line" style={{ objectPosition: ci?.position || "50% 50%" }} />}
-                <div className="p-4">
-                  <p className="eyebrow">{S["en.project"]} {String(i + 1).padStart(2, "0")}</p>
-                  <p className="ink font-bold text-lg mt-1">{p.title}</p>
-                  <p className="text-sm mt-1 leading-snug line-clamp-2">{p.tagline}</p>
-                </div>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+    <div className="bg">
+      {portrait && <img className="blur" src={cover} alt="" />}
+      <img className={portrait ? "fit" : "fill"} src={cover} alt="" onLoad={e => setPortrait(e.target.naturalHeight > e.target.naturalWidth)} />
     </div>
+  );
+}
+
+function Scene({ p, i, active, S, onPlay, onDetail }) {
+  const metaLine = (p.meta || []).filter(m => ["장르", "기간"].includes(m.label)).map(m => m.value).join("  ·  ");
+  return (
+    <section className="scene" id={"p-" + p.id} data-id={p.id} aria-label={p.title}>
+      <SceneBackground p={p} active={active} />
+      <div className="shade" />
+      <div className="relative h-full flex flex-col items-center justify-center text-center px-5 pt-[var(--bar)] pb-36">
+        <p className="eyebrow">{S["en.project"]} {String(i + 1).padStart(2, "0")}</p>
+        <h2 className="mt-3 text-5xl sm:text-7xl font-extrabold tracking-tight">{p.title}</h2>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          {VIDEO_KINDS.filter(k => videoUrl(p, k.id)).map(k => (
+            <button key={k.id} type="button" className="play" onClick={() => onPlay(p, k.id)} aria-label={`${p.title} ${k.id === "full" ? S["name.video"] : "쇼츠"} 재생`}>
+              <YouTubeIcon />{k.id === "full" ? S["name.video"] : "쇼츠"}
+            </button>
+          ))}
+        </div>
+        {p.tagline && <p className="mt-8 text-lg sm:text-xl font-bold max-w-2xl leading-snug" style={{ color: "#fff" }}>{p.tagline}</p>}
+        {metaLine && <p className="mt-2 text-sm sm:text-[15px] max-w-2xl" style={{ color: "rgba(255,255,255,.72)" }}>{metaLine}</p>}
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <button type="button" className="ghost" onClick={() => onDetail(p.id)}>{S["page.nav-projects"]} 자세히</button>
+          <a className="ghost" href={`../doc.html?p=${encodeURIComponent(p.id)}`}>{S["name.doc"]}</a>
+          <a className="ghost" href={`../project.html?p=${encodeURIComponent(p.id)}`}>{S["name.deck"]}</a>
+          {p.links?.github && <a className="ghost" href={p.links.github} target="_blank" rel="noopener" aria-label={`${p.title} GitHub`} title="GitHub"><GitHubIcon /></a>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SceneDot({ p, i, current, onGo }) {
+  const logo = LOGOS[p.id] ? img(p.id, LOGOS[p.id]) : "";
+  const ci = CARD_IMAGE[p.id];
+  const src = logo || (ci ? ci.src : (p.cover ? img(p.id, p.cover) : ""));
+  return (
+    <li>
+      <button type="button" className="dot" aria-current={current || undefined} onClick={() => onGo(i)} title={p.title}>
+        {current
+          ? <span className="thumb">{src ? <img src={src} alt="" style={{ objectFit: logo ? "contain" : "cover", objectPosition: ci?.position || "50% 50%" }} /> : <span>{String(i + 1).padStart(2, "0")}</span>}</span>
+          : <span className="mark"><i /></span>}
+        <span className="label">{p.title}</span>
+      </button>
+    </li>
+  );
+}
+
+function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrollRef, locked }) {
+  useEffect(() => {
+    const root = scrollRef.current; if (!root) return;
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) setActive(projects.findIndex(p => p.id === e.target.dataset.id));
+    }), { root, threshold: 0.6 });
+    root.querySelectorAll(".scene").forEach(s => io.observe(s));
+    return () => io.disconnect();
+  }, [projects]);
+  const go = i => scrollRef.current?.children[i]?.scrollIntoView({ behavior: "smooth" });
+  // 위·아래 방향키로 이전·다음 장면(영상·자세히가 열려 있거나 글 입력 중이면 쓰지 않음)
+  useEffect(() => {
+    const onKey = e => {
+      if (locked || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.target.closest?.("input, textarea, select, [contenteditable]")) return;
+      const to = e.key === "ArrowDown" || e.key === "PageDown" ? active + 1 : e.key === "ArrowUp" || e.key === "PageUp" ? active - 1 : null;
+      if (to === null) return;
+      e.preventDefault();
+      if (to >= 0 && to < projects.length) go(to);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active, locked, projects]);
+  return (
+    <>
+      <main ref={scrollRef} className="scenes">
+        {projects.map((p, i) => <Scene key={p.id} p={p} i={i} active={i === active} S={S} onPlay={onPlay} onDetail={onDetail} />)}
+      </main>
+      <nav className="scenebar" aria-label="프로젝트 고르기">
+        <div className="wrap">
+          <ol>{projects.map((p, i) => <SceneDot key={p.id} p={p} i={i} current={i === active} onGo={go} />)}</ol>
+          <div className="scrollhint" aria-hidden="true"><span className="mouse"><i /></span><span>SCROLL</span></div>
+        </div>
+      </nav>
+      {active > 0 && <button type="button" className="next up" aria-label="이전 프로젝트" onClick={() => go(active - 1)}>↑</button>}
+      {active < projects.length - 1 && <button type="button" className="next down" aria-label="다음 프로젝트" onClick={() => go(active + 1)}>↓</button>}
+    </>
   );
 }
 
@@ -451,10 +626,12 @@ function ProjectsPanel({ projects, openId, setOpenId, S }) {
 function App() {
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState("projects");   // 처음 열면 프로젝트 칸이 눌려 있음
-  const [openId, setOpenId] = useState(null);     // 프로젝트 칸에서 고른 프로젝트 → 오른쪽에 자세히
-  const [videoId, setVideoId] = useState(null);   // 링크 칸에서 고른 프로젝트 → 오른쪽에 영상
-  const sideRef = React.useRef(null);
+  const [tab, setTab] = useState("profile");      // 처음 열면 항상 프로필
+  const [active, setActive] = useState(0);         // 지금 보이는 프로젝트 장면
+  const [detailId, setDetailId] = useState(null);  // 오른쪽에서 열린 프로젝트 자세히
+  const [player, setPlayer] = useState(null);      // 장면에서 누른 영상 { p, kind }
+  const [videoId, setVideoId] = useState(null);    // 시연 영상 탭에서 고른 영상
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -464,139 +641,122 @@ function App() {
         const projects = await Promise.all((pf.projects || []).map(id => fetch(`../data/projects/${id}.json`).then(r => r.json())));
         document.title = [pf.profile?.name, S["name.portfolio"]].filter(Boolean).join(" · ");
         setData({ pf, projects, S });
-        // 주소(#links · #stack · #projects · #p-<폴더> · #v-<폴더> 풀영상 · #s-<폴더> 쇼츠)로 바로 열기
+        // 페이지를 열 때는 주소와 상관없이 항상 프로필로 시작(주소의 # 부분을 지움).
+        // 열린 뒤 주소(#projects · #links · #stack · #profile · #p-<폴더> 장면 · #v-<폴더> 풀영상 · #s-<폴더> 쇼츠)를 바꾸면 그 화면으로 감
         const fromHash = () => {
           const h = decodeURIComponent(location.hash.slice(1));
-          const id = h.slice(2), known = projects.some(p => p.id === id);
-          if (h.startsWith("p-") && known) { setTab("projects"); setOpenId(id); }
-          else if (h.startsWith("v-") && known) { setTab("links"); setVideoId(id); }
-          else if (h.startsWith("s-") && known) { setTab("links"); setVideoId(videoKey(id, "shorts")); }
-          else if (["links", "stack", "projects"].includes(h)) { setTab(h); setOpenId(null); setVideoId(null); }
+          const id = h.slice(2), idx = projects.findIndex(p => p.id === id);
+          if (h.startsWith("p-") && idx >= 0) { setTab("projects"); setActive(idx); requestAnimationFrame(() => scrollRef.current?.children[idx]?.scrollIntoView()); }
+          else if (h.startsWith("v-") && idx >= 0) { setTab("links"); setVideoId(id); }
+          else if (h.startsWith("s-") && idx >= 0) { setTab("links"); setVideoId(videoKey(id, "shorts")); }
+          else if (["links", "stack", "projects", "profile"].includes(h)) setTab(h);
         };
-        fromHash();
+        history.replaceState(null, "", location.pathname + location.search);
         window.addEventListener("hashchange", fromHash);
       } catch (e) { setErr(String(e)); }
     })();
   }, []);
 
-  // 지금 오른쪽에 보일 것: 프로젝트 칸 → 프로젝트 자세히, 링크 칸 → 시연 영상
-  const vSel = videoSel(videoId);
-  const selId = tab === "projects" ? openId : tab === "links" ? vSel.id : null;
-  const selKey = selId ? (tab === "projects" ? "p-" : vSel.kind === "shorts" ? "s-" : "v-") + selId : null;
-
+  // 주소 막대에 지금 위치를 남김
   useEffect(() => {
     if (!data) return;
-    const h = selKey || tab || "";
-    history.replaceState(null, "", h ? "#" + h : location.pathname + location.search);
-    if (!selKey) return;
-    requestAnimationFrame(() => {
-      if (window.matchMedia("(min-width: 768px)").matches) {
-        // 넓은 화면: 오른쪽 칸은 화면에 붙어 있으므로 그 칸만 맨 위로
-        sideRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        // 좁은 화면: 오른쪽 칸이 목록 아래로 내려가므로 그곳까지 내려 줌
-        document.getElementById(selKey)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-  }, [tab, selKey, data]);
+    const v = videoSel(videoId);
+    const h = tab === "projects" ? (active ? "p-" + data.projects[active]?.id : "projects")
+      : tab === "links" && v.id ? (v.kind === "shorts" ? "s-" : "v-") + v.id : tab;
+    history.replaceState(null, "", "#" + h);
+  }, [tab, active, videoId, data]);
+
+  // Esc로 덮개 닫기
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") { setPlayer(null); setDetailId(null); } };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   if (err) return <p className="p-8 text-red-600">데이터를 읽지 못했습니다. /portfolio-build를 먼저 실행해 주세요. ({err})</p>;
   if (!data) return <p className="p-8 muted">불러오는 중…</p>;
 
   const { pf, projects, S } = data;
   const profile = pf.profile || {};
-  const titles = Object.fromEntries(projects.map(p => [p.id, p.title]));
   const TABS = [
+    { id: "profile", label: "프로필" },
     { id: "projects", label: S["page.nav-projects"] },
     { id: "links", label: S["name.video"] },
     { id: "stack", label: S["page.nav-stack"] },
   ];
-  // 프로필 > 개인 링크: profile.md의 GitHub · 기타 링크
+  // 머리 막대 왼쪽 아이콘: profile.md의 GitHub, 링크 중 유튜브(재생목록)
+  const ytLink = (profile.links || []).find(l => l && l.url && /youtube\.com|youtu\.be/i.test(l.url));
   const ownLinks = [
-    ...(profile.github ? [{ label: "GitHub", url: profile.github }] : []),
-    ...(profile.links || []).filter(l => l && l.url).map(l => ({ label: l.label || l.url, url: l.url })),
+    ...(profile.github ? [{ label: "GitHub", url: profile.github, icon: "github" }] : []),
+    ...(profile.links || []).filter(l => l && l.url).map(l => ({ label: l.label || "링크", url: l.url, icon: /youtube\.com|youtu\.be/i.test(l.url) ? "youtube" : "" })),
   ];
-  const goProject = id => { setTab("projects"); setOpenId(id); };
-  const selProject = selId && projects.find(p => p.id === selId);
+  const detail = detailId && projects.find(p => p.id === detailId);
+  const vSel = videoSel(videoId);
+  const vProject = vSel.id && projects.find(p => p.id === vSel.id);
+  const over = tab === "projects";
+  const openDetail = id => { setPlayer(null); setDetailId(id); };
 
   return (
-    // 두 단 × 두 줄: [이름·탭 | 연락처] / [고른 칸의 목록 | 고른 항목 자세히·영상]
-    // 오른쪽 단은 무언가를 골랐을 때 넓어짐. 좁은 화면에서는 위에서 아래로 차례대로 쌓임
-    <div className="min-h-screen">
-      <div className="grid md:grid-cols-[minmax(0,1fr)_var(--side)] max-w-[1600px] mx-auto"
-        style={{ "--side": selProject ? "minmax(24rem,46%)" : "minmax(16rem,32%)" }}>
-          {/* 왼쪽 위: 이름 + 탭 */}
-          <header className="md:border-r border-b line flex flex-col">
-            <div className="px-5 sm:px-10 pt-10 pb-8 flex-1 relative">
-              <button type="button" className="mode-btn" data-mode-toggle></button>
-              <p className="eyebrow">{S["en.portfolio"]}</p>
-              <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mt-2">{profile.name}</h1>
-              {profile.nameEn && <p className="mt-2 text-lg accent" style={{ fontFamily: "var(--display)", fontWeight: 800 }}>{profile.nameEn}</p>}
-              {profile.headline && <p className="mt-4 text-lg">{profile.headline}</p>}
-            </div>
-            <nav role="tablist" aria-label="항목" className="grid grid-cols-3 border-t line">
-              {TABS.map((t, i) => (
-                <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => setTab(tab === t.id ? null : t.id)}
-                  className={"tab px-3 sm:px-6 py-4 text-sm sm:text-base font-bold text-left " + (i > 0 ? "border-l line" : "")}>
-                  {t.label}
-                </button>
-              ))}
-            </nav>
-          </header>
-          {/* 오른쪽 위: 프로필 (연락처 · 개인 링크) */}
-          <aside className="px-5 sm:px-10 py-10 border-b line">
-            <p className="eyebrow">PROFILE</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">프로필</h2>
-            <div className="mt-6 flex flex-wrap gap-6 items-start">
-            <ProfilePhoto name={profile.name} />
-            <div className="flex-1 min-w-[12rem] grid gap-6 sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 text-[15px]">
-              <section>
-                <h3 className="text-sm font-bold border-b line pb-1.5 mb-3">{S["page.nav-contact"]}</h3>
-                <dl className="space-y-3">
-                  {profile.email
-                    ? <div><dt className="muted text-sm">{S["page.print-email"]}</dt><dd><a href={"mailto:" + profile.email} className="ext break-all">{profile.email}</a></dd></div>
-                    : <p className="muted text-sm">등록된 연락처가 없습니다.</p>}
-                </dl>
-              </section>
-              <section>
-                <h3 className="text-sm font-bold border-b line pb-1.5 mb-3">개인 링크</h3>
-                {ownLinks.length > 0 ? (
-                  <ul className="space-y-3">
-                    {ownLinks.map(l => (
-                      <li key={l.url}><p className="muted text-sm">{l.label}</p><Ext href={l.url} className="break-all">{l.url.replace(/^https?:\/\//, "")}</Ext></li>
-                    ))}
-                  </ul>
-                ) : <p className="muted text-sm">등록된 링크가 없습니다.</p>}
-              </section>
-            </div>
-            </div>
-          </aside>
+    <>
+      <header className={"topbar" + (over ? " over" : "")}>
+        {profile.github && <a className="icon-btn" href={profile.github} target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><GitHubIcon /></a>}
+        {ytLink && <a className="icon-btn" href={ytLink.url} target="_blank" rel="noopener" aria-label={ytLink.label || "YouTube 재생목록"} title={ytLink.label || "YouTube 재생목록"}><YouTubeIcon /></a>}
+        <span className="hidden lg:block ml-2 font-extrabold text-[17px]">{profile.name}</span>
+        <nav role="tablist" aria-label="항목" className="tabs ml-auto">
+          {TABS.map(t => (
+            <button key={t.id} role="tab" aria-selected={tab === t.id} className="tab" onClick={() => { setTab(t.id); window.scrollTo(0, 0); }}>{t.label}</button>
+          ))}
+        </nav>
+        <button type="button" className="icon-btn" data-mode-toggle aria-label="라이트·다크 바꾸기"></button>
+      </header>
 
-          {/* 왼쪽 아래: 고른 칸의 목록 */}
-          <main className="min-w-0 md:border-r line px-5 sm:px-10 py-12">
-            {tab === null && <p className="muted">위에서 항목을 골라 주세요.</p>}
-            {tab === "links" && <LinksPanel projects={projects} videoId={videoId} setVideoId={setVideoId} S={S} />}
-            {tab === "stack" && <StackPanel skills={pf.skills || []} titles={titles} onProject={goProject} S={S} />}
-            {tab === "projects" && <ProjectsPanel projects={projects} openId={openId} setOpenId={setOpenId} S={S} />}
-          </main>
+      {tab === "projects" && (
+        <ProjectScenes projects={projects} S={S} active={active} setActive={setActive} scrollRef={scrollRef} locked={!!(player || detailId)}
+          onPlay={(p, kind) => setPlayer({ p, kind })} onDetail={openDetail} />
+      )}
 
-          {/* 오른쪽 아래(연락처 밑): 고른 프로젝트 자세히 · 시연 영상. 넓은 화면에서는 화면에 붙어 따로 스크롤 */}
-          <section ref={sideRef} aria-live="polite"
-            className="min-w-0 self-start md:sticky md:top-0 md:max-h-screen md:overflow-y-auto">
-            {selProject ? (
-              <div className="px-5 sm:px-10 py-10" key={selKey}>
-                {tab === "projects"
-                  ? <ProjectDetail p={selProject} S={S} />
-                  : <VideoDetail p={selProject} kind={vSel.kind} S={S} onProject={goProject} setVideoId={setVideoId} />}
+      {tab !== "projects" && (
+        <main className="max-w-[1120px] mx-auto px-5 sm:px-8 pt-[calc(var(--bar)+48px)] pb-20 min-h-screen">
+          {tab === "links" && (
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] items-start">
+              <div>
+                <p className="eyebrow">VIDEO</p>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 mb-8">{S["name.video"]}</h2>
+                <LinksPanel projects={projects} videoId={videoId} setVideoId={setVideoId} />
               </div>
-            ) : (tab === "projects" || tab === "links") && (
-              <p className="px-5 sm:px-10 py-10 muted text-[15px] leading-relaxed">
-                {tab === "projects" ? "왼쪽에서 프로젝트를 누르면 여기에 자세한 내용이 나옵니다." : "왼쪽에서 프로젝트를 누르면 여기에서 시연 영상을 볼 수 있습니다."}
-              </p>
-            )}
-          </section>
-      </div>
-    </div>
+              <div className="lg:sticky lg:top-[calc(var(--bar)+24px)]">
+                {vProject
+                  ? <VideoDetail key={videoId} p={vProject} kind={vSel.kind} S={S} setVideoId={setVideoId} onProject={id => { setTab("projects"); openDetail(id); }} />
+                  : <p className="panel p-6 muted text-[15px] leading-relaxed">왼쪽에서 [▶ 풀영상] 또는 [▶ 쇼츠]를 누르면 여기에서 볼 수 있습니다.</p>}
+              </div>
+            </div>
+          )}
+          {tab === "stack" && <StackPanel skills={pf.skills || []} S={S} />}
+          {tab === "profile" && <ProfilePanel profile={profile} ownLinks={ownLinks} S={S} />}
+        </main>
+      )}
+
+      {/* 장면의 재생 버튼 → 페이지 위에 영상 */}
+      {player && (
+        <div className="overlay" role="dialog" aria-modal="true" aria-label={`${player.p.title} 영상`} onClick={e => { if (e.target === e.currentTarget) setPlayer(null); }}>
+          <button type="button" className="close" aria-label="닫기" onClick={() => setPlayer(null)}>✕</button>
+          <div className="w-full max-w-5xl">
+            <VideoFrame p={player.p} kind={player.kind} autoplay />
+          </div>
+        </div>
+      )}
+
+      {/* 장면의 [프로젝트 자세히] → 오른쪽에서 열리는 칸 */}
+      {detail && (
+        <>
+          <div className="overlay" style={{ zIndex: 50 }} onClick={() => setDetailId(null)} />
+          <aside className="drawer" role="dialog" aria-modal="true" aria-label={`${detail.title} 자세히`}>
+            <button type="button" className="close" aria-label="닫기" onClick={() => setDetailId(null)}>✕</button>
+            <div className="px-6 sm:px-10 py-12"><ProjectDetail p={detail} S={S} /></div>
+          </aside>
+        </>
+      )}
+    </>
   );
 }
 
