@@ -292,24 +292,21 @@ function StackPanel({ skills, titles, onProject, S }) {
     <div className="fade">
       <div className="flex items-baseline justify-between gap-4 mb-6">
         <p className="eyebrow">{S["en.skills"]}</p>
-        <p className="text-sm muted">{S["page.stack-note"]}</p>
       </div>
-      <ul className="grid gap-x-10 gap-y-8 md:grid-cols-2">
-        {skills.map(s => (
-          <li key={s.name} className="border-t line pt-4">
-            <h3 className="font-bold text-lg mb-2">{s.name}</h3>
-            <ul className="space-y-2 text-[15px] leading-relaxed">
-              {(s.evidence || []).map((e, i) => (
-                <li key={i}>
-                  {e.text}
-                  {e.project && titles[e.project] && (
-                    <button onClick={() => onProject(e.project)} className="chip ml-2 align-[1px]">{titles[e.project]}</button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
+      {/* 묶음 + 세부 키워드만 — 근거 문장·근거 프로젝트는 숨김(데이터의 evidence는 그대로), 2026-11-23 수강생 요청.
+          기술 이름 「묶음 · 키워드 · 키워드 …」에서 첫 낱말이 묶음, 나머지가 키워드 */}
+      <ul className="border-t line">
+        {skills.map(s => {
+          const [group, ...keys] = s.name.split(" · ");
+          return (
+            <li key={s.name} className="border-b line py-4 grid gap-3 md:grid-cols-[140px_1fr] md:items-center">
+              <h3 className="font-bold text-lg">{group}</h3>
+              <ul className="flex flex-wrap gap-2">
+                {keys.map(k => <li key={k} className="border line rounded-full px-3 py-1 text-[15px]">{k}</li>)}
+              </ul>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

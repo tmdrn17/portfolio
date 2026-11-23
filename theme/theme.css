@@ -117,3 +117,13 @@
 /* 표 첫 칸(자료형·필드 이름 같은 낱말)이 글자 중간에서 줄바뀌지 않게 — 2026-11-22 수강생 요청
    (예: 슬라이드 ODDITY §3.3 표의 "MissionDTO"가 "MissionDT / O"로 끊기던 것) */
 table.md-table td:first-child { overflow-wrap: normal; }
+
+/* 기술 스택: 근거 문장·근거 프로젝트를 숨기고 「묶음 · 키워드 …」 한 줄씩만 보이게 — 2026-11-23 수강생 요청
+   (데이터의 근거는 그대로 있어서, 이 묶음만 지우면 원래 모습으로 돌아옵니다) */
+#stack .sec-r, .skill > ul { display: none; }
+.skill, .skill:nth-child(n) { display: block; padding: 14px 0; }
+.skill h3 { font-size: 17px; font-weight: 700; line-height: 1.6; }
+@media print {
+  .skill, .skill:nth-child(n) { padding: 5pt 0; }
+  .skill h3 { font-size: 10.5pt; }
+}
