@@ -265,9 +265,9 @@
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
+        "title": {"text": "2.1 플레이어", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어"],
         "points": [
           {
             "label": "",
@@ -283,9 +283,9 @@
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
+        "title": {"text": "2.1 플레이어", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어"],
         "points": [],
         "visuals": [
           {
@@ -302,9 +302,9 @@
         "chapter": "structure",
         "layout": "full",
         "tab": "흐름",
-        "title": {"text": "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다", "verbatim": true},
+        "title": {"text": "2.2 미션", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다"],
+        "sectionPath": ["2. 시스템 구조", "2.2 미션"],
         "points": [],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
@@ -515,23 +515,25 @@
         "key": "roll-choice",
         "chapter": "tradeoffs",
         "layout": "full",
-        "tab": "선택",
+        "tab": "",
         "title": {"text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
-        "lead": {"text": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다.", "verbatim": true},
+        "lead": null,
         "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}],
+        "edited": true
       },
       {
         "key": "mission-data",
         "chapter": "tradeoffs",
         "layout": "full",
-        "tab": "선택",
+        "tab": "",
         "title": {"text": "4.2 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
-        "lead": {"text": "미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.", "verbatim": true},
+        "lead": null,
         "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}],
+        "edited": true
       },
       {
         "key": "ai-collab",
@@ -630,9 +632,9 @@
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
+        "title": {"text": "2.1 플레이어", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어"],
         "points": [
           {
             "label": "",
@@ -648,9 +650,9 @@
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {"text": "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다", "verbatim": true},
+        "title": {"text": "2.1 플레이어", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.1 플레이어 — Player가 이벤트를 중계하고, PlayerController가 실제 움직임을 맡습니다"],
+        "sectionPath": ["2. 시스템 구조", "2.1 플레이어"],
         "points": [],
         "visuals": [
           {
@@ -667,9 +669,9 @@
         "chapter": "structure",
         "layout": "full",
         "tab": "흐름",
-        "title": {"text": "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다", "verbatim": true},
+        "title": {"text": "2.2 미션", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.2 미션 — TSV 데이터가 테이블을 거쳐 수락 목록과 출격까지 이어집니다"],
+        "sectionPath": ["2. 시스템 구조", "2.2 미션"],
         "points": [],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
@@ -937,6 +939,6 @@
         "visuals": []
       }
     ],
-    "applied": "fa4b4850ab71f1d5"
+    "applied": "6c679fe3e62fd350"
   }
 }

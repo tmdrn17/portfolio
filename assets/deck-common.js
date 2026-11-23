@@ -167,10 +167,11 @@
   const DOT = '<div class="dotrule" aria-hidden="true"><span class="ln"></span><span class="dot"></span></div>';
   const imgTag = (src, alt, d, cls = '') => `<img${cls ? ` class="${cls}"` : ''} src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async"${d ? ` width="${d.w}" height="${d.h}"` : ''}>`;
 
-  // 프로젝트 외부 링크(시연 영상 · GitHub · 그 밖의 링크) — data 순서 그대로. type으로 영문 라벨을 고름(보이는 이름은 문구 표에서 바뀔 수 있음)
+  // 프로젝트 외부 링크(GitHub · 시연 영상 · 그 밖의 링크) — type으로 영문 라벨을 고름(보이는 이름은 문구 표에서 바뀔 수 있음)
+  // 순서: GitHub을 시연 영상 앞에(포트폴리오 페이지·상세 문서와 같게) — 수강생 요청 2026-11-23
   const extLinks = (p) => [
-    PF.isUrl(p.links?.video) && { type: 'video', label: PF.t('name.video'), url: p.links.video },
     PF.isUrl(p.links?.github) && { type: 'github', label: 'GitHub', url: p.links.github },
+    PF.isUrl(p.links?.video) && { type: 'video', label: PF.t('name.video'), url: p.links.video },
     ...(p.links?.extra || []).filter((l) => PF.isUrl(l.url)).map((l) => ({ type: 'extra', label: l.label, url: l.url, extra: true })),
   ].filter(Boolean);
   const EXT_EN = { video: 'en.gameplay', github: 'en.repo' };

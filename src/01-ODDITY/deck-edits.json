@@ -63,6 +63,38 @@
       "visuals": [],
       "after": "why-parts",
       "group": "split-why-parts-2"
+    },
+    {
+      "key": "roll-choice",
+      "chapter": "tradeoffs",
+      "layout": "full",
+      "tab": "",
+      "title": {"text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+      "points": [],
+      "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}],
+      "from": {
+        "key": "roll-choice",
+        "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+        "sig": ["4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가|table|1|단계|방식|결과"]
+      }
+    },
+    {
+      "key": "mission-data",
+      "chapter": "tradeoffs",
+      "layout": "full",
+      "tab": "",
+      "title": {"text": "4.2 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
+      "points": [],
+      "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}],
+      "from": {
+        "key": "mission-data",
+        "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
+        "sig": ["4.2 미션 데이터를 무엇으로 관리할 것인가|table|1||ScriptableObject|✔ 선택: TSV 데이터 테이블"]
+      }
     }
   ],
   "hide": []
