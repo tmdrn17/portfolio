@@ -165,3 +165,7 @@ table.md-table td:first-child { overflow-wrap: normal; }
 .table-wrap table th { font-size: 16px; padding: 7px 10px; vertical-align: middle; }
 .table-wrap table td { padding: 6px 10px; line-height: 1.5; }
 .table-wrap table td:first-child { font-size: 15.5px; font-weight: 700; }
+
+/* 슬라이드 표: 칸 안 위아래·좌우 가운데에 — 2026-11-24 수강생 요청(표가 장면 위쪽에 붙고 아래가 비던 것)
+   남는 자리만큼 표를 키우는 것은 렌더러(assets/deck-common.js stretchScene, 1.3배까지). 이 묶음을 지우면 위쪽 정렬로 돌아감 */
+[data-view="deck"] .vbox[data-kind="table"] > .vmedia { display: flex; flex-direction: column; justify-content: center; align-items: center; }

@@ -415,6 +415,7 @@
     const touched = [...s.querySelectorAll('.vis > .vbox[data-kind]')];
     const saved = touched.flatMap((b) => [b, b.querySelector(':scope > .vmedia'), b.querySelector(':scope > .vmedia > .fit-in'), b.querySelector(':scope > .vmedia table')])
       .filter(Boolean).map((e) => [e, e.getAttribute('style')]);
+    const savedZ = touched.map((b) => [b, b.dataset.sc, b.querySelector(':scope > .vmedia > .fit-in')]).map(([b, sc, fin]) => [b, sc, fin, fin?.dataset.pfFz]);
     const sz = touched.map((b) => { const m = b.querySelector(':scope > .vmedia'); return { b, m, bw: b.offsetWidth, bh: b.offsetHeight, mh: m ? m.offsetHeight : 0 }; });
     s.classList.add('pf-stretch');
     sz.forEach(({ b, m, bw, bh, mh }) => {
@@ -425,18 +426,26 @@
       else Object.assign(b.style, { width: '', flex: `${bh} 1 ${bh}px`, minHeight: `${bh}px`, alignSelf: 'stretch' });
       Object.assign(m.style, { width: '100%', height: '', flex: `1 1 ${mh}px`, minHeight: `${mh}px` });
     });
-    // 표: 늘어난 칸 높이만큼 행 높이를 나눠 가짐(글자 배율은 그대로)
+    // 표: 늘어난 칸에 남는 자리만큼 표 전체(글자·칸)를 키움 — 맞춘 배율의 1.3배까지(수강생 요청 2026-11-24: 아래 여백이 너무 많이 남던 것).
+    //   행 높이를 늘이지 않음(칸이 위아래로 길어지지 않게). 칸 안 가운데 놓기는 theme/theme.css
     sz.forEach(({ b, m }) => {
       if (b.dataset.kind !== 'table' || !m) return;
-      const fin = m.querySelector(':scope > .fit-in'), tb = m.querySelector('table');
-      if (!fin || !tb) return;
-      const z = +fin.dataset.pfFz || 1;
-      fin.style.height = `${Math.floor(m.clientHeight / z)}px`;
-      tb.style.height = '100%';
+      const fin = m.querySelector(':scope > .fit-in');
+      if (!fin) return;
+      const z0 = +fin.dataset.pfFz || 1, W = m.clientWidth, H = m.clientHeight;
+      const ok = (z) => { Object.assign(fin.style, { zoom: String(z), width: `${W / z}px`, height: '' }); return fin.offsetHeight * z <= H + 0.5 && fin.scrollWidth <= W / z + 1; };
+      let lo = z0, hi = z0 * 1.3;
+      if (!ok(lo)) return;
+      if (ok(hi)) lo = hi;
+      else for (let i = 0; i < 7; i++) { const mid = (lo + hi) / 2; if (ok(mid)) lo = mid; else hi = mid; }
+      ok(lo);
+      fin.dataset.pfFz = lo.toFixed(3);
+      b.dataset.sc = lo.toFixed(3);
     });
     if (!fitsScene(s)) {
       s.classList.remove('pf-stretch');
       saved.forEach(([e, v]) => (v == null ? e.removeAttribute('style') : e.setAttribute('style', v)));
+      savedZ.forEach(([b, sc, fin, fz]) => { if (sc != null) b.dataset.sc = sc; if (fin && fz != null) fin.dataset.pfFz = fz; });
     }
     if (!wasIn) s.remove();
     return s;
