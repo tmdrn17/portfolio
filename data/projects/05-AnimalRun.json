@@ -874,7 +874,7 @@
           "verbatim": true
         },
         "lead": {
-          "text": "이번 업데이트(맵 테마 · 연출)에서 Claude Code를 썼고, 커밋마다 AI가 작성한 부분과 직접 작성한 부분을 나눠 적었습니다.",
+          "text": "양이 많은 반복 작업을 통째로 맡기고, 커밋마다 AI가 쓴 부분과 직접 쓴 부분을 나눠 기록했습니다.",
           "verbatim": true
         },
         "sectionPath": [

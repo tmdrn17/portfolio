@@ -544,6 +544,7 @@
         "lead": null,
         "sectionPath": ["AI 협업"],
         "points": [
+          {"label": "쓴 방식", "text": "AI가 만든 초안을 받아 검수하고, 필요한 부분을 골라 그 위에 직접 더했습니다.", "verbatim": true},
           {
             "label": "맡긴 것",
             "text": "3인칭 카메라의 첫 버전 초안, 미션 UI 전체를 코드로 조립하는 MissionUIBuilder, 로비 자동 배치 툴을 AI(Claude)로 만들어 반복 작업을 줄였습니다.",
@@ -551,9 +552,10 @@
           },
           {
             "label": "직접 판단한 것",
-            "text": "카메라 초안은 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했고, 필요한 기능이라고 판단해 남겼습니다. 상황에 따라 카메라가 바뀌는 부분은 그 위에 직접 더했습니다(3.4).",
+            "text": "벽 충돌 보정(SphereCast)은 필요한 기능이라고 판단해 남겼고, 상황에 따라 카메라가 바뀌는 부분은 그 위에 직접 더했습니다(3.4).",
             "verbatim": true
-          }
+          },
+          {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true}
         ],
         "visuals": []
       },
@@ -909,6 +911,7 @@
         "lead": null,
         "sectionPath": ["AI 협업"],
         "points": [
+          {"label": "쓴 방식", "text": "AI가 만든 초안을 받아 검수하고, 필요한 부분을 골라 그 위에 직접 더했습니다.", "verbatim": true},
           {
             "label": "맡긴 것",
             "text": "3인칭 카메라의 첫 버전 초안, 미션 UI 전체를 코드로 조립하는 MissionUIBuilder, 로비 자동 배치 툴을 AI(Claude)로 만들어 반복 작업을 줄였습니다.",
@@ -916,9 +919,10 @@
           },
           {
             "label": "직접 판단한 것",
-            "text": "카메라 초안은 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했고, 필요한 기능이라고 판단해 남겼습니다. 상황에 따라 카메라가 바뀌는 부분은 그 위에 직접 더했습니다(3.4).",
+            "text": "벽 충돌 보정(SphereCast)은 필요한 기능이라고 판단해 남겼고, 상황에 따라 카메라가 바뀌는 부분은 그 위에 직접 더했습니다(3.4).",
             "verbatim": true
-          }
+          },
+          {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true}
         ],
         "visuals": []
       },
@@ -939,6 +943,6 @@
         "visuals": []
       }
     ],
-    "applied": "6c679fe3e62fd350"
+    "applied": "92d3ad85356c3acb"
   }
 }

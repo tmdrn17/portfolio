@@ -140,6 +140,11 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .t-P2.compact .toc-list .n { width: 32px; height: 32px; font-size: 15px; }
 .t-P2.compact .toc-list.sub .t { font-size: 15px; }
 .t-P2.compact .toc-list.sub .n { width: 26px; height: 26px; font-size: 12px; }
+/* 장 표지 목록의 번호 칸에 원문 절 번호(1.2 · 3.1.1)가 들어갈 때 — 칸만 넓힘(project-deck.js chapterScene) */
+.toc-list.dotted .n { width: 52px; font-size: 14px; letter-spacing: -.02em; }
+.toc-list.sub.dotted .n { width: 44px; font-size: 13px; }
+.t-P2.compact .toc-list.dotted .n { width: 44px; font-size: 13px; }
+.t-P2.compact .toc-list.sub.dotted .n { width: 40px; font-size: 12px; }
 
 /* ── 결과와 회고(P6) ── */
 .rt { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; height: 100%; align-items: start; }

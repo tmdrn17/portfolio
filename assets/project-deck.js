@@ -314,28 +314,61 @@
     // 장 → 장 표지 + 장면들
     const chapterScenes = [];
     const tocItems = [];
+    // 결과와 회고가 deck의 회고 장(같은 H2 절)과 겹치면 그 장 안에 넣음 — 목차 한 줄, 하위 절 번호 순서(수강생 요청 2026-11-23)
+    const rp = auto ? null : retroPlace(p.retro || {}, model, P);
+    let retro = [];
+    // 번호 = 슬라이드 순서. 장 = 01, 02 …(장 차례), 소제목 = <장>.<장 표지 목록 순번>(6.1, 6.2 …). 원문 번호(5.2 …)와 상관없이
+    //   장면 제목 앞의 원문 번호도 이 번호로 바꿔 보임(3.1.1 → 3.2.1처럼 아래 자리는 그대로). 글은 그대로, 번호만(수강생 요청 2026-11-23)
     model.forEach((c, ci) => {
       const ckey = PF.keyOk(c.key) ? c.key : `c${ci + 1}`;
       let chId = `ch-${ckey}`; if (used.has(chId)) chId = `ch-c${ci + 1}`; used.add(chId);
+      const parts = rp && rp.ci === ci ? rp.parts : [];
+      const order = c.slides.map((sl) => ({ sl }));
+      parts.forEach((pt) => {                                            // 하위 절 번호가 더 뒤인 첫 장면 앞에(못 찾으면 장 끝)
+        const at = pt.at < 0 ? -1 : order.findIndex((x) => x.sl && rp.subOf(x.sl) > pt.at);
+        if (at < 0) order.push({ pt }); else order.splice(at, 0, { pt });
+      });
+      const no = String(ci + 1);
+      let k = 0, lastKey = null;
+      order.forEach((x) => {                                             // 장 표지 목록과 같은 묶음(tocGroups)으로 순번
+        const f = x.pt ? x.pt.title : featureOf(x.sl);
+        const key = PF.normTitle(f);
+        if (!(key && key === lastKey)) k++;
+        lastKey = key; x.f = secNo(f); x.nn = `${no}.${k}`;
+      });
+      const renum = (t, x) => {
+        const s = String(t || '');
+        if (x.f && new RegExp(`^\\s*${x.f.replace(/\./g, '\\.')}(?=[.\\s])`).test(s)) return s.replace(x.f, x.nn);
+        return secNo(s) ? s.replace(secNo(s), x.nn) : s;
+      };
       const slides = [];
-      c.slides.forEach((sl, si) => {
+      order.forEach((x, si) => {
+        if (x.pt) {
+          const ss = retroScenes({ ...x.pt, title: renum(x.pt.title, x) }, foot, auto, { chapter: c.title || '', rlabel: `${si + 1}/${order.length}`, n0: retro.length });
+          ss.forEach((s) => { used.add(s.id); retro.push(s); });
+          slides.push({ sl: { sectionPath: [c.title, x.pt.title], title: { text: x.pt.title }, tab: '', lead: null }, scenes: ss });
+          return;
+        }
+        const sl = x.sl;
         let sid = PF.keyOk(sl.key) ? `d-${sl.key}` : `d${ci + 1}-${si + 1}`, err = '';
         if (!PF.keyOk(sl.key)) err = `key-invalid: "${sl.key || ''}"`;
         if (used.has(sid)) { err = `key-invalid: "${sl.key}" 중복`; sid = `d${ci + 1}-${si + 1}`; }
         used.add(sid);
-        const rl = [PF.tab(sl.tab), `${si + 1}/${c.slides.length}`].filter(Boolean).join(' · ');
-        const scenes = slideScenes(sl, sid, { chapter: c.title || '', rlabel: rl, foot, auto, err });
+        const rl = [PF.tab(sl.tab), `${si + 1}/${order.length}`].filter(Boolean).join(' · ');
+        const t = txt(sl.title), t2 = renum(t, x);
+        const scenes = slideScenes(t2 === t ? sl : { ...sl, title: t2 }, sid, { chapter: c.title || '', rlabel: rl, foot, auto, err });
         scenes.forEach((s) => used.add(s.id));
         slides.push({ sl, scenes });
       });
-      const chs = chapterScene(c, ci, chId, slides, foot, auto, p.title);
+      const chs = chapterScene(c, no, chId, slides, foot, auto, p.title);
       chapterScenes.push(chs, ...slides.flatMap((x) => x.scenes));
-      tocItems.push({ c, chId, n: slides.reduce((a, x) => a + x.scenes.length, 0) });
+      tocItems.push({ c, chId, no, n: slides.reduce((a, x) => a + x.scenes.length, 0) });
     });
-    const retro = buildRetro(p.retro || {}, p, foot, auto);
+    const merged = !!rp;
+    if (!merged) retro = buildRetro(p.retro || {}, p, foot, auto);
     const end = endScene(p, foot, ext, auto);
-    const toc = tocScene(p, foot, tocItems, retro, auto);
-    const all = [cover, toc, ...chapterScenes, ...retro, end];
+    const toc = tocScene(p, foot, tocItems, merged ? [] : retro, auto);
+    const all = [cover, toc, ...chapterScenes, ...(merged ? [] : retro), end];
     // 글 장면 글 키우기 → 한 줄 지키기 → 꽉 채우기(수강생 요청 2026-11-12, deck-common.js). 모두 넘침 검사를 거치므로 넘침이 새로 생기지 않음
     info.textGrow = PF.growText(all.filter((s) => s.classList.contains('pf-sum') && s.querySelector('.dk-text') && !s.querySelector('.pf-zoomwrap, .pf-clipped')),
       ['.dk-text .ncard p', '.dk-text .ncard .lb', '.dk-text .ncard .num', '.dk-text .fstep p', '.dk-text .fstep .labelchip']);
@@ -383,6 +416,9 @@
   // 목록 한 줄(같은 슬라이드 안 이동 = 같은 탭). 쪽 번호(p.N)는 키트가 채움
   //   ld = 장 표지 넉넉한 변형에서 그 장면의 도입(lead, 데이터의 글 조각 그대로)
   const item = (n, t, d, ref, ld = '') => `<li><a href="#${esc(ref)}" data-pf-ref="${esc(ref)}"><span class="n">${esc(n)}</span><span class="tx"><span class="t">${inline(t)}</span>${d ? `<span class="d">${esc(d)}</span>` : ''}${ld ? `<span class="ld">${inline(ld)}</span>` : ''}</span><span class="pg"><span class="pf-n-screen">p.00</span><span class="pf-n-print"></span></span></a></li>`;
+  // 원문 제목 앞의 절 번호: "5. 회고" → "5", "3.1 구르기" → "3.1", 번호 없음 → ''
+  const secNo = (t) => (/^\s*(\d+(?:\.\d+)*)\.?\s/.exec(String(t || '')) || [])[1] || '';
+  const noNum = (t) => String(t || '').replace(/^\s*\d+(?:\.\d+)*\.?\s+/, '');
   const band = (s, auto) => { if (auto) s.querySelector('.pf-foot > span').insertAdjacentHTML('beforeend', '<span class="pf-autoband" data-pf-ui="note">예전 데이터로 자동 구성</span>'); return s; };
 
   // 장 표지: 장면이 적으면(4개 이하) 넉넉한 변형 — 목차 크기 목록 + 장면마다 도입(결정 I7). 안 들어가면 보통 → 촘촘
@@ -405,18 +441,20 @@
       const head = featureOf(first.sl);
       const title = g.items.length > 1 && head ? head : txt(first.sl.title) || head;
       const tabs = [...new Set(g.items.map((x) => PF.tab(x.sl.tab)).filter(Boolean))].join(' · ');
-      return { title, tabs, ref: first.scenes[0].id, lead: txt(first.sl.lead) };
+      return { title, head, tabs, ref: first.scenes[0].id, lead: txt(first.sl.lead) };
     });
   }
-  function chapterScene(c, ci, chId, slides, foot, auto, ptitle) {
-    const groups = tocGroups(slides);
+  // 장 표지 목록: 번호 칸 = <장>.<순번>(슬라이드 순서), 제목 앞의 원문 번호는 뺌 — "1 5.2 …"처럼 두 번호가 어긋나지 않게(수강생 요청 2026-11-23)
+  function chapterScene(c, no, chId, slides, foot, auto, ptitle) {
+    const groups = tocGroups(slides).map((g, i) => ({ ...g, n: `${no}.${i + 1}`, t: noNum(g.title || c.title) }));
+    const dotted = true;
     const make = (mode) => {
       const s = PF.scene({ id: chId, tpl: 'CH', kind: 'bare', cls: mode === 'compact' ? 'compact' : '', foot, sec: c.title, group: c.title, stitle: c.title });
       const roomy = mode === 'roomy';
-      const list = groups.map((g, i) => item(String(i + 1), g.title || c.title, g.tabs, g.ref, roomy ? g.lead : '')).join('');
+      const list = groups.map((g) => item(g.n, g.t, g.tabs, g.ref, roomy ? g.lead : '')).join('');
       PF.body(s).innerHTML = `<div class="toprow"><span class="pf-eyebrow long">${esc(ptitle)}</span><span class="rl">${esc(PF.t('deck.ch-count', { n: groups.length }))}</span></div>
-        <div class="ch-mid"><div><p class="ch-no">${esc(PF.t('en.chapter'))} ${String(ci + 1).padStart(2, '0')}</p><h2 class="ch-t">${esc(c.title)}</h2>${DOT}</div>
-        <div class="ch-list t-P2${mode === 'normal' ? '' : ' ' + mode}"><ol class="toc-list${roomy ? '' : ' sub'}">${list}</ol></div></div>`;
+        <div class="ch-mid"><div><p class="ch-no">${esc(PF.t('en.chapter'))} ${no.padStart(2, '0')}</p><h2 class="ch-t">${esc(c.title)}</h2>${DOT}</div>
+        <div class="ch-list t-P2${mode === 'normal' ? '' : ' ' + mode}"><ol class="toc-list${roomy ? '' : ' sub'}${dotted ? ' dotted' : ''}">${list}</ol></div></div>`;
       return band(s, auto);
     };
     const modes = groups.length <= ROOMY_MAX ?['roomy', 'normal', 'compact'] : ['normal', 'compact'];
@@ -425,9 +463,10 @@
   }
 
   function tocScene(p, foot, items, retro, auto) {
-    const rows = [...items.map((x, i) => [String(i + 1).padStart(2, '0'), x.c.title, PF.t('deck.toc-count', { n: x.n }), x.chId]),
-      retro.length && [String(items.length + 1).padStart(2, '0'), PF.t('deck.retro'), PF.t('deck.retro-desc'), retro[0].id],
-      [String(items.length + (retro.length ? 2 : 1)).padStart(2, '0'), PF.t('deck.more'), PF.t('deck.more-desc'), 'end']].filter(Boolean);
+    const seq = (i) => String(i + 1).padStart(2, '0');
+    const rows = [...items.map((x, i) => [seq(i), x.c.title, PF.t('deck.toc-count', { n: x.n }), x.chId]),
+      retro.length && [seq(items.length), PF.t('deck.retro'), PF.t('deck.retro-desc'), retro[0].id],
+      [seq(items.length + (retro.length ? 1 : 0)), PF.t('deck.more'), PF.t('deck.more-desc'), 'end']].filter(Boolean);
     const make = (compact) => {
       const s = PF.scene({ id: 'toc', tpl: 'P2', kind: 'bare', cls: compact ? 'compact' : '', foot, sec: PF.t('name.toc'), stitle: PF.t('name.toc') });
       const half = rows.length > 7 ? Math.ceil(rows.length / 2) : rows.length;
@@ -439,13 +478,58 @@
     return PF.shrinkOrClip(make(true), PFScene.refUrl('toc'), info.overflow);
   }
 
-  // 결과와 회고: ✓ 달성 카드 │ 아쉬운 점 → 개선 계획 표. 안 들어가면 두 장으로
-  function buildRetro(r, p, foot, auto) {
+  // 결과와 회고 글 조각: ✓ 달성 카드 · 아쉬운 점 → 개선 계획 표
+  function retroHtml(r) {
     const ach = r.achieved || [], reg = r.regrets || [], plan = r.plans || [];
-    if (!ach.length && !reg.length && !plan.length) return [];
     const n = Math.max(reg.length, plan.length);
     const achHtml = ach.length ? `<div class="rt-ach card"><p class="rt-h ok">✓ ${esc(PF.t('deck.achieved'))}</p><ul>${ach.map((x) => `<li>${inline(x)}</li>`).join('')}</ul></div>` : '';
     const pairHtml = n ? `<table class="mini"><thead><tr><th scope="col">△ ${esc(PF.t('deck.regrets'))}</th><th scope="col">→ ${esc(PF.t('deck.plans'))}</th></tr></thead><tbody>${Array.from({ length: n }, (_, i) => `<tr><td>${inline(reg[i] || '')}</td><td class="p">${inline(plan[i] || '')}</td></tr>`).join('')}</tbody></table>` : '';
+    return { achHtml, pairHtml };
+  }
+
+  // 회고 장에 넣을 자리: deck 장 중 retro.section(H2)과 같은 장 → 달성·아쉬운 점이 원문의 어느 하위 절(5.1·5.3 …)에 있는지 글자로 찾음.
+  //   두 하위 절 사이에 다른 장면이 있으면 두 장면으로 나눠 각 하위 절 자리에(제목 = 원문 하위 절 제목), 아니면 한 장면. 글은 retro 데이터 그대로
+  function retroPlace(r, model, P) {
+    const sec = PF.normTitle(r.section || '');
+    const ach = r.achieved || [], reg = r.regrets || [], plan = r.plans || [];
+    if (!sec || (!ach.length && !reg.length && !plan.length)) return null;
+    const ci = model.findIndex((c) => PF.normTitle((c.sectionPath || [])[0] || '') === sec);
+    if (ci < 0) return null;
+    const hs = PF.md.findSection(P, [r.section]);
+    const subs = hs.length === 1 ? P.headings.filter((h) => h.parents[h.parents.length - 1] === hs[0]) : [];
+    const sq = (s) => String(s || '').replace(/[\s*_`]+/g, '');
+    const texts = subs.map((h) => { let t = ''; for (let el = h.el.nextElementSibling; el && !/^H[1-6]$/.test(el.tagName); el = el.nextElementSibling) t += el.textContent; return sq(t); });
+    const find = (list) => { const k = sq(list[0]).slice(0, 15); return k ? texts.findIndex((t) => t.includes(k)) : -1; };
+    const subOf = (sl) => { const t = PF.normTitle((sl.sectionPath || [])[1] || ''); return t ? subs.findIndex((h) => PF.normTitle(h.text) === t) : -1; };
+    const { achHtml, pairHtml } = retroHtml(r);
+    const a = achHtml ? find(ach) : -1, b = pairHtml ? find(reg.length ? reg : plan) : -1;
+    const between = a >= 0 && b >= 0 && a !== b && model[ci].slides.some((sl) => { const k = subOf(sl); return k > Math.min(a, b) && k < Math.max(a, b); });
+    const parts = !(achHtml && pairHtml) || !between
+      ? [{ html: [achHtml, pairHtml], at: Math.min(...[a, b].filter((x) => x >= 0), Infinity) === Infinity ? -1 : Math.min(...[a, b].filter((x) => x >= 0)), title: PF.t('deck.retro') }]
+      : [{ html: [achHtml], at: a, title: subs[a].text }, { html: [pairHtml], at: b, title: subs[b].text }].sort((x, y) => x.at - y.at);
+    return { ci, parts, subOf };
+  }
+
+  // 회고 장 안의 결과·회고 장면. 한 장면에 안 들어가면 두 장으로
+  function retroScenes(pt, foot, auto, meta) {
+    const html = pt.html.filter(Boolean);
+    const make = (h, one, i, cnt) => {
+      const id = meta.n0 + i === 0 ? 'retro' : `retro-${meta.n0 + i + 1}`;
+      const s = PF.scene({ id, tpl: 'P6', eyebrow: meta.chapter, rlabel: meta.rlabel, title: pt.title, sub: cnt > 1 ? `${i + 1}/${cnt}` : '', foot,
+        sec: meta.chapter, group: meta.chapter, stitle: pt.title });
+      PF.body(s).innerHTML = `<div class="pf-fill"><div class="rt${one ? ' one' : ''}">${h}</div></div>`;
+      return band(s, auto);
+    };
+    const s = make(html.join(''), html.length < 2, 0, 1);
+    if (PF.fitsM(s)) return [s];
+    return html.map((h, i, a) => make(h, true, i, a.length)).map((x) => (PF.fitsM(x) ? x : PF.shrinkOrClip(x, PFScene.refUrl(x.id), info.overflow)));
+  }
+
+  // 결과와 회고(회고 장이 없을 때): ✓ 달성 카드 │ 아쉬운 점 → 개선 계획 표. 안 들어가면 두 장으로
+  function buildRetro(r, p, foot, auto) {
+    const ach = r.achieved || [], reg = r.regrets || [], plan = r.plans || [];
+    if (!ach.length && !reg.length && !plan.length) return [];
+    const { achHtml, pairHtml } = retroHtml(r);
     const make = (html, one, i, cnt) => {
       const s = PF.scene({ id: i === 0 ? 'retro' : `retro-${i + 1}`, tpl: 'P6', eyebrow: PF.t('deck.retro-eyebrow'), rlabel: p.title, title: PF.t('deck.retro'), sub: cnt > 1 ? `${i + 1}/${cnt}` : '', foot,
         sec: PF.t('deck.retro'), group: PF.t('deck.retro') });
