@@ -385,7 +385,7 @@
         "points": [
           {
             "label": "커브로 구간별 속도",
-            "text": "지금은 커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
+            "text": "커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
             "verbatim": false
           },
           {"label": "", "text": "구르기는 스태미나 25를 쓰고(최대 100, 1초 뒤부터 초당 15 회복), 진행도 0.8까지 무적입니다.", "verbatim": true}
@@ -401,7 +401,8 @@
               "verbatim": true
             }
           }
-        ]
+        ],
+        "edited": true
       },
       {
         "key": "roll-choice",
@@ -990,6 +991,6 @@
         "visuals": []
       }
     ],
-    "applied": "a6112018a8849eed"
+    "applied": "6fe53f9adc598bb1"
   }
 }

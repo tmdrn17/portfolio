@@ -155,3 +155,13 @@ table.md-table td:first-child { overflow-wrap: normal; }
 
 /* 슬라이드 표: 칸마다 테두리 선(가로줄만 있어 칸 구분이 어렵던 것) — 2026-11-24 수강생 요청 */
 [data-view="deck"] table.md-table th, [data-view="deck"] table.md-table td { border: 1px solid var(--t-line-2, #A9D8C3); }
+
+/* 표(슬라이드 · 상세 문서): 가로 제목(머리 줄)과 세로 제목(첫 칸)은 크고 굵게, 내용 칸은 여백을 줄여 컴팩트하게 — 2026-11-24 수강생 요청
+   슬라이드 표는 장면 높이만큼 늘이지 않고 내용 높이대로(칸이 위아래로 길게 늘어나던 것). 이 묶음을 지우면 원래 모습 */
+[data-view="deck"] table.md-table { height: auto !important; }
+[data-view="deck"] table.md-table th { font-size: 16px; padding: 6px 10px; vertical-align: middle; }
+[data-view="deck"] table.md-table td { padding: 5px 10px; line-height: 1.45; }
+[data-view="deck"] table.md-table td:first-child { font-size: 16px; font-weight: 700; }
+.table-wrap table th { font-size: 16px; padding: 7px 10px; vertical-align: middle; }
+.table-wrap table td { padding: 6px 10px; line-height: 1.5; }
+.table-wrap table td:first-child { font-size: 15.5px; font-weight: 700; }
