@@ -4,7 +4,7 @@
     "name": "김승구",
     "nameEn": "",
     "headline": "",
-    "intro": "",
+    "intro": "끝까지 파고드는 개발자\n코드를 한 번에 이해하는 편은 아니지만, 막히는 개념은 작은 프로그램으로 직접 만들어 보며 끝까지 파고듭니다.\n게임을 제대로 설계하려면 게임이 실제로 어떻게 움직이는지부터 알아야 한다고 생각해 프로그래밍을 택했고, 지금은 플레이어가 직접 탐험할 세계와 그 안에서 새로운 경험을 주는 기믹을 만드는 일을 가장 좋아합니다.",
     "email": "tmdrn9810@gmail.com",
     "github": "https://github.com/tmdrn17",
     "links": []
@@ -15,7 +15,7 @@
   },
   "skills": [
     {
-      "name": "Unity · Animator · Blend Tree · AnimationCurve · UniTask · DOTween · ObjectPool · 충돌 직접 구현",
+      "name": "Unity",
       "evidence": [
         {
           "text": "AnimationCurve로 애니메이션 진행도를 따르는 구르기 이동",
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "name": "C# · 전략 패턴 · 추상 클래스 · TSV 데이터 테이블",
+      "name": "C#",
       "evidence": [
         {
           "text": "delegate 생성기 목록으로 수식 문 유형을 고르는 전략 패턴",
@@ -59,7 +59,7 @@
           "project": "01-ODDITY"
         },
         {
-          "text": "동물 19종·무기 7종 수치를 TSV로 관리하고 프리팹·아이콘 연결",
+          "text": "동물 18종·무기 7종 수치를 TSV로 관리하고 프리팹·아이콘 연결",
           "project": "05-AnimalRun"
         }
       ]
@@ -78,14 +78,14 @@
       ]
     },
     {
-      "name": "AI 활용 · Claude · NotebookLM",
+      "name": "AI 활용 · Claude Code · NotebookLM",
       "evidence": [
         {
-          "text": "미션 UI 조립·로비 자동 배치 에디터 툴을 Claude로 제작",
+          "text": "미션 UI 조립·로비 자동 배치 에디터 툴을 Claude Code로 제작",
           "project": "01-ODDITY"
         },
         {
-          "text": "동물 프리팹 파이프라인과 맵 테마 청크·적 대량 제작에 Claude 사용",
+          "text": "동물 프리팹 파이프라인과 맵 테마 청크·적 대량 제작에 Claude Code 사용",
           "project": "05-AnimalRun"
         }
       ]

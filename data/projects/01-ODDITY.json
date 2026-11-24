@@ -59,7 +59,7 @@
         "section": "1.2 목표한 경험과 기능마다의 의도"
       },
       "what": "애니메이션 진행도에 맞춰 이동하고, 커브로 구르는 도중 속도를 바꿈",
-      "how": "애니메이션이 끝나는 부분보다 조금 앞(기본 80%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다. 총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.",
+      "how": "애니메이션이 끝나는 부분보다 조금 앞(기본 70%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다. rollDistance를 이동 시간으로 나눈 값이 기준 속도이고, 커브가 구간마다 그 배율을 정합니다.",
       "why": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다. 그래서 이동을 코드로 만들되, 애니메이션과 어긋나지 않도록 '애니메이션 진행도'를 기준으로 삼는 쪽을 택했습니다.",
       "section": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기",
       "image": {
@@ -78,7 +78,7 @@
       },
       "what": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.",
       "how": "코드는 '어떤 반응인지' 번호만 넘기고 실제 모션은 Blend Tree가 고릅니다. 앞인지 뒤인지만 알면 되므로 각도를 계산하지 않고 내적의 부호만 봤습니다.",
-      "why": "피격 모션을 추가해도 코드 분기가 늘지 않습니다.",
+      "why": "처음에는 넘어지는 모션이 하나뿐이라 몸을 돌리는 방식으로 해결했지만, 막상 적용해 보니 이상했습니다. 그래서 다음 날 앞으로 쓰러지는 넉다운 모션을 추가하고, 강제 회전 대신 내적으로 앞 · 뒤만 골라 넘어지게 바꿨습니다.",
       "section": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응",
       "image": {
         "src": "images/animator_hitreaction.png",
@@ -94,9 +94,9 @@
         "verbatim": true,
         "section": "1.2 목표한 경험과 기능마다의 의도"
       },
-      "what": "missions.tsv → MissionTable(DTO → MissionDef 변환, 보상 테이블·아이콘 연결) → 수락 목록(최대 3개, 씬이 바뀌어도 유지) → 출격",
-      "how": "UI가 결과에 따라 '이미 수락한 미션', '목록이 가득 참' 같은 메시지를 골라 띄울 수 있습니다. 수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.",
-      "why": "팀장님이 처음 TSV를 제안했고, 미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.",
+      "what": "UI가 결과에 따라 '이미 수락한 미션', '목록이 가득 참' 같은 메시지를 골라 띄울 수 있습니다. 수락 목록이 바뀌면 이벤트로 알려, 목록을 보여 주는 쪽이 직접 상태를 확인하지 않아도 됩니다.",
+      "how": "missions.tsv → MissionTable(DTO → MissionDef 변환, 보상 테이블·아이콘 연결) → 수락 목록(최대 3개, 씬이 바뀌어도 유지) → 출격. 수락 목록(AddMission)과 임무 창 UI는 Def만 받으므로, TSV 칸 구성이 바뀌어도 변환 코드만 고치면 됩니다.",
+      "why": "팀장님이 처음 TSV를 제안했고, 미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다. 변환 코드를 만드는 비용은 감수하고, 실패하면 경고 로그를 남기도록 했습니다.",
       "section": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템",
       "image": null
     },
@@ -124,13 +124,37 @@
       "title": "구르기 전후 미끄러짐",
       "problem": "정해진 속도로 정해진 거리만큼 이동하면 구르기 전후에 미끄러짐",
       "cause": "고정 속도·고정 거리 이동이 애니메이션 시간과 맞지 않음 — 사용한 구르기 애니메이션에는 루트 모션이 없어 이동을 코드로 만들어야 했음",
-      "solution": "애니메이션 진행도에 맞춰 이동하고 AnimationCurve로 속도를 바꾼 뒤, 애니메이션이 끝나기 조금 전에 이동을 먼저 멈춤 (moveEndTime)",
+      "solution": "애니메이션 진행도에 맞춰 이동하고 AnimationCurve로 속도를 바꾼 뒤, 애니메이션이 끝나기 조금 전에 이동을 먼저 멈춤 (moveEndTime). AI가 만든 디버깅 도구로 목표 속도와 실제 속도를 겹쳐 보며 이동을 멈추는 시점(0.7)을 맞춤",
       "result": "시간이 맞고, 끝부분 미끄러짐까지 해결",
       "lesson": "",
-      "section": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"
+      "section": "3.1.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"
+    },
+    {
+      "title": "BGM을 바꾸면 새 곡이 재생되지 않던 문제",
+      "problem": "BGM을 바꾸는 기능(ChangeBGM)으로 곡을 끄고 켜면 새 곡이 재생되지 않고, 손으로 끄고 켜면 되는 문제",
+      "cause": "같은 프레임에 끄기(페이드아웃을 await로 기다림)와 켜기(취소 토큰으로 이전 작업 취소)가 겹쳤는데, 페이드 트윈을 Kill하면 기다리던 작업이 취소가 아니라 정상 완료로 끝나 다음 줄의 Stop이 새 곡까지 멈춤",
+      "solution": "팀원의 SoundManager는 고치지 않고, 끈 뒤 페이드(0.5초)가 끝날 때까지 0.6초 기다렸다가 다음 곡을 켜도록 고침",
+      "result": "",
+      "lesson": "취소한 비동기 작업이 '완료'로 끝날 수도 있어, 기다린 뒤에 이어지는 코드가 의도와 다르게 실행될 수 있다는 것을 배웠습니다.",
+      "section": "5.2 배운 점"
+    },
+    {
+      "title": "UI를 열면 캐릭터가 제자리에서 계속 걷던 문제",
+      "problem": "걷거나 달리다가 Esc를 누르거나 UI를 열면 캐릭터가 제자리에서 계속 걷는 모션을 보임",
+      "cause": "커서를 풀 때마다 PlayerController · CameraController를 enabled = false로 꺼서, 스크립트 전체가 멈춰 애니메이터 값이 마지막 상태로 남음",
+      "solution": "컴포넌트는 켜 둔 채 UIManager의 잠금 값(isUIClose)을 두고, 이동 · 회전 · 달리기 · 구르기 · 카메라가 각각 이 값을 확인",
+      "result": "",
+      "lesson": "",
+      "section": "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"
     }
   ],
   "screenshots": [
+    {
+      "src": "images/roll_dodge.gif",
+      "w": 560,
+      "h": 315,
+      "caption": "보스의 공격 범위(빨간 표시)를 구르기로 빠져나와 회피"
+    },
     {
       "src": "images/roll_speed_curve_inspector.png",
       "w": 408,
@@ -168,14 +192,10 @@
       "커브 기반 구르기와 피격·넉다운 반응으로 '아슬아슬하게 피하는' 조작을 구현했고, 미션 수락부터 보스 출격까지 한 바퀴를 연결했습니다."
     ],
     "regrets": [
-      "PlayerController가 1,500줄까지 커짐 — 팀원과 함께 작업하며 관리하다 보니 기능이 계속 붙었습니다.",
-      "애니메이션 신호를 문자열로 주고받음 — \"EndRolling\" 오타를 컴파일 단계에서 못 잡습니다.",
-      "커밋 단위 — 기능마다 브랜치는 나눠 작업했지만, 에셋 변경·코드 작성 및 수정·유니티 씬 수정이 한 커밋에 섞여 리뷰가 어려웠습니다."
+      "PlayerController가 1,500줄까지 커짐 — 팀원과 함께 작업하며 관리하다 보니 기능이 계속 붙었습니다."
     ],
     "plans": [
-      "이동·구르기·피격을 상태 패턴으로 분리",
-      "enum이나 상수로 교체",
-      "커밋 단위를 확실히 정하고 단위에 맞는 작업이 끝나면 빠르게 커밋 하기."
+      "이동·구르기·피격을 상태 패턴으로 분리"
     ]
   },
   "deck": {
@@ -183,9 +203,7 @@
       {"key": "overview", "title": "개요", "sectionPath": ["1. 개요"]},
       {"key": "structure", "title": "시스템 구조", "sectionPath": ["2. 시스템 구조"]},
       {"key": "features", "title": "핵심 기능", "sectionPath": ["3. 핵심 기능"]},
-      {"key": "tradeoffs", "title": "고민과 선택", "sectionPath": ["4. 고민과 선택"]},
-      {"key": "ai", "title": "AI 협업", "sectionPath": ["AI 협업"]},
-      {"key": "retro-ch", "title": "회고", "sectionPath": ["5. 회고"]}
+      {"key": "ai", "title": "AI 협업", "sectionPath": ["4. AI 협업"]}
     ],
     "slides": [
       {
@@ -309,6 +327,17 @@
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
+        "key": "ui-lock",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 미션", "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|컴포넌트를 통째로 끄기 (처음 방식)|✔ 선택: 잠금 값 하나를 두고 확인하기"}]
+      },
+      {
         "key": "roll-demo",
         "chapter": "features",
         "layout": "visual",
@@ -338,17 +367,12 @@
         "points": [
           {
             "label": "끝나기 전에 먼저 멈춤",
-            "text": "애니메이션이 끝나는 부분보다 조금 앞(기본 80%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다.",
+            "text": "애니메이션이 끝나는 부분보다 조금 앞(기본 70%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다.",
             "verbatim": true
           },
-          {"label": "거리와 속도 변화를 분리", "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.", "verbatim": true},
-          {
-            "label": "블렌딩 중에도 정확한 진행도",
-            "text": "다른 동작에서 구르기로 넘어가는 중에는 다음 상태의 진행도를 읽어, 시작 프레임이 끊기지 않게 했습니다.",
-            "verbatim": true
-          }
+          {"label": "커브로 구간별 속도", "text": "rollDistance를 이동 시간으로 나눈 값이 기준 속도이고, 커브가 구간마다 그 배율을 정합니다.", "verbatim": true}
         ],
-        "visuals": [{"kind": "code", "n": 1, "fp": "public float GetSpeedAt(float normalizedTime)"}]
+        "visuals": [{"kind": "code", "n": 1, "lines": [1, 11], "fp": "public float GetSpeedAt(float normalizedTime)"}]
       },
       {
         "key": "roll-inspector",
@@ -360,10 +384,11 @@
         "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
         "points": [
           {
-            "label": "거리와 속도 변화를 분리",
-            "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다. 커브를 바꿔도 거리는 같습니다.",
-            "verbatim": true
-          }
+            "label": "커브로 구간별 속도",
+            "text": "지금은 커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
+            "verbatim": false
+          },
+          {"label": "", "text": "구르기는 스태미나 25를 쓰고(최대 100, 1초 뒤부터 초당 15 회복), 진행도 0.8까지 무적입니다.", "verbatim": true}
         ],
         "visuals": [
           {
@@ -377,6 +402,17 @@
             }
           }
         ]
+      },
+      {
+        "key": "roll-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "",
+        "title": {"text": "3.1.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "3.1.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
       },
       {
         "key": "hit-reaction",
@@ -404,7 +440,7 @@
         "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
         "lead": {"text": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.", "verbatim": true},
         "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
-        "points": [],
+        "points": [{"label": "", "text": "넉다운 뒤 기상까지는 3초, 기상 뒤 무적은 1.5초이고, 조기 기상은 8초에 한 번 쓸 수 있습니다.", "verbatim": true}],
         "visuals": [
           {
             "kind": "image",
@@ -421,6 +457,17 @@
             "caption": {"text": "Knockdown Blend Tree — HitDir 값(0 · 1)으로 앞 · 뒤 넉다운 모션 선택", "verbatim": true}
           }
         ]
+      },
+      {
+        "key": "hit-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "3.2.1 맞은 방향에 따라 어떻게 넘어지게 할 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "3.2.1 맞은 방향에 따라 어떻게 넘어지게 할 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|공격자 쪽으로 몸을 돌리기 (처음 방식)|✔ 선택: 내적으로 앞 · 뒤 넉다운 고르기"}]
       },
       {
         "key": "mission-result",
@@ -441,17 +488,6 @@
         "visuals": [{"kind": "code", "n": 1, "fp": "public AddMissionResult AddMission(MissionDef missionDef)"}]
       },
       {
-        "key": "mission-enum",
-        "chapter": "features",
-        "layout": "code",
-        "tab": "구현",
-        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
-        "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다. 값마다 UI가 다른 안내 문구를 띄웁니다.", "verbatim": true},
-        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
-        "points": [],
-        "visuals": [{"kind": "code", "n": 2, "fp": "public enum AddMissionResult"}]
-      },
-      {
         "key": "mission-types",
         "chapter": "features",
         "layout": "full",
@@ -460,7 +496,18 @@
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "자료형|역할"}, {"kind": "table", "n": 2, "fp": "필드|MissionDTO|MissionDef|뜻"}]
+        "visuals": [{"kind": "table", "n": 2, "fp": "필드|MissionDTO|MissionDef|뜻"}]
+      },
+      {
+        "key": "mission-data",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "",
+        "title": {"text": "3.3.1 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "3.3.1 미션 데이터를 무엇으로 관리할 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}]
       },
       {
         "key": "aim-zoom",
@@ -472,7 +519,7 @@
         "sectionPath": ["3. 핵심 기능", "3.4 상황에 따라 바뀌는 3인칭 카메라"],
         "points": [
           {"label": "", "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.", "verbatim": true},
-          {"label": "", "text": "카메라의 첫 버전은 AI(Claude)가 만든 초안이었습니다.", "verbatim": true}
+          {"label": "", "text": "카메라는 프로토타입을 빠르게 만들기 위해 AI(Claude Code)로 첫 버전 초안을 만들었습니다.", "verbatim": true}
         ],
         "visuals": [
           {
@@ -505,50 +552,37 @@
           },
           {
             "label": "FPS와 관계없는 보간",
-            "text": "1 - e^(-속도 × deltaTime)을 보간 비율로 써서, 프레임이 달라도 같은 빠르기로 목표에 다가갑니다.",
+            "text": "카메라 전환 기준을 오른쪽 클릭에서 '물체를 잡았는지'로 바꾸면서, `1 - e^(-속도 × deltaTime)`을 쓰도록 고쳐 프레임이 달라도 같은 빠르기로 목표에 다가가게 했습니다.",
             "verbatim": true
           }
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "private Vector3 UpdatePosition()"}]
       },
       {
-        "key": "roll-choice",
-        "chapter": "tradeoffs",
+        "key": "sound",
+        "chapter": "features",
         "layout": "full",
-        "tab": "",
-        "title": {"text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+        "tab": "구현",
+        "title": {"text": "3.5 사운드", "verbatim": true},
+        "lead": {"text": "효과음 · 볼륨을 관리하는 SoundManager와 볼륨 설정은 팀원 작업이고, 저는 그 위에서 소리를 연결했습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.5 사운드"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}],
-        "edited": true
-      },
-      {
-        "key": "mission-data",
-        "chapter": "tradeoffs",
-        "layout": "full",
-        "tab": "",
-        "title": {"text": "4.2 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
-        "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}],
-        "edited": true
+        "visuals": [{"kind": "table", "n": 1, "fp": "소리|한 일"}]
       },
       {
         "key": "ai-collab",
         "chapter": "ai",
         "layout": "overview",
         "tab": "",
-        "title": {"text": "AI 협업", "verbatim": true},
+        "title": {"text": "4. AI 협업", "verbatim": true},
         "lead": null,
-        "sectionPath": ["AI 협업"],
+        "sectionPath": ["4. AI 협업"],
         "points": [
           {"label": "쓴 방식", "text": "AI가 만든 초안을 받아 검수하고, 필요한 부분을 골라 그 위에 직접 더했습니다.", "verbatim": true},
           {
             "label": "맡긴 것",
-            "text": "3인칭 카메라의 첫 버전 초안, 미션 UI 전체를 코드로 조립하는 MissionUIBuilder, 로비 자동 배치 툴을 AI(Claude)로 만들어 반복 작업을 줄였습니다.",
-            "verbatim": true
+            "text": "3인칭 카메라의 첫 버전 초안, 에디터 툴 전부(로비 맵 자동 배치 · 미션 UI 조립 · 시작 화면 폰트 적용), 구르기 디버깅 도구, BGM 문제의 원인 분석",
+            "verbatim": false
           },
           {
             "label": "직접 판단한 것",
@@ -556,22 +590,6 @@
             "verbatim": true
           },
           {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true}
-        ],
-        "visuals": []
-      },
-      {
-        "key": "lesson",
-        "chapter": "retro-ch",
-        "layout": "overview",
-        "tab": "결과",
-        "title": {"text": "5.2 배운 점 — 판단은 상태를 가진 쪽이", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["5. 회고", "5.2 배운 점 — 판단은 상태를 가진 쪽이"],
-        "points": [
-          {"label": "문제", "text": "처음에는 보스 공격 코드 안에서 플레이어가 무적인지를 직접 확인했습니다.", "verbatim": true},
-          {"label": "해결", "text": "무적 조건이 늘 때마다 보스 코드를 고쳐야 했고, 이후 팀원이 이 판단을 맞는 쪽으로 옮기는 리팩터링을 진행했습니다.", "verbatim": true},
-          {"label": "배운 점", "text": "이를 보며 의존 방향의 기준을 배웠습니다.", "verbatim": true},
-          {"label": "", "text": "이 프로젝트에서는 데이터(TSV)로 시스템을 만들고, 애니메이터 설계와 에디터 툴로 작업을 자동화했습니다.", "verbatim": true}
         ],
         "visuals": []
       }
@@ -678,6 +696,17 @@
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
+        "key": "ui-lock",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 미션", "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|컴포넌트를 통째로 끄기 (처음 방식)|✔ 선택: 잠금 값 하나를 두고 확인하기"}]
+      },
+      {
         "key": "roll-demo",
         "chapter": "features",
         "layout": "visual",
@@ -707,17 +736,12 @@
         "points": [
           {
             "label": "끝나기 전에 먼저 멈춤",
-            "text": "애니메이션이 끝나는 부분보다 조금 앞(기본 80%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다.",
+            "text": "애니메이션이 끝나는 부분보다 조금 앞(기본 70%)에서 이동을 멈춰, 구르기 끝에 미끄러지던 문제를 막았습니다.",
             "verbatim": true
           },
-          {"label": "거리와 속도 변화를 분리", "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다.", "verbatim": true},
-          {
-            "label": "블렌딩 중에도 정확한 진행도",
-            "text": "다른 동작에서 구르기로 넘어가는 중에는 다음 상태의 진행도를 읽어, 시작 프레임이 끊기지 않게 했습니다.",
-            "verbatim": true
-          }
+          {"label": "커브로 구간별 속도", "text": "rollDistance를 이동 시간으로 나눈 값이 기준 속도이고, 커브가 구간마다 그 배율을 정합니다.", "verbatim": true}
         ],
-        "visuals": [{"kind": "code", "n": 1, "fp": "public float GetSpeedAt(float normalizedTime)"}]
+        "visuals": [{"kind": "code", "n": 1, "lines": [1, 11], "fp": "public float GetSpeedAt(float normalizedTime)"}]
       },
       {
         "key": "roll-inspector",
@@ -729,10 +753,11 @@
         "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
         "points": [
           {
-            "label": "거리와 속도 변화를 분리",
-            "text": "총 거리는 rollDistance로 고정하고 커브는 '어느 구간에서 빠르게 움직일지'만 정합니다. 커브를 바꿔도 거리는 같습니다.",
-            "verbatim": true
-          }
+            "label": "커브로 구간별 속도",
+            "text": "지금은 커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
+            "verbatim": false
+          },
+          {"label": "", "text": "구르기는 스태미나 25를 쓰고(최대 100, 1초 뒤부터 초당 15 회복), 진행도 0.8까지 무적입니다.", "verbatim": true}
         ],
         "visuals": [
           {
@@ -746,6 +771,17 @@
             }
           }
         ]
+      },
+      {
+        "key": "roll-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "",
+        "title": {"text": "3.1.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "3.1.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
       },
       {
         "key": "hit-reaction",
@@ -773,7 +809,7 @@
         "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
         "lead": {"text": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.", "verbatim": true},
         "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
-        "points": [],
+        "points": [{"label": "", "text": "넉다운 뒤 기상까지는 3초, 기상 뒤 무적은 1.5초이고, 조기 기상은 8초에 한 번 쓸 수 있습니다.", "verbatim": true}],
         "visuals": [
           {
             "kind": "image",
@@ -790,6 +826,17 @@
             "caption": {"text": "Knockdown Blend Tree — HitDir 값(0 · 1)으로 앞 · 뒤 넉다운 모션 선택", "verbatim": true}
           }
         ]
+      },
+      {
+        "key": "hit-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "3.2.1 맞은 방향에 따라 어떻게 넘어지게 할 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "3.2.1 맞은 방향에 따라 어떻게 넘어지게 할 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|공격자 쪽으로 몸을 돌리기 (처음 방식)|✔ 선택: 내적으로 앞 · 뒤 넉다운 고르기"}]
       },
       {
         "key": "mission-result",
@@ -810,17 +857,6 @@
         "visuals": [{"kind": "code", "n": 1, "fp": "public AddMissionResult AddMission(MissionDef missionDef)"}]
       },
       {
-        "key": "mission-enum",
-        "chapter": "features",
-        "layout": "code",
-        "tab": "구현",
-        "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
-        "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다. 값마다 UI가 다른 안내 문구를 띄웁니다.", "verbatim": true},
-        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
-        "points": [],
-        "visuals": [{"kind": "code", "n": 2, "fp": "public enum AddMissionResult"}]
-      },
-      {
         "key": "mission-types",
         "chapter": "features",
         "layout": "full",
@@ -829,7 +865,18 @@
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "자료형|역할"}, {"kind": "table", "n": 2, "fp": "필드|MissionDTO|MissionDef|뜻"}]
+        "visuals": [{"kind": "table", "n": 2, "fp": "필드|MissionDTO|MissionDef|뜻"}]
+      },
+      {
+        "key": "mission-data",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "",
+        "title": {"text": "3.3.1 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "3.3.1 미션 데이터를 무엇으로 관리할 것인가"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}]
       },
       {
         "key": "aim-zoom",
@@ -841,7 +888,7 @@
         "sectionPath": ["3. 핵심 기능", "3.4 상황에 따라 바뀌는 3인칭 카메라"],
         "points": [
           {"label": "", "text": "물체를 조준하고 오른쪽 마우스를 누르면, 누르고 있는 동안 카메라가 줌인됩니다.", "verbatim": true},
-          {"label": "", "text": "카메라의 첫 버전은 AI(Claude)가 만든 초안이었습니다.", "verbatim": true}
+          {"label": "", "text": "카메라는 프로토타입을 빠르게 만들기 위해 AI(Claude Code)로 첫 버전 초안을 만들었습니다.", "verbatim": true}
         ],
         "visuals": [
           {
@@ -874,48 +921,37 @@
           },
           {
             "label": "FPS와 관계없는 보간",
-            "text": "1 - e^(-속도 × deltaTime)을 보간 비율로 써서, 프레임이 달라도 같은 빠르기로 목표에 다가갑니다.",
+            "text": "카메라 전환 기준을 오른쪽 클릭에서 '물체를 잡았는지'로 바꾸면서, `1 - e^(-속도 × deltaTime)`을 쓰도록 고쳐 프레임이 달라도 같은 빠르기로 목표에 다가가게 했습니다.",
             "verbatim": true
           }
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "private Vector3 UpdatePosition()"}]
       },
       {
-        "key": "roll-choice",
-        "chapter": "tradeoffs",
+        "key": "sound",
+        "chapter": "features",
         "layout": "full",
-        "tab": "선택",
-        "title": {"text": "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가", "verbatim": true},
-        "lead": {"text": "사용한 구르기 애니메이션에는 루트 모션이 없었습니다.", "verbatim": true},
-        "sectionPath": ["4. 고민과 선택", "4.1 구르기 이동을 어떻게 애니메이션과 맞출 것인가"],
+        "tab": "구현",
+        "title": {"text": "3.5 사운드", "verbatim": true},
+        "lead": {"text": "효과음 · 볼륨을 관리하는 SoundManager와 볼륨 설정은 팀원 작업이고, 저는 그 위에서 소리를 연결했습니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.5 사운드"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
-      },
-      {
-        "key": "mission-data",
-        "chapter": "tradeoffs",
-        "layout": "full",
-        "tab": "선택",
-        "title": {"text": "4.2 미션 데이터를 무엇으로 관리할 것인가", "verbatim": true},
-        "lead": {"text": "미션이 계속 추가·수정될 구조라 관리와 확장이 더 편하다고 판단해 동의했습니다.", "verbatim": true},
-        "sectionPath": ["4. 고민과 선택", "4.2 미션 데이터를 무엇으로 관리할 것인가"],
-        "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "|ScriptableObject|✔ 선택: TSV 데이터 테이블"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "소리|한 일"}]
       },
       {
         "key": "ai-collab",
         "chapter": "ai",
         "layout": "overview",
         "tab": "",
-        "title": {"text": "AI 협업", "verbatim": true},
+        "title": {"text": "4. AI 협업", "verbatim": true},
         "lead": null,
-        "sectionPath": ["AI 협업"],
+        "sectionPath": ["4. AI 협업"],
         "points": [
           {"label": "쓴 방식", "text": "AI가 만든 초안을 받아 검수하고, 필요한 부분을 골라 그 위에 직접 더했습니다.", "verbatim": true},
           {
             "label": "맡긴 것",
-            "text": "3인칭 카메라의 첫 버전 초안, 미션 UI 전체를 코드로 조립하는 MissionUIBuilder, 로비 자동 배치 툴을 AI(Claude)로 만들어 반복 작업을 줄였습니다.",
-            "verbatim": true
+            "text": "3인칭 카메라의 첫 버전 초안, 에디터 툴 전부(로비 맵 자동 배치 · 미션 UI 조립 · 시작 화면 폰트 적용), 구르기 디버깅 도구, BGM 문제의 원인 분석",
+            "verbatim": false
           },
           {
             "label": "직접 판단한 것",
@@ -925,24 +961,8 @@
           {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true}
         ],
         "visuals": []
-      },
-      {
-        "key": "lesson",
-        "chapter": "retro-ch",
-        "layout": "overview",
-        "tab": "결과",
-        "title": {"text": "5.2 배운 점 — 판단은 상태를 가진 쪽이", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["5. 회고", "5.2 배운 점 — 판단은 상태를 가진 쪽이"],
-        "points": [
-          {"label": "문제", "text": "처음에는 보스 공격 코드 안에서 플레이어가 무적인지를 직접 확인했습니다.", "verbatim": true},
-          {"label": "해결", "text": "무적 조건이 늘 때마다 보스 코드를 고쳐야 했고, 이후 팀원이 이 판단을 맞는 쪽으로 옮기는 리팩터링을 진행했습니다.", "verbatim": true},
-          {"label": "배운 점", "text": "이를 보며 의존 방향의 기준을 배웠습니다.", "verbatim": true},
-          {"label": "", "text": "이 프로젝트에서는 데이터(TSV)로 시스템을 만들고, 애니메이터 설계와 에디터 툴로 작업을 자동화했습니다.", "verbatim": true}
-        ],
-        "visuals": []
       }
     ],
-    "applied": "92d3ad85356c3acb"
+    "applied": "9432a0ae24496e5c"
   }
 }

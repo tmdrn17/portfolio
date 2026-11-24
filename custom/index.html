@@ -42,12 +42,12 @@
   /* ── 머리 막대 ── */
   .topbar { position: fixed; inset: 0 0 auto 0; height: var(--bar); z-index: 30; display: flex; align-items: center; gap: 12px; padding: 0 16px;
             background: var(--bg); border-bottom: 0; color: var(--ink); transition: background .2s, border-color .2s; }
-  .topbar.over { background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,0)); border-color: transparent; color: #fff; }
+  .topbar.over { background: linear-gradient(color-mix(in srgb, var(--bg) 85%, transparent), transparent); border-color: transparent; color: var(--ink); }
   @media (min-width: 768px) { .topbar { padding: 0 28px; } }
   .icon-btn { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 999px; border: 1px solid var(--line-2); color: inherit; background: transparent; cursor: pointer; transition: border-color .15s, background .15s; }
   .icon-btn:hover { border-color: var(--accent); }
-  .topbar.over .icon-btn { border-color: rgba(255,255,255,.45); }
-  .topbar.over .icon-btn:hover { border-color: #fff; background: rgba(255,255,255,.12); }
+  .topbar.over .icon-btn { border-color: var(--line-2); }
+  .topbar.over .icon-btn:hover { border-color: var(--accent); }
   .icon-btn:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .icon-btn svg { width: 18px; height: 18px; }
   .tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
@@ -56,56 +56,72 @@
   @media (min-width: 768px) { .tab { padding: 8px 16px; font-size: 15px; } }
   .tab:hover { opacity: 1; }
   .tab[aria-selected="true"] { opacity: 1; border-color: var(--accent); }
-  .topbar.over .tab[aria-selected="true"] { border-color: #fff; }
+  .topbar.over .tab[aria-selected="true"] { border-color: var(--accent); }
 
-  /* ── 프로젝트 장면 ── */
-  .scenes { position: fixed; inset: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; background: #000; }
+  /* ── 프로젝트 장면: 시연 영상 탭과 같은 톤(밝은 바탕·진한 글씨·테두리 칸, 라이트/다크 손잡이 그대로) ── */
+  .scenes { position: fixed; inset: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; background: var(--bg); }
   .scenes::-webkit-scrollbar { display: none; }
-  .scene { position: relative; height: 100vh; height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always; overflow: hidden; color: #fff; }
+  .scene { position: relative; height: 100vh; height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always; overflow: hidden; color: var(--body); }
+  .me-wrap { padding-bottom: 128px; }
+  @media (min-width: 640px) { .me-wrap { padding-bottom: 188px; } }   /* ↓ 버튼(아래 132px + 48px) 위까지만 */
+  /* 장면 배경: 화면 전체에 흐린 영상(또는 대표 그림), 그 위를 페이지 바탕색으로 덮어 시연 영상 탭과 같은 톤으로 */
   .scene .bg, .scene .bg > * { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .scene .bg img.fill, .scene .bg video { object-fit: cover; }
-  .scene .bg img.blur { object-fit: cover; filter: blur(28px) brightness(.7); transform: scale(1.15); }
-  .scene .bg img.fit { object-fit: contain; }
-  .scene .shade { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55) 45%, rgba(0,0,0,.85)); }
-  .scene .eyebrow { color: rgba(255,255,255,.78); }
-  .scene h2 { color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.5); }
-  .play { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 800; font-size: 15px;
-          border: 1px solid rgba(255,255,255,.25); box-shadow: 0 8px 28px rgba(0,0,0,.35); transition: transform .15s, filter .15s; }
-  .play:hover { transform: translateY(-2px); filter: brightness(1.12); }
-  .play svg { width: 22px; height: 22px; }
-  .ghost { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--pill); border: 1px solid rgba(255,255,255,.4); color: #fff; font-weight: 700; font-size: 13.5px;
-           background: rgba(0,0,0,.25); backdrop-filter: blur(4px); transition: border-color .15s, background .15s; }
-  .ghost:hover { border-color: #fff; background: rgba(255,255,255,.12); }
+  .scene .bg { overflow: hidden; background: var(--surface); }
+  .scene .bg img.fill, .scene .bg video { object-fit: cover; filter: blur(6px) saturate(1.05); transform: scale(1.06); }
+  .scene .bg img.blur { object-fit: cover; filter: blur(28px); transform: scale(1.15); }
+  .scene .bg img.fit { object-fit: contain; filter: blur(4px); }
+  .scene .shade { position: absolute; inset: 0;
+                  background: linear-gradient(color-mix(in srgb, var(--bg) 72%, transparent), color-mix(in srgb, var(--bg) 62%, transparent) 45%, color-mix(in srgb, var(--bg) 90%, transparent)); }
+  .scene .glow { position: absolute; inset: 0; background: radial-gradient(60% 60% at 50% 45%, color-mix(in srgb, var(--bg) 55%, transparent), transparent 75%); }
+  .scene h2 { text-shadow: 0 2px 24px color-mix(in srgb, var(--bg) 80%, transparent); }
+  .play { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: var(--pill); background: var(--accent); color: #fff; font-weight: 800; font-size: 14.5px;
+          border: 1px solid var(--accent); transition: transform .15s, filter .15s; }
+  .play:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .play svg { width: 20px; height: 20px; }
+  .ghost { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--pill); border: 1px solid var(--line-2); color: var(--ink);
+           background: color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter: blur(4px);
+           font-weight: 700; font-size: 13.5px; transition: border-color .15s, color .15s; }
+  .ghost:hover { border-color: var(--accent); color: var(--accent); }
   .ghost svg { width: 16px; height: 16px; }
-  .play:focus-visible, .ghost:focus-visible, .dot:focus-visible, .next:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .play:focus-visible, .ghost:focus-visible, .dot:focus-visible, .next:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   /* 아래 띠: 장면 고르기 */
   .scenebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 0 16px 18px; pointer-events: none; }
   .scenebar ol { position: relative; display: flex; justify-content: center; gap: clamp(18px, 6vw, 88px); pointer-events: auto; }
-  .scenebar ol::before { content: ""; position: absolute; left: 10%; right: 10%; top: 28px; height: 1px; background: rgba(255,255,255,.25); }
-  .dot { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,.7); font-size: 12.5px; font-weight: 700; }
+  .scenebar ol::before { content: ""; position: absolute; left: 10%; right: 10%; top: 28px; height: 1px; background: var(--line-2); }
+  .dot { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted); font-size: 12.5px; font-weight: 700; }
   .dot .mark { width: 56px; height: 56px; display: grid; place-items: center; }
-  .dot .mark i { width: 9px; height: 9px; border-radius: 999px; background: rgba(255,255,255,.75); transition: transform .15s; }
-  .dot:hover .mark i { transform: scale(1.4); }
-  .dot .thumb { width: 56px; height: 56px; border-radius: 999px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 0 0 3px var(--accent), 0 6px 20px rgba(0,0,0,.4); background: #111; }
+  .dot .mark i { width: 9px; height: 9px; border-radius: 999px; background: var(--line-2); box-shadow: 0 0 0 4px var(--bg); transition: transform .15s, background .15s; }
+  .dot:hover .mark i { transform: scale(1.4); background: var(--accent); }
+  .dot .thumb { width: 56px; height: 56px; border-radius: 999px; overflow: hidden; border: 2px solid var(--bg); box-shadow: 0 0 0 3px var(--accent), 0 6px 18px -6px rgba(0,0,0,.3); background: var(--surface); }
   .dot .thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .dot .thumb span { display: grid; place-items: center; height: 100%; font-family: var(--display); font-weight: 800; font-size: 14px; }
-  .dot[aria-current="true"] { color: #fff; }
+  .dot .thumb span { display: grid; place-items: center; height: 100%; font-family: var(--display); font-weight: 800; font-size: 14px; color: var(--ink); }
+  .dot[aria-current="true"] { color: var(--ink); }
   .dot .label { white-space: nowrap; }
   @media (max-width: 639px) { .dot .label { display: none; } .scenebar ol { gap: 14px; } .dot .mark, .dot .thumb { width: 44px; height: 44px; } .scenebar ol::before { top: 22px; } }
-  /* 오른쪽 위·아래 화살표: 처음엔 ↓만, 끝엔 ↑만, 가운데는 둘 다 */
-  .next { position: fixed; left: 50%; transform: translateX(-50%); z-index: 20; width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center;
-          border: 2px solid rgba(255,255,255,.8); color: #fff; font-size: 22px; background: rgba(0,0,0,.25); transition: background .15s; }
-  .next:hover { background: rgba(255,255,255,.15); }
-  .next.up { top: calc(var(--bar) + 4px); }        /* 머리 막대 바로 아래 가운데 */
-  .next.down { bottom: 132px; }                    /* 장면 고르기 띠 바로 위 가운데 */
+  /* 위·아래 화살표: 처음엔 ↓만, 끝엔 ↑만, 가운데는 둘 다 */
+  .next { position: fixed; left: 50%; transform: translateX(-50%); z-index: 20; width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center;
+          border: 1px solid var(--line-2); color: var(--ink); font-size: 20px; background: color-mix(in srgb, var(--bg) 78%, transparent); transition: border-color .15s, color .15s; }
+  .next:hover { border-color: var(--accent); color: var(--accent); }
+  .next.up { top: calc(var(--bar) + 6px); }
+  .next.down { bottom: 132px; }
   @media (max-width: 639px) { .next { display: none; } }
-  /* 장면 고르기 버튼 오른쪽: 스크롤도 된다는 표시 */
   .scenebar .wrap { position: relative; width: fit-content; max-width: 100%; margin: 0 auto; pointer-events: auto; }
+  /* ── 프로필 장면(프로젝트 탭 0번 장면): 배경 = 프로젝트 대표 그림을 흐리게 모은 것 + 같은 덮개 ── */
+  .scene.me .mosaic { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); filter: blur(22px); transform: scale(1.12); }
+  .scene.me .mosaic img { width: 100%; height: 100%; object-fit: cover; }
+  .scene.me .shade { background: color-mix(in srgb, var(--bg) 80%, transparent); }
+  .me-chip { display: inline-flex; padding: 3px 11px; border-radius: 999px; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--bg) 70%, transparent); color: var(--ink); font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .me-chip.main { padding: 5px 16px; font-size: 14.5px; font-weight: 800; border-color: var(--accent); color: var(--accent); }
+  .me-stack { flex: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 8px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .me-stack li { display: flex; align-items: center; gap: 6px; }
+  @media (max-height: 700px), (max-width: 639px) { .me-stack { display: none; } }
+  @media (max-height: 640px) { .me-intro p + p { display: none; } }
+  @media (max-width: 767px) { .me-chip { font-size: 12px; padding: 3px 9px; } }
   .scrollhint { position: absolute; left: 100%; top: 0; height: 56px; margin-left: clamp(18px, 4vw, 56px); display: flex; align-items: center; gap: 8px;
-                color: rgba(255,255,255,.75); font-family: var(--display); font-size: 11px; font-weight: 800; letter-spacing: .16em; white-space: nowrap; }
-  .scrollhint .mouse { width: 22px; height: 34px; border: 2px solid rgba(255,255,255,.8); border-radius: 12px; position: relative; flex: none; }
-  .scrollhint .mouse i { position: absolute; left: 50%; top: 6px; width: 4px; height: 7px; margin-left: -2px; border-radius: 2px; background: #fff; animation: wheel 1.6s ease-in-out infinite; }
+                color: var(--muted); font-family: var(--display); font-size: 11px; font-weight: 800; letter-spacing: .16em; white-space: nowrap; }
+  .scrollhint .mouse { width: 22px; height: 34px; border: 2px solid var(--line-2); border-radius: 12px; position: relative; flex: none; }
+  .scrollhint .mouse i { position: absolute; left: 50%; top: 6px; width: 4px; height: 7px; margin-left: -2px; border-radius: 2px; background: var(--accent); animation: wheel 1.6s ease-in-out infinite; }
   @keyframes wheel { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(10px); opacity: 0; } 100% { transform: translateY(0); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .scrollhint .mouse i { animation: none; } }
   @media (max-width: 639px) { .scrollhint { height: 44px; margin-left: 14px; } .scrollhint span { display: none; } }
@@ -134,13 +150,6 @@
   .media a { display: contents; }
   figure figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
 
-  /* 프로필 사진(3:4). 사진이 없을 때의 점선 자리는 미리보기에서만 보임 */
-  .photo { flex: none; width: 100%; max-width: 260px; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
-  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
-  .photo-empty { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
-                 border: 2px dashed var(--line-2); border-radius: inherit; color: var(--muted); font-size: 12px; line-height: 1.4; padding: 8px; }
-  .photo-empty b { color: var(--ink); font-size: 13px; }
-  .photo:has(.photo-empty) { border: 0; }
 
   /* 시연 영상 탭: 프로젝트마다 [풀영상] [쇼츠] 버튼. 준비 안 된 쪽은 흐리게(누를 수 없음) */
   .vbtn { display: inline-flex; align-items: center; padding: 3px 10px; border: 1px solid var(--line-2); border-radius: var(--pill); font-size: 12.5px; font-weight: 700;
@@ -261,23 +270,6 @@ function Media({ id, m }) {
   );
 }
 
-// ── 프로필 사진: custom/images/profile.jpg(또는 .png·.webp)를 넣으면 프로필 칸에 보임 ──
-// 사진이 없으면 미리보기(localhost)에서만 점선 "사진 자리"를 보이고, 배포된 페이지에서는 칸 자체를 숨김
-const PHOTO_SRCS = ["images/profile.jpg", "images/profile.png", "images/profile.webp"];
-const IS_LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-function ProfilePhoto({ name }) {
-  const [i, setI] = useState(0);
-  const missing = i >= PHOTO_SRCS.length;
-  if (missing && !IS_LOCAL) return null;
-  return (
-    <div className="photo">
-      {missing
-        ? <div className="photo-empty"><b>사진 자리</b><span>custom/images/<br />profile.jpg</span></div>
-        : <img src={PHOTO_SRCS[i]} alt={name ? `${name} 사진` : "프로필 사진"} onError={() => setI(i + 1)} />}
-    </div>
-  );
-}
-
 // 영상 주소 → 페이지에서 바로 틀 수 있는 형태
 //  · 레포 안 영상(…/src/<폴더>/….mp4)은 상대경로로(로컬 미리보기·GitHub Pages 둘 다 열림)
 //  · YouTube는 embed 주소로(일반·youtu.be·embed·Shorts 주소 모두)
@@ -383,36 +375,6 @@ function StackPanel({ skills, S }) {
           );
         })}
       </ul>
-    </div>
-  );
-}
-
-// ── 프로필 탭: 사진 | 이름·연락처·개인 링크 (35:65) ──
-function ProfilePanel({ profile, ownLinks, S }) {
-  return (
-    <div className="fade grid gap-10 md:grid-cols-[35fr_65fr] items-start">
-      <ProfilePhoto name={profile.name} />
-      <div>
-        <p className="eyebrow">PROFILE</p>
-        <h2 className="text-5xl sm:text-6xl font-extrabold tracking-tight mt-2">{profile.name}</h2>
-        {profile.nameEn && <p className="mt-2 text-lg accent" style={{ fontFamily: "var(--display)", fontWeight: 800 }}>{profile.nameEn}</p>}
-        {profile.headline && <p className="mt-4 text-lg">{profile.headline}</p>}
-        {profile.intro && <p className="mt-4 leading-relaxed max-w-2xl whitespace-pre-line">{profile.intro}</p>}
-        <dl className="mt-8 border-t line text-[15px]">
-          {profile.email && (
-            <div className="grid grid-cols-[6rem_1fr] gap-4 py-4 border-b line">
-              <dt className="muted">{S["page.print-email"]}</dt>
-              <dd><a href={"mailto:" + profile.email} className="ext break-all">{profile.email}</a></dd>
-            </div>
-          )}
-          {ownLinks.map(l => (
-            <div key={l.url} className="grid grid-cols-[6rem_1fr] gap-4 py-4 border-b line items-center">
-              <dt className="muted">{l.label}</dt>
-              <dd><a href={l.url} target="_blank" rel="noopener" className="btn" aria-label={l.label} title={l.label}>{l.icon === "youtube" ? <YouTubeIcon /> : l.icon === "github" ? <GitHubIcon /> : "열기 ↗"}</a></dd>
-            </div>
-          ))}
-        </dl>
-      </div>
     </div>
   );
 }
@@ -543,6 +505,7 @@ function Scene({ p, i, active, S, onPlay, onDetail }) {
     <section className="scene" id={"p-" + p.id} data-id={p.id} aria-label={p.title}>
       <SceneBackground p={p} active={active} />
       <div className="shade" />
+      <div className="glow" />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-5 pt-[var(--bar)] pb-36">
         <p className="eyebrow">{S["en.project"]} {String(i + 1).padStart(2, "0")}</p>
         <h2 className="mt-3 text-5xl sm:text-7xl font-extrabold tracking-tight">{p.title}</h2>
@@ -553,8 +516,8 @@ function Scene({ p, i, active, S, onPlay, onDetail }) {
             </button>
           ))}
         </div>
-        {p.tagline && <p className="mt-8 text-lg sm:text-xl font-bold max-w-2xl leading-snug" style={{ color: "#fff" }}>{p.tagline}</p>}
-        {metaLine && <p className="mt-2 text-sm sm:text-[15px] max-w-2xl" style={{ color: "rgba(255,255,255,.72)" }}>{metaLine}</p>}
+        {p.tagline && <p className="ink mt-8 text-lg sm:text-xl font-bold max-w-2xl leading-snug">{p.tagline}</p>}
+        {metaLine && <p className="mt-2 text-sm sm:text-[15px] max-w-2xl" style={{ color: "var(--body)" }}>{metaLine}</p>}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button type="button" className="ghost" onClick={() => onDetail(p.id)}>{S["page.nav-projects"]} 자세히</button>
           <a className="ghost" href={`../doc.html?p=${encodeURIComponent(p.id)}`}>{S["name.doc"]}</a>
@@ -563,6 +526,71 @@ function Scene({ p, i, active, S, onPlay, onDetail }) {
         </div>
       </div>
     </section>
+  );
+}
+
+// ── 프로필 장면: 프로젝트 탭 맨 위(0번 장면). 이름·자기소개·연락처를 가운데에(사진 없음, 2026-11-24), 밑단에 기술 스택 ──
+function ProfileScene({ profile, ownLinks, skills, projects, S }) {
+  const covers = projects.filter(p => p.cover).slice(0, 6).map(p => img(p.id, p.cover));
+  return (
+    <section className="scene me" id="profile" data-id="__profile" aria-label="프로필">
+      <div className="bg">
+        {covers.length > 0 && <div className="mosaic" style={{ "--n": Math.min(covers.length, 3) }}>{covers.map(c => <img key={c} src={c} alt="" />)}</div>}
+      </div>
+      <div className="shade" />
+      <div className="me-wrap relative h-full max-w-[1120px] mx-auto flex flex-col px-5 sm:px-8 pt-[var(--bar)]">
+      <div className="flex-1 min-h-0 flex flex-col items-center justify-center text-center">
+        <div className="min-w-0 flex flex-col items-center">
+          <p className="eyebrow">PROFILE</p>
+          <h2 className="mt-3 text-5xl sm:text-7xl font-extrabold tracking-tight">{profile.name}</h2>
+          {profile.nameEn && <p className="accent mt-2 text-lg font-extrabold" style={{ fontFamily: "var(--display)" }}>{profile.nameEn}</p>}
+          {profile.headline && <p className="ink mt-5 text-lg sm:text-xl font-bold max-w-2xl leading-snug">{profile.headline}</p>}
+          {/* 자기소개: profile.md 글 그대로(고쳐 쓰지 않음). 첫 줄은 굵게, 나머지 줄은 문단으로 */}
+          {profile.intro && (() => {
+            const [first, ...rest] = profile.intro.split(/\n+/).filter(l => l.trim());
+            return (
+              <div className="me-intro mt-5 max-w-2xl">
+                <p className="ink text-lg sm:text-xl font-bold leading-snug">{first}</p>
+                {rest.map(l => <p key={l} className="mt-2 text-[15px] leading-relaxed">{l}</p>)}
+              </div>
+            );
+          })()}
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {profile.email && <a className="ghost" href={"mailto:" + profile.email}>{profile.email}</a>}
+            {ownLinks.map(l => (
+              <a key={l.url} className="ghost" href={l.url} target="_blank" rel="noopener" aria-label={l.label} title={l.label}>
+                {l.icon === "youtube" ? <YouTubeIcon /> : l.icon === "github" ? <GitHubIcon /> : null}{l.icon === "github" ? "GitHub" : l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* 기술 스택: 프로필 장면 밑단 한 줄 띠. 키워드 없는 묶음(Unity·C#)은 굵은 태그로, 키워드 있는 묶음(협업·AI 활용)은 묶음 이름 없이 키워드 태그만 */}
+      {skills.length > 0 && (
+        <ul className="me-stack" aria-label={S["page.stack"]}>
+          {skills.map(s => {
+            const [group, ...keys] = s.name.split(" · ");
+            return keys.length === 0
+              ? <li key={s.name}><span className="me-chip main">{group}</span></li>
+              : keys.map(k => <li key={k}><span className="me-chip">{k}</span></li>);
+          })}
+        </ul>
+      )}
+      </div>
+    </section>
+  );
+}
+
+function ProfileDot({ current, onGo, label }) {
+  return (
+    <li>
+      <button type="button" className="dot" aria-current={current || undefined} onClick={() => onGo(0)} title={label}>
+        {current
+          ? <span className="thumb"><span>ME</span></span>
+          : <span className="mark"><i /></span>}
+        <span className="label">{label}</span>
+      </button>
+    </li>
   );
 }
 
@@ -582,14 +610,20 @@ function SceneDot({ p, i, current, onGo }) {
   );
 }
 
-function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrollRef, locked }) {
+function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrollRef, locked, profile, ownLinks, skills }) {
+  const count = projects.length + 1;   // 0번 장면 = 프로필
   useEffect(() => {
     const root = scrollRef.current; if (!root) return;
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) setActive(projects.findIndex(p => p.id === e.target.dataset.id));
-    }), { root, threshold: 0.6 });
-    root.querySelectorAll(".scene").forEach(s => io.observe(s));
-    return () => io.disconnect();
+    // 지금 장면 = 스크롤 위치 ÷ 화면 높이(처음 그릴 때 장면 높이가 잡히기 전에 모든 장면이 '보임'으로 잡혀 마지막 장면이 골라지던 문제를 피함)
+    let raf = 0;
+    const pick = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
+      const h = root.clientHeight || 1;
+      setActive(Math.max(0, Math.min(projects.length, Math.round(root.scrollTop / h))));
+    }); };
+    root.addEventListener("scroll", pick, { passive: true });
+    window.addEventListener("resize", pick);
+    pick();
+    return () => { cancelAnimationFrame(raf); root.removeEventListener("scroll", pick); window.removeEventListener("resize", pick); };
   }, [projects]);
   const go = i => scrollRef.current?.children[i]?.scrollIntoView({ behavior: "smooth" });
   // 위·아래 방향키로 이전·다음 장면(영상·자세히가 열려 있거나 글 입력 중이면 쓰지 않음)
@@ -600,7 +634,7 @@ function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrol
       const to = e.key === "ArrowDown" || e.key === "PageDown" ? active + 1 : e.key === "ArrowUp" || e.key === "PageUp" ? active - 1 : null;
       if (to === null) return;
       e.preventDefault();
-      if (to >= 0 && to < projects.length) go(to);
+      if (to >= 0 && to < count) go(to);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -608,16 +642,20 @@ function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrol
   return (
     <>
       <main ref={scrollRef} className="scenes">
-        {projects.map((p, i) => <Scene key={p.id} p={p} i={i} active={i === active} S={S} onPlay={onPlay} onDetail={onDetail} />)}
+        <ProfileScene profile={profile} ownLinks={ownLinks} skills={skills} projects={projects} S={S} />
+        {projects.map((p, i) => <Scene key={p.id} p={p} i={i} active={i + 1 === active} S={S} onPlay={onPlay} onDetail={onDetail} />)}
       </main>
       <nav className="scenebar" aria-label="프로젝트 고르기">
         <div className="wrap">
-          <ol>{projects.map((p, i) => <SceneDot key={p.id} p={p} i={i} current={i === active} onGo={go} />)}</ol>
+          <ol>
+            <ProfileDot current={active === 0} onGo={go} label="프로필" />
+            {projects.map((p, i) => <SceneDot key={p.id} p={p} i={i} current={i + 1 === active} onGo={() => go(i + 1)} />)}
+          </ol>
           <div className="scrollhint" aria-hidden="true"><span className="mouse"><i /></span><span>SCROLL</span></div>
         </div>
       </nav>
       {active > 0 && <button type="button" className="next up" aria-label="이전 프로젝트" onClick={() => go(active - 1)}>↑</button>}
-      {active < projects.length - 1 && <button type="button" className="next down" aria-label="다음 프로젝트" onClick={() => go(active + 1)}>↓</button>}
+      {active < count - 1 && <button type="button" className="next down" aria-label="다음 프로젝트" onClick={() => go(active + 1)}>↓</button>}
     </>
   );
 }
@@ -626,7 +664,7 @@ function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrol
 function App() {
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState("profile");      // 처음 열면 항상 프로필
+  const [tab, setTab] = useState("projects");     // 처음 열면 항상 프로젝트 탭 맨 위(프로필 장면)
   const [active, setActive] = useState(0);         // 지금 보이는 프로젝트 장면
   const [detailId, setDetailId] = useState(null);  // 오른쪽에서 열린 프로젝트 자세히
   const [player, setPlayer] = useState(null);      // 장면에서 누른 영상 { p, kind }
@@ -646,10 +684,12 @@ function App() {
         const fromHash = () => {
           const h = decodeURIComponent(location.hash.slice(1));
           const id = h.slice(2), idx = projects.findIndex(p => p.id === id);
-          if (h.startsWith("p-") && idx >= 0) { setTab("projects"); setActive(idx); requestAnimationFrame(() => scrollRef.current?.children[idx]?.scrollIntoView()); }
+          if (h.startsWith("p-") && idx >= 0) { setTab("projects"); setActive(idx + 1); requestAnimationFrame(() => scrollRef.current?.children[idx + 1]?.scrollIntoView()); }
+          else if (h === "profile") { setTab("projects"); setActive(0); requestAnimationFrame(() => scrollRef.current?.children[0]?.scrollIntoView()); }
           else if (h.startsWith("v-") && idx >= 0) { setTab("links"); setVideoId(id); }
           else if (h.startsWith("s-") && idx >= 0) { setTab("links"); setVideoId(videoKey(id, "shorts")); }
-          else if (["links", "stack", "projects", "profile"].includes(h)) setTab(h);
+          else if (h === "stack") { setTab("projects"); setActive(0); requestAnimationFrame(() => scrollRef.current?.children[0]?.scrollIntoView()); }
+          else if (["links", "projects"].includes(h)) setTab(h);
         };
         history.replaceState(null, "", location.pathname + location.search);
         window.addEventListener("hashchange", fromHash);
@@ -661,7 +701,7 @@ function App() {
   useEffect(() => {
     if (!data) return;
     const v = videoSel(videoId);
-    const h = tab === "projects" ? (active ? "p-" + data.projects[active]?.id : "projects")
+    const h = tab === "projects" ? (active ? "p-" + data.projects[active - 1]?.id : "profile")
       : tab === "links" && v.id ? (v.kind === "shorts" ? "s-" : "v-") + v.id : tab;
     history.replaceState(null, "", "#" + h);
   }, [tab, active, videoId, data]);
@@ -679,10 +719,8 @@ function App() {
   const { pf, projects, S } = data;
   const profile = pf.profile || {};
   const TABS = [
-    { id: "profile", label: "프로필" },
     { id: "projects", label: S["page.nav-projects"] },
     { id: "links", label: S["name.video"] },
-    { id: "stack", label: S["page.nav-stack"] },
   ];
   // 머리 막대 왼쪽 아이콘: profile.md의 GitHub, 링크 중 유튜브(재생목록)
   const ytLink = (profile.links || []).find(l => l && l.url && /youtube\.com|youtu\.be/i.test(l.url));
@@ -693,7 +731,7 @@ function App() {
   const detail = detailId && projects.find(p => p.id === detailId);
   const vSel = videoSel(videoId);
   const vProject = vSel.id && projects.find(p => p.id === vSel.id);
-  const over = tab === "projects";
+  const over = tab === "projects";   // 프로젝트 탭: 장면 위에 비치는 머리 막대(밝은 톤)
   const openDetail = id => { setPlayer(null); setDetailId(id); };
 
   return (
@@ -712,7 +750,8 @@ function App() {
 
       {tab === "projects" && (
         <ProjectScenes projects={projects} S={S} active={active} setActive={setActive} scrollRef={scrollRef} locked={!!(player || detailId)}
-          onPlay={(p, kind) => setPlayer({ p, kind })} onDetail={openDetail} />
+          onPlay={(p, kind) => setPlayer({ p, kind })} onDetail={openDetail}
+          profile={profile} ownLinks={ownLinks} skills={pf.skills || []} />
       )}
 
       {tab !== "projects" && (
@@ -731,8 +770,6 @@ function App() {
               </div>
             </div>
           )}
-          {tab === "stack" && <StackPanel skills={pf.skills || []} S={S} />}
-          {tab === "profile" && <ProfilePanel profile={profile} ownLinks={ownLinks} S={S} />}
         </main>
       )}
 

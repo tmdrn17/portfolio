@@ -419,6 +419,8 @@
     s.classList.add('pf-stretch');
     sz.forEach(({ b, m, bw, bh, mh }) => {
       if (!m) return;
+      // 그림은 늘이지 않음(수강생 요청 2026-11-24): 판만 늘면 비율을 지키는 그림 둘레에 빈 여백이 생김 → 맞춘 크기 그대로, 칸 가운데에
+      if (b.dataset.kind === 'image') { b.style.alignSelf = 'center'; return; }
       if (b.parentElement.dataset.arr === 'row') Object.assign(b.style, { width: '', flex: `${bw} 1 ${bw}px`, minWidth: `${bw}px`, alignSelf: 'stretch' });
       else Object.assign(b.style, { width: '', flex: `${bh} 1 ${bh}px`, minHeight: `${bh}px`, alignSelf: 'stretch' });
       Object.assign(m.style, { width: '100%', height: '', flex: `1 1 ${mh}px`, minHeight: `${mh}px` });

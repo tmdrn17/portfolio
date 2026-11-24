@@ -70,7 +70,7 @@
         "text": [
           "물고기의 기본 상태 머신(IFishState: Enter · Tick · Exit) 위에 납치·복귀·해마 상태를 추가했습니다.",
           "오징어 촉수, 갯가재 펀치, 전기가오리 감전은 자식 오브젝트의 트리거 센서로 만들어, 물고기 본체는 그대로 두고 기믹만 붙이고 뗄 수 있게 했습니다.",
-          "센서는 FishStateManager의 현재 상태를 확인해, 기절하거나 지친 물고기는 공격하지 않습니다."
+          "오징어 촉수와 갯가재 펀치는 FishStateManager의 현재 상태를 확인해, 기절하거나 지친 물고기는 공격하지 않습니다."
         ]
       },
       "items": [
@@ -172,12 +172,21 @@
     },
     {
       "title": "납치 중 팔이 짧아지는 버그",
-      "problem": "처음에는 관절로 끌었지만 팔이 짧아지는 버그가 반복됐습니다.",
-      "cause": "관절에 갑자기 큰 힘이 걸려 몸이 분리됨 · 팔이 몸 안으로 들어간 뒤 빠져나오지 못함",
-      "solution": "납치 중에만 Kinematic으로 고정한 뒤 끝나면 되돌리는 방식을 택했습니다. 복원 처리는 몇 차례 고친 끝에 완성했습니다.",
-      "result": "래그돌이 망가지지 않아 안정적",
+      "problem": "몸통만 Kinematic으로 고정하고 팔은 관절에 매달린 채 끌려가, 몸이 분리되고 팔이 짧아짐",
+      "cause": "몸통만 순간이동하니 팔 관절에 갑자기 큰 힘이 걸려 몸이 분리됨 · 팔이 몸 안으로 들어간 뒤 빠져나오지 못해 팔이 짧아지는 버그",
+      "solution": "몸 전체를 Kinematic으로, 잡기 관절 해제, 물고기와 충돌 끄기, 끝나면 처음 자세로 복원",
+      "result": "",
       "lesson": "",
-      "section": "4.1 납치 중인 플레이어를 어떻게 끌고 갈 것인가"
+      "section": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"
+    },
+    {
+      "title": "게스트 화면의 카메라가 다음 구역으로 가지 않던 문제",
+      "problem": "게스트는 다음 구역으로 넘어간 것을 알지 못했습니다.",
+      "cause": "다리 건설 처리에서 스테이지 번호를 바꾸는 줄이 호스트만 실행하는 부분 뒤에 있었습니다.",
+      "solution": "세 번 고친 끝에 이 줄을 호스트 전용 부분 앞으로 옮겼습니다.",
+      "result": "게스트도 같은 목적지로 카메라가 이동하게 했습니다.",
+      "lesson": "",
+      "section": "3.2 다리 건설 연출"
     }
   ],
   "screenshots": [
@@ -194,10 +203,22 @@
       "caption": "카메라 이동 — 다음 구역이 열리면 1초 뒤 다음 목적지까지 천천히 이동"
     },
     {
+      "src": "images/squid_card.gif",
+      "w": 480,
+      "h": 259,
+      "caption": "대왕오징어 — 촉수로 플레이어를 붙잡아 끌고 갔다가 놓아 줌"
+    },
+    {
       "src": "images/mantis_shrimp_card.gif",
       "w": 480,
       "h": 258,
       "caption": "갯가재 — 펀치로 플레이어를 멀리 날려 버림"
+    },
+    {
+      "src": "images/electric_ray_card.gif",
+      "w": 480,
+      "h": 259,
+      "caption": "전기가오리 — 감전시켜 잡고 있던 것을 놓치게 하고 잠시 못 움직이게 함"
     },
     {
       "src": "images/seahorse_card.gif",
@@ -209,17 +230,20 @@
   "retro": {
     "section": "5. 회고",
     "achieved": [
-      "기획한 특수 물고기 4종을 모두 구현했고, 오징어 납치와 해마 대응처럼 플레이어끼리 서로 도와야 하는 상황을 만들었습니다."
+      "기획한 특수 물고기 4종을 모두 구현했고, 오징어 납치와 해마 대응처럼 플레이어끼리 서로 도와야 하는 상황을 만들었습니다.",
+      "기능마다 브랜치를 따로 만들어 작업했고(예: feature/대왕-오징어), 메인 씬·프리팹·폰트 에셋 충돌을 직접 정리했습니다."
     ],
     "regrets": [
       "상태 전환 때 정리(Exit)가 자동으로 불리지 않음 — 상태 안에서 직접 정리하다 보니 코드가 중복됐습니다.",
       "목적지는 Find로, 상태는 문자열로 비교 — 이름이 바뀌면 깨지는 구조입니다.",
-      "비동기 방식이 섞임 — 감전 해제는 UniTask, 쿨다운은 코루틴으로 의도 없이 섞였습니다."
+      "비동기 방식이 섞임 — 팀원들의 매니저 · 서버 코드가 UniTask를 쓰고 있어 마비 해제를 UniTask로 바꿨지만, 같은 파일의 공격 정지 쿨다운은 코루틴으로 남겨 한 파일 안에 두 방식이 섞였습니다.",
+      "갯가재가 반대 방향으로 날리는 버그 — 날릴 방향을 정할 때 지역 변수가 아니라 넉백 힘 필드 자체의 부호를 뒤집어, 왼쪽에서 두 번 맞으면 갯가재 쪽으로 날아갈 수 있습니다."
     ],
     "plans": [
       "전환 함수 한 곳에서 Exit 일괄 처리",
       "외부에서 주입하고 enum으로 비교",
-      "한 방식으로 통일"
+      "한 방식으로 통일",
+      "방향은 지역 변수로 계산"
     ]
   },
   "deck": {
@@ -227,8 +251,7 @@
       {"key": "overview", "title": "개요", "sectionPath": ["1. 개요"]},
       {"key": "structure", "title": "시스템 구조", "sectionPath": ["2. 시스템 구조"]},
       {"key": "features", "title": "핵심 기능", "sectionPath": ["3. 핵심 기능"]},
-      {"key": "tradeoffs", "title": "고민과 선택", "sectionPath": ["4. 고민과 선택"]},
-      {"key": "retro-ch", "title": "회고", "sectionPath": ["5. 회고"]}
+      {"key": "ai", "title": "AI 협업", "sectionPath": ["4. AI 협업"]}
     ],
     "slides": [
       {
@@ -293,6 +316,17 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "물고기|그림|구분|동작|의도"}]
       },
       {
+        "key": "fish-stats",
+        "chapter": "overview",
+        "layout": "full",
+        "tab": "개요",
+        "title": {"text": "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 2, "fp": "물고기|주요 수치"}]
+      },
+      {
         "key": "fsm",
         "chapter": "structure",
         "layout": "visual",
@@ -311,7 +345,12 @@
             "text": "오징어 촉수, 갯가재 펀치, 전기가오리 감전은 자식 오브젝트의 트리거 센서로 만들어, 물고기 본체는 그대로 두고 기믹만 붙이고 뗄 수 있게 했습니다.",
             "verbatim": true
           },
-          {"label": "", "text": "센서는 FishStateManager의 현재 상태를 확인해, 기절하거나 지친 물고기는 공격하지 않습니다.", "verbatim": true}
+          {
+            "label": "",
+            "text": "오징어 촉수와 갯가재 펀치는 FishStateManager의 현재 상태를 확인해, 기절하거나 지친 물고기는 공격하지 않습니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "전기가오리는 상태를 확인하지 않는 대신, 한 번 감전시키면 10초 동안 공격을 멈춥니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}]
       },
@@ -343,6 +382,34 @@
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
         "points": [{"label": "", "text": "해마는 이 납치에 대응하는 물고기로, 잡으면 플레이어를 목적지까지 데려다 줍니다.", "verbatim": true}],
         "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}]
+      },
+      {
+        "key": "abduction-history",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}]
+      },
+      {
+        "key": "abduct-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "lead": {"text": "납치 중인 플레이어를 어떻게 끌고 갈 것인가", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+        "points": [
+          {
+            "label": "선택한 이유",
+            "text": "연출의 자연스러움보다 플레이어 몸이 망가지지 않는 안정성이 더 중요하다고 보고, 납치 중에만 Kinematic으로 고정한 뒤 끝나면 되돌리는 방식을 택했습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}]
       },
       {
         "key": "shock",
@@ -404,8 +471,19 @@
         ],
         "visuals": [
           {"kind": "code", "n": 1, "fp": "// FishStateManager.OnGrabbed — 해마(ItemId 9)는 잡혀도 저항 상태로 가지 "},
-          {"kind": "code", "n": 2, "lines": [2, 21], "fp": "// SeaHorse — 손이 해마를 잡고 있는 동안"}
+          {"kind": "code", "n": 2, "lines": [4, 20], "fp": "// SeaHorse — 손이 해마를 잡고 있는 동안"}
         ]
+      },
+      {
+        "key": "seahorse-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "3.1.4 해마", "verbatim": true},
+        "lead": {"text": "해마는 플레이어를 어떻게 데려다 줄 것인가", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.4 해마"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
       },
       {
         "key": "bridge-screens",
@@ -451,9 +529,34 @@
             "label": "",
             "text": "다리가 이어져 다음 구역이 열리면 카메라가 1초 뒤 다음 목적지까지 천천히 이동해 갈 곳을 보여 주고, 도착하면 다시 플레이어를 따라갑니다.",
             "verbatim": true
-          }
+          },
+          {"label": "게임 오버 · 클리어 연출", "text": "모두 DOTween Sequence로 순서를 짰습니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "// 다음 구역이 열리면 1초 뒤 카메라가 목적지로 이동"}]
+      },
+      {
+        "key": "bridge-fix",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "3.2 다리 건설 연출", "verbatim": true},
+        "lead": {"text": "고친 문제", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.2 다리 건설 연출"],
+        "points": [
+          {
+            "label": "인벤토리 아이콘이 계속 커짐",
+            "text": "튀어 오르는 연출이 끝나기 전에 아이템이 또 들어오면, 커진 크기를 기준으로 다시 튀어 크기가 쌓였습니다.",
+            "verbatim": true
+          },
+          {"label": "해결", "text": "연출 전에 진행 중인 트윈을 멈추고(DOKill) 크기를 원래대로 돌린 뒤 다시 튀게 했습니다.", "verbatim": true},
+          {
+            "label": "게스트 화면의 카메라",
+            "text": "다리 건설 처리에서 스테이지 번호를 바꾸는 줄이 호스트만 실행하는 부분 뒤에 있어, 게스트는 다음 구역으로 넘어간 것을 알지 못했습니다.",
+            "verbatim": true
+          },
+          {"label": "해결", "text": "세 번 고친 끝에 이 줄을 호스트 전용 부분 앞으로 옮겨, 게스트도 같은 목적지로 카메라가 이동하게 했습니다.", "verbatim": true}
+        ],
+        "visuals": []
       },
       {
         "key": "grab-cause",
@@ -471,7 +574,7 @@
           },
           {
             "label": "원인",
-            "text": "손을 놓을 때 불리는 OnReleased()가 어느 손이 놓았는지 넘겨받지 않아, 물고기는 아직 다른 손이 잡고 있는지 알 수 없었습니다.",
+            "text": "손을 놓을 때 불리는 `OnReleased()`가 어느 손이 놓았는지 넘겨받지 않아, 물고기는 아직 다른 손이 잡고 있는지 알 수 없었습니다.",
             "verbatim": true
           }
         ],
@@ -488,57 +591,50 @@
         "points": [
           {
             "label": "해결",
-            "text": "처음에는 잡은 플레이어의 양손 상태(IsLeftGrab · IsRightGrab)를 확인해 막았지만, 이 값에는 마지막으로 잡은 플레이어 한 명만 들어 있어 다른 플레이어의 손은 셀 수 없었습니다.",
+            "text": "처음에는 잡은 플레이어의 양손 상태(`IsLeftGrab` · `IsRightGrab`)를 확인해 막았지만, 이 값에는 마지막으로 잡은 플레이어 한 명만 들어 있어 다른 플레이어의 손은 셀 수 없었습니다.",
             "verbatim": true
           },
-          {"label": "해결", "text": "그래서 OnGrabbed · OnReleased가 손을 넘겨받도록 바꾸고, 잡은 손을 직접 모아 두었습니다.", "verbatim": true},
-          {
-            "label": "개수 대신 HashSet",
-            "text": "같은 손이 두 번 들어가거나 빠지는 일을 막기 위해, 잡은 손을 정수 카운트가 아니라 집합으로 관리했습니다.",
-            "verbatim": true
-          },
+          {"label": "해결", "text": "그래서 `OnGrabbed` · `OnReleased`가 손을 넘겨받도록 바꾸고, 잡은 손을 직접 모아 두었습니다.", "verbatim": true},
           {"label": "마지막 손일 때만 전환", "text": "협동해서 잡는 중에는 한 명이 손을 바꿔 잡아도 물고기가 도망가지 않습니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 2, "fp": "public void OnReleased(HandControllerV2 hand)"}]
       },
       {
-        "key": "abduct-choice",
-        "chapter": "tradeoffs",
+        "key": "proto",
+        "chapter": "features",
         "layout": "full",
-        "tab": "선택",
-        "title": {"text": "4.1 납치 중인 플레이어를 어떻게 끌고 갈 것인가", "verbatim": true},
-        "lead": {"text": "연출의 자연스러움보다 플레이어 몸이 망가지지 않는 안정성이 더 중요하다고 보고", "verbatim": false},
-        "sectionPath": ["4. 고민과 선택", "4.1 납치 중인 플레이어를 어떻게 끌고 갈 것인가"],
+        "tab": "구현",
+        "title": {"text": "3.4 빠르게 만든 초기 인벤토리 · 다리 건설 프로토타입", "verbatim": true},
+        "lead": {
+          "text": "팀이 기획한 최종 구조는 처음부터 정해져 있었지만, 게임 루프(잡기 → 넣기 → 짓기)를 빨리 돌려 보기 위해 프로젝트 첫 주에 초기본을 먼저 만들었습니다.",
+          "verbatim": true
+        },
+        "sectionPath": ["3. 핵심 기능", "3.4 빠르게 만든 초기 인벤토리 · 다리 건설 프로토타입"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "|관절로 연결해 물리로 끌기|✔ 선택: 납치 중에만 물리를 끄고 고정"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "기능|초기본에서 만든 방식"}]
       },
       {
-        "key": "collab",
-        "chapter": "retro-ch",
+        "key": "ai-collab",
+        "chapter": "ai",
         "layout": "overview",
-        "tab": "결과",
-        "title": {"text": "5.2 협업", "verbatim": true},
+        "tab": "",
+        "title": {"text": "4. AI 협업", "verbatim": true},
         "lead": null,
-        "sectionPath": ["5. 회고", "5.2 협업"],
+        "sectionPath": ["4. AI 협업"],
         "points": [
+          {"label": "쓴 방식", "text": "코드는 직접 짜고, Gemini에게 보여 주며 검토와 설명을 받았습니다.", "verbatim": true},
+          {"label": "맡긴 것", "text": "직접 짠 대왕오징어 납치 상태와, 충돌 · 장애물 감지를 Fish 하나로 합친 코드를 검토받았습니다.", "verbatim": true},
           {
-            "label": "",
-            "text": "기능마다 브랜치를 따로 만들어 작업했고(예: feature/대왕-오징어), 메인 씬·프리팹·폰트 에셋 충돌을 직접 정리했습니다.",
+            "label": "직접 판단한 것",
+            "text": "AI가 준 리팩터링 코드에서 원래 IFishState의 내용이 빠진 것과, 장애물 센서가 목표 지점을 받지 못하게 된 것을 찾아 지적했습니다.",
             "verbatim": true
           },
-          {"label": "", "text": "테스트에서 나온 버그는 전용 브랜치에 모아 처리했습니다.", "verbatim": true}
+          {
+            "label": "확인한 방법",
+            "text": "직접 짠 코드를 먼저 보여 주고 검토받는 순서로 썼고, 받은 코드는 그대로 붙이지 않고 기존 구조와 맞는지 대조했습니다.",
+            "verbatim": true
+          }
         ],
-        "visuals": []
-      },
-      {
-        "key": "growth",
-        "chapter": "retro-ch",
-        "layout": "overview",
-        "tab": "결과",
-        "title": {"text": "5.4 이 프로젝트를 거치며 달라진 점", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["5. 회고", "5.4 이 프로젝트를 거치며 달라진 점"],
-        "points": [{"label": "", "text": "인터페이스 기반 FSM 위에 기믹을 얹고, 브랜치 단위로 팀 협업을 했습니다.", "verbatim": true}],
         "visuals": []
       }
     ],
@@ -604,6 +700,17 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "물고기|그림|구분|동작|의도"}]
       },
       {
+        "key": "fish-stats",
+        "chapter": "overview",
+        "layout": "full",
+        "tab": "개요",
+        "title": {"text": "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.4 담당 파트 — 특수 물고기 4종: 잡기에 변수를, 협동에 이유를"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 2, "fp": "물고기|주요 수치"}]
+      },
+      {
         "key": "fsm",
         "chapter": "structure",
         "layout": "visual",
@@ -622,7 +729,12 @@
             "text": "오징어 촉수, 갯가재 펀치, 전기가오리 감전은 자식 오브젝트의 트리거 센서로 만들어, 물고기 본체는 그대로 두고 기믹만 붙이고 뗄 수 있게 했습니다.",
             "verbatim": true
           },
-          {"label": "", "text": "센서는 FishStateManager의 현재 상태를 확인해, 기절하거나 지친 물고기는 공격하지 않습니다.", "verbatim": true}
+          {
+            "label": "",
+            "text": "오징어 촉수와 갯가재 펀치는 FishStateManager의 현재 상태를 확인해, 기절하거나 지친 물고기는 공격하지 않습니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "전기가오리는 상태를 확인하지 않는 대신, 한 번 감전시키면 10초 동안 공격을 멈춥니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}]
       },
@@ -654,6 +766,34 @@
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
         "points": [{"label": "", "text": "해마는 이 납치에 대응하는 물고기로, 잡으면 플레이어를 목적지까지 데려다 줍니다.", "verbatim": true}],
         "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}]
+      },
+      {
+        "key": "abduction-history",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}]
+      },
+      {
+        "key": "abduct-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "lead": {"text": "납치 중인 플레이어를 어떻게 끌고 갈 것인가", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+        "points": [
+          {
+            "label": "선택한 이유",
+            "text": "연출의 자연스러움보다 플레이어 몸이 망가지지 않는 안정성이 더 중요하다고 보고, 납치 중에만 Kinematic으로 고정한 뒤 끝나면 되돌리는 방식을 택했습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}]
       },
       {
         "key": "shock",
@@ -715,8 +855,19 @@
         ],
         "visuals": [
           {"kind": "code", "n": 1, "fp": "// FishStateManager.OnGrabbed — 해마(ItemId 9)는 잡혀도 저항 상태로 가지 "},
-          {"kind": "code", "n": 2, "lines": [2, 21], "fp": "// SeaHorse — 손이 해마를 잡고 있는 동안"}
+          {"kind": "code", "n": 2, "lines": [4, 20], "fp": "// SeaHorse — 손이 해마를 잡고 있는 동안"}
         ]
+      },
+      {
+        "key": "seahorse-choice",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "3.1.4 해마", "verbatim": true},
+        "lead": {"text": "해마는 플레이어를 어떻게 데려다 줄 것인가", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.4 해마"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|방식|결과"}]
       },
       {
         "key": "bridge-screens",
@@ -762,9 +913,34 @@
             "label": "",
             "text": "다리가 이어져 다음 구역이 열리면 카메라가 1초 뒤 다음 목적지까지 천천히 이동해 갈 곳을 보여 주고, 도착하면 다시 플레이어를 따라갑니다.",
             "verbatim": true
-          }
+          },
+          {"label": "게임 오버 · 클리어 연출", "text": "모두 DOTween Sequence로 순서를 짰습니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "// 다음 구역이 열리면 1초 뒤 카메라가 목적지로 이동"}]
+      },
+      {
+        "key": "bridge-fix",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "3.2 다리 건설 연출", "verbatim": true},
+        "lead": {"text": "고친 문제", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.2 다리 건설 연출"],
+        "points": [
+          {
+            "label": "인벤토리 아이콘이 계속 커짐",
+            "text": "튀어 오르는 연출이 끝나기 전에 아이템이 또 들어오면, 커진 크기를 기준으로 다시 튀어 크기가 쌓였습니다.",
+            "verbatim": true
+          },
+          {"label": "해결", "text": "연출 전에 진행 중인 트윈을 멈추고(DOKill) 크기를 원래대로 돌린 뒤 다시 튀게 했습니다.", "verbatim": true},
+          {
+            "label": "게스트 화면의 카메라",
+            "text": "다리 건설 처리에서 스테이지 번호를 바꾸는 줄이 호스트만 실행하는 부분 뒤에 있어, 게스트는 다음 구역으로 넘어간 것을 알지 못했습니다.",
+            "verbatim": true
+          },
+          {"label": "해결", "text": "세 번 고친 끝에 이 줄을 호스트 전용 부분 앞으로 옮겨, 게스트도 같은 목적지로 카메라가 이동하게 했습니다.", "verbatim": true}
+        ],
+        "visuals": []
       },
       {
         "key": "grab-cause",
@@ -782,7 +958,7 @@
           },
           {
             "label": "원인",
-            "text": "손을 놓을 때 불리는 OnReleased()가 어느 손이 놓았는지 넘겨받지 않아, 물고기는 아직 다른 손이 잡고 있는지 알 수 없었습니다.",
+            "text": "손을 놓을 때 불리는 `OnReleased()`가 어느 손이 놓았는지 넘겨받지 않아, 물고기는 아직 다른 손이 잡고 있는지 알 수 없었습니다.",
             "verbatim": true
           }
         ],
@@ -799,60 +975,53 @@
         "points": [
           {
             "label": "해결",
-            "text": "처음에는 잡은 플레이어의 양손 상태(IsLeftGrab · IsRightGrab)를 확인해 막았지만, 이 값에는 마지막으로 잡은 플레이어 한 명만 들어 있어 다른 플레이어의 손은 셀 수 없었습니다.",
+            "text": "처음에는 잡은 플레이어의 양손 상태(`IsLeftGrab` · `IsRightGrab`)를 확인해 막았지만, 이 값에는 마지막으로 잡은 플레이어 한 명만 들어 있어 다른 플레이어의 손은 셀 수 없었습니다.",
             "verbatim": true
           },
-          {"label": "해결", "text": "그래서 OnGrabbed · OnReleased가 손을 넘겨받도록 바꾸고, 잡은 손을 직접 모아 두었습니다.", "verbatim": true},
-          {
-            "label": "개수 대신 HashSet",
-            "text": "같은 손이 두 번 들어가거나 빠지는 일을 막기 위해, 잡은 손을 정수 카운트가 아니라 집합으로 관리했습니다.",
-            "verbatim": true
-          },
+          {"label": "해결", "text": "그래서 `OnGrabbed` · `OnReleased`가 손을 넘겨받도록 바꾸고, 잡은 손을 직접 모아 두었습니다.", "verbatim": true},
           {"label": "마지막 손일 때만 전환", "text": "협동해서 잡는 중에는 한 명이 손을 바꿔 잡아도 물고기가 도망가지 않습니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 2, "fp": "public void OnReleased(HandControllerV2 hand)"}]
       },
       {
-        "key": "abduct-choice",
-        "chapter": "tradeoffs",
+        "key": "proto",
+        "chapter": "features",
         "layout": "full",
-        "tab": "선택",
-        "title": {"text": "4.1 납치 중인 플레이어를 어떻게 끌고 갈 것인가", "verbatim": true},
-        "lead": {"text": "연출의 자연스러움보다 플레이어 몸이 망가지지 않는 안정성이 더 중요하다고 보고", "verbatim": false},
-        "sectionPath": ["4. 고민과 선택", "4.1 납치 중인 플레이어를 어떻게 끌고 갈 것인가"],
+        "tab": "구현",
+        "title": {"text": "3.4 빠르게 만든 초기 인벤토리 · 다리 건설 프로토타입", "verbatim": true},
+        "lead": {
+          "text": "팀이 기획한 최종 구조는 처음부터 정해져 있었지만, 게임 루프(잡기 → 넣기 → 짓기)를 빨리 돌려 보기 위해 프로젝트 첫 주에 초기본을 먼저 만들었습니다.",
+          "verbatim": true
+        },
+        "sectionPath": ["3. 핵심 기능", "3.4 빠르게 만든 초기 인벤토리 · 다리 건설 프로토타입"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "|관절로 연결해 물리로 끌기|✔ 선택: 납치 중에만 물리를 끄고 고정"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "기능|초기본에서 만든 방식"}]
       },
       {
-        "key": "collab",
-        "chapter": "retro-ch",
+        "key": "ai-collab",
+        "chapter": "ai",
         "layout": "overview",
-        "tab": "결과",
-        "title": {"text": "5.2 협업", "verbatim": true},
+        "tab": "",
+        "title": {"text": "4. AI 협업", "verbatim": true},
         "lead": null,
-        "sectionPath": ["5. 회고", "5.2 협업"],
+        "sectionPath": ["4. AI 협업"],
         "points": [
+          {"label": "쓴 방식", "text": "코드는 직접 짜고, Gemini에게 보여 주며 검토와 설명을 받았습니다.", "verbatim": true},
+          {"label": "맡긴 것", "text": "직접 짠 대왕오징어 납치 상태와, 충돌 · 장애물 감지를 Fish 하나로 합친 코드를 검토받았습니다.", "verbatim": true},
           {
-            "label": "",
-            "text": "기능마다 브랜치를 따로 만들어 작업했고(예: feature/대왕-오징어), 메인 씬·프리팹·폰트 에셋 충돌을 직접 정리했습니다.",
+            "label": "직접 판단한 것",
+            "text": "AI가 준 리팩터링 코드에서 원래 IFishState의 내용이 빠진 것과, 장애물 센서가 목표 지점을 받지 못하게 된 것을 찾아 지적했습니다.",
             "verbatim": true
           },
-          {"label": "", "text": "테스트에서 나온 버그는 전용 브랜치에 모아 처리했습니다.", "verbatim": true}
+          {
+            "label": "확인한 방법",
+            "text": "직접 짠 코드를 먼저 보여 주고 검토받는 순서로 썼고, 받은 코드는 그대로 붙이지 않고 기존 구조와 맞는지 대조했습니다.",
+            "verbatim": true
+          }
         ],
-        "visuals": []
-      },
-      {
-        "key": "growth",
-        "chapter": "retro-ch",
-        "layout": "overview",
-        "tab": "결과",
-        "title": {"text": "5.4 이 프로젝트를 거치며 달라진 점", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["5. 회고", "5.4 이 프로젝트를 거치며 달라진 점"],
-        "points": [{"label": "", "text": "인터페이스 기반 FSM 위에 기믹을 얹고, 브랜치 단위로 팀 협업을 했습니다.", "verbatim": true}],
         "visuals": []
       }
     ],
-    "applied": "a492babc098e9eb1"
+    "applied": "2c5d0598beb07250"
   }
 }
