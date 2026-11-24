@@ -262,32 +262,21 @@
         "title": {"text": "1.1 물리 팔로 물고기를 잡아 다리를 짓는 협동 게임", "verbatim": true},
         "lead": {"text": "2D 물리 협동 팀 프로젝트에서 특수 물고기 기믹, FSM 확장, 래그돌 제어, 다리 건설 연출을 담당했습니다.", "verbatim": true},
         "sectionPath": ["1. 개요", "1.1 물리 팔로 물고기를 잡아 다리를 짓는 협동 게임"],
-        "points": [],
-        "visuals": []
-      },
-      {
-        "key": "why",
-        "chapter": "overview",
-        "layout": "overview",
-        "tab": "개요",
-        "title": {"text": "1.2 목표한 경험과 기능마다의 의도", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["1. 개요", "1.2 목표한 경험과 기능마다의 의도"],
         "points": [
           {
             "label": "팀이 목표한 경험",
             "text": "서로 같은 목표를 향해 다 같이 협동하면서도, 때로는 서로를 방해하게 되는 불협화음을 헤쳐나가며 목적지까지 도달하는 경험을 주고 싶었습니다.",
-            "verbatim": true
+            "verbatim": false
           },
           {
             "label": "특수 물고기 4종",
             "text": "기획 단계에서 일반 물고기만 있으면 '잡고 버티기'만 반복될 것으로 예상했습니다. 그래서 적대 물고기 3종(대왕오징어 · 갯가재 · 전기가오리)으로 잡는 과정에 변수를 넣었고, 방해만 있으면 좌절감이 커지기 때문에 친구 물고기인 해마로 대왕오징어의 납치에 대응할 수단을 주었습니다.",
-            "verbatim": true
+            "verbatim": false
           },
           {
             "label": "다리 건설 연출 · 피드백 효과",
             "text": "무엇이 인벤토리에 들어갔는지, 다리가 얼마나 지어졌는지, 다음에 어디로 가야 하는지 플레이어가 헷갈리지 않도록 효과음 · 파티클 · 인벤토리 튀어 오름 · 카메라 이동으로 진행 상황을 알려 주고 싶었습니다.",
-            "verbatim": true
+            "verbatim": false
           }
         ],
         "visuals": [],
@@ -328,7 +317,7 @@
       },
       {
         "key": "fsm",
-        "chapter": "structure",
+        "chapter": "features",
         "layout": "visual",
         "tab": "구조",
         "title": {"text": "2.1 물고기 FSM에 특수 상태와 센서를 얹는 구조", "verbatim": true},
@@ -352,14 +341,15 @@
           },
           {"label": "", "text": "전기가오리는 상태를 확인하지 않는 대신, 한 번 감전시키면 10초 동안 공격을 멈춥니다.", "verbatim": true}
         ],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}],
+        "edited": true
       },
       {
         "key": "abduction-flow",
         "chapter": "features",
         "layout": "visual",
         "tab": "흐름",
-        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
         "points": [
@@ -370,36 +360,39 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}],
+        "edited": true
       },
       {
         "key": "abduction-code",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
-        "points": [{"label": "", "text": "해마는 이 납치에 대응하는 물고기로, 잡으면 플레이어를 목적지까지 데려다 줍니다.", "verbatim": true}],
-        "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}]
+        "points": [],
+        "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}],
+        "edited": true
       },
       {
         "key": "abduction-history",
         "chapter": "features",
         "layout": "problem",
         "tab": "문제 해결",
-        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
         "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}],
+        "edited": true
       },
       {
         "key": "abduct-choice",
         "chapter": "features",
         "layout": "full",
         "tab": "선택",
-        "title": {"text": "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기", "verbatim": true},
+        "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
         "lead": {"text": "납치 중인 플레이어를 어떻게 끌고 갈 것인가", "verbatim": true},
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
         "points": [
@@ -409,7 +402,8 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}]
+        "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}],
+        "edited": true
       },
       {
         "key": "shock",
@@ -537,7 +531,7 @@
       {
         "key": "bridge-fix",
         "chapter": "features",
-        "layout": "problem",
+        "layout": "overview",
         "tab": "문제 해결",
         "title": {"text": "3.2 다리 건설 연출", "verbatim": true},
         "lead": {"text": "고친 문제", "verbatim": true},
@@ -556,12 +550,13 @@
           },
           {"label": "해결", "text": "세 번 고친 끝에 이 줄을 호스트 전용 부분 앞으로 옮겨, 게스트도 같은 목적지로 카메라가 이동하게 했습니다.", "verbatim": true}
         ],
-        "visuals": []
+        "visuals": [],
+        "edited": true
       },
       {
         "key": "grab-cause",
         "chapter": "features",
-        "layout": "problem",
+        "layout": "code",
         "tab": "문제 해결",
         "title": {"text": "3.3 두 손 · 여러 플레이어가 함께 잡는 판정", "verbatim": true},
         "lead": null,
@@ -578,7 +573,8 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "code", "n": 1, "fp": "public void OnReleased()   // 어느 손이 놓았는지 모름"}]
+        "visuals": [{"kind": "code", "n": 1, "fp": "public void OnReleased()   // 어느 손이 놓았는지 모름"}],
+        "edited": true
       },
       {
         "key": "grab",
@@ -1022,6 +1018,6 @@
         "visuals": []
       }
     ],
-    "applied": "2c5d0598beb07250"
+    "applied": "bef739bd0aec907c"
   }
 }

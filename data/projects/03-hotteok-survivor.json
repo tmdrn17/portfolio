@@ -155,41 +155,11 @@
   },
   "deck": {
     "chapters": [
-      {
-        "key": "overview",
-        "title": "개요",
-        "sectionPath": [
-          "1. 개요"
-        ]
-      },
-      {
-        "key": "structure",
-        "title": "시스템 구조",
-        "sectionPath": [
-          "2. 시스템 구조"
-        ]
-      },
-      {
-        "key": "features",
-        "title": "핵심 기능",
-        "sectionPath": [
-          "3. 핵심 기능"
-        ]
-      },
-      {
-        "key": "tradeoffs",
-        "title": "고민과 선택",
-        "sectionPath": [
-          "4. 고민과 선택"
-        ]
-      },
-      {
-        "key": "ai",
-        "title": "AI 협업",
-        "sectionPath": [
-          "5. AI 협업"
-        ]
-      }
+      {"key": "overview", "title": "개요", "sectionPath": ["1. 개요"]},
+      {"key": "structure", "title": "시스템 구조", "sectionPath": ["2. 시스템 구조"]},
+      {"key": "features", "title": "핵심 기능", "sectionPath": ["3. 핵심 기능"]},
+      {"key": "tradeoffs", "title": "고민과 선택", "sectionPath": ["4. 고민과 선택"]},
+      {"key": "ai", "title": "AI 협업", "sectionPath": ["5. AI 협업"]}
     ],
     "slides": [
       {
@@ -197,19 +167,19 @@
         "chapter": "overview",
         "layout": "overview",
         "tab": "개요",
-        "title": {
-          "text": "1.1 최적화를 공부하기 위해 고른 뱀서류",
-          "verbatim": true
-        },
-        "lead": null,
-        "sectionPath": [
-          "1. 개요",
-          "1.1 최적화를 공부하기 위해 고른 뱀서류"
-        ],
+        "title": {"text": "1.1 최적화를 공부하기 위해 고른 뱀서류", "verbatim": true},
+        "lead": {"text": "최적화를 직접 공부해 보고 싶었습니다.", "verbatim": true},
+        "sectionPath": ["1. 개요", "1.1 최적화를 공부하기 위해 고른 뱀서류"],
         "points": [
+          {"label": "", "text": "개인 프로젝트로 공간 분할 격자, 무한맵, 추상 클래스 무기를 구현했습니다.", "verbatim": true},
           {
             "label": "",
-            "text": "개인 프로젝트로 공간 분할 격자, 무한맵, 추상 클래스 무기를 구현했습니다.",
+            "text": "뱀서류는 적과 탄환이 화면 가득 몰려나오는 장르라, 처음부터 많은 오브젝트를 어떻게 가볍게 처리할지를 중심에 두고 설계했습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "목표한 경험",
+            "text": "끊임없이 몰려오는 적들에 대한 압박감 속에서, 레벨업 순간마다 랜덤으로 나오는 보상을 고르고, 그 선택의 결과로 패배하거나 강력한 화력으로 적들을 쓸어버리는 쾌감을 주고 싶었습니다.",
             "verbatim": true
           }
         ],
@@ -219,10 +189,253 @@
             "src": "images/gameplay.gif",
             "w": 560,
             "h": 296,
-            "caption": {
-              "text": "적이 몰려오고 돈다발이 흩어진 플레이 화면",
-              "verbatim": true
-            }
+            "caption": {"text": "적이 몰려오고 돈다발이 흩어진 플레이 화면", "verbatim": true}
+          }
+        ],
+        "edited": true
+      },
+      {
+        "key": "loop",
+        "chapter": "overview",
+        "layout": "visual",
+        "tab": "흐름",
+        "title": {"text": "1.2 게임 루프", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.2 게임 루프"],
+        "points": [{"label": "", "text": "돈다발 하나가 경험치 1이고, 레벨업에 필요한 경험치는 10에서 시작해 레벨마다 1씩 늘어납니다.", "verbatim": true}],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
+        "key": "levelup",
+        "chapter": "overview",
+        "layout": "visual",
+        "tab": "결과",
+        "title": {"text": "1.2 게임 루프", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.2 게임 루프"],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/levelup.gif",
+            "w": 560,
+            "h": 296,
+            "caption": {"text": "레벨업 — 일반 · 팥 · 딸기 호떡 중 하나를 골라 획득 · 강화", "verbatim": true}
+          }
+        ]
+      },
+      {
+        "key": "grid",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "2.1 격자를 중심으로 모이는 충돌 판정", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 격자를 중심으로 모이는 충돌 판정"],
+        "points": [
+          {"label": "", "text": "적과 돈다발은 자신이 속한 칸에 등록하고, 호떡과 플레이어는 자기 칸과 주변 8칸만 조회합니다.", "verbatim": true},
+          {"label": "", "text": "같은 격자를 공격 판정과 돈 줍기에 함께 씁니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
+        "key": "grid-search",
+        "chapter": "structure",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "2.1 격자를 중심으로 모이는 충돌 판정", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 격자를 중심으로 모이는 충돌 판정"],
+        "points": [
+          {
+            "label": "칸은 Dictionary로",
+            "text": "칸 좌표(Vector2Int)를 키로, 그 칸의 오브젝트 목록을 값으로 둡니다. 적은 칸이 바뀔 때만 다시 등록합니다.",
+            "verbatim": true
+          },
+          {"label": "검사 대상을 줄이기", "text": "화면 전체가 아니라 가까운 9칸에 있는 소수의 적과만 거리를 계산합니다.", "verbatim": true},
+          {"label": "제곱근 없는 거리 비교", "text": "실제 거리 대신 제곱 거리로 비교해 매 프레임 제곱근 계산을 피했습니다.", "verbatim": true},
+          {"label": "관통 호떡의 다단히트 방지", "text": "이미 맞힌 적은 HashSet에 기록해 같은 적을 여러 번 때리지 않습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "// ① 내 위치가 속한 칸 번호", "lines": [3, 22]}]
+      },
+      {
+        "key": "weapons",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "2.2 추상 클래스로 늘어나는 무기", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 추상 클래스로 늘어나는 무기"],
+        "points": [
+          {
+            "label": "",
+            "text": "탐색·충돌·사거리처럼 모든 호떡에 공통인 부분은 추상 클래스가 맡고, 각 호떡은 이동(Move)과 피해(SendDamage)만 구현합니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}]
+      },
+      {
+        "key": "infinite-map",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.1 끝없는 맵과 늘어나는 호떡", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 끝없는 맵과 늘어나는 호떡"],
+        "points": [
+          {"label": "", "text": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.", "verbatim": true},
+          {"label": "", "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.", "verbatim": true},
+          {
+            "label": "이유",
+            "text": "그래서 정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다. 또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
+            "verbatim": false
+          }
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "// 플레이어와 1.5칸 넘게 멀어진 타일을"}],
+        "edited": true
+      },
+      {
+        "key": "hotteok-types",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "구현",
+        "title": {"text": "3.1.1 호떡 3종", "verbatim": false},
+        "lead": {"text": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.", "verbatim": true},
+        "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "호떡|동작"}],
+        "edited": true
+      },
+      {
+        "key": "ddalgi-orbit",
+        "chapter": "features",
+        "layout": "screens",
+        "tab": "결과",
+        "title": {"text": "3.1.1 호떡 3종", "verbatim": false},
+        "lead": null,
+        "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
+        "points": [
+          {"label": "팥 호떡", "text": "적을 관통. 이미 맞힌 적은 HashSet으로 걸러 다단히트 방지", "verbatim": true},
+          {"label": "딸기 호떡", "text": "플레이어 주위를 회전. 일정 시간 켜졌다 꺼지기를 반복하고, 다시 켜질 때 맞힌 기록을 비움", "verbatim": true}
+        ],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/pat_hotteok.gif",
+            "w": 400,
+            "h": 211,
+            "caption": {"text": "팥 호떡 — 레벨업에서 골라 적을 관통", "verbatim": true}
+          },
+          {
+            "kind": "image",
+            "src": "images/ddalgi_hotteok.gif",
+            "w": 400,
+            "h": 211,
+            "caption": {"text": "딸기 호떡 — 레벨업에서 골라 플레이어 주위를 회전", "verbatim": true}
+          }
+        ],
+        "edited": true
+      },
+      {
+        "key": "difficulty",
+        "chapter": "features",
+        "layout": "full",
+        "tab": "구조",
+        "title": {"text": "3.2 30초마다 오르는 난이도", "verbatim": true},
+        "lead": {"text": "게임은 100초를 버티면 클리어되고, 30초마다 적이 늘고 강해집니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
+        "points": [{"label": "", "text": "시작할 때는 두 종류의 적이 3마리씩, 모두 6마리 나옵니다.", "verbatim": true}],
+        "visuals": [{"kind": "table", "n": 1, "fp": "시간|추가되는 적|모든 적의 능력치"}, {"kind": "table", "n": 2, "fp": "적|체력|방어력|공격력|이동 속도"}]
+      },
+      {
+        "key": "difficulty-code",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.2 30초마다 오르는 난이도", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
+        "points": [
+          {
+            "label": "",
+            "text": "DifficultySystem.cs — 단계마다 추가할 적 종류 · 수는 인스펙터 배열(enemyKind · enemyCount)로 정합니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "code", "n": 1, "fp": "if (GameManager.Instance.CurrentTime >= difficultyTime && cu"}]
+      },
+      {
+        "key": "physics-choice",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "4.1 충돌 판정을 물리 엔진에 맡길 것인가", "verbatim": true},
+        "lead": {"text": "뱀서류는 적과 탄환이 대량으로 몰려나오기 때문에, 문제가 생기기 전에 미리 예상하고 물리 엔진 대신 격자 방향을 택했습니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.1 충돌 판정을 물리 엔진에 맡길 것인가"],
+        "points": [
+          {
+            "label": "선택한 이유",
+            "text": "처음에는 Physics2D.CircleCast와 Enemy 태그로 호떡과 적의 충돌을 판정하기 시작했지만, 다음 날 격자와 제곱 거리 비교로 바꿨습니다. 판정 수식과 칸 관리를 직접 맡는 비용은 감수했고, 적과 탄환은 원으로 단순화해 거리 비교만으로 판정했습니다.",
+            "verbatim": false
+          }
+        ],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"}],
+        "edited": true
+      },
+      {
+        "key": "pierce-hashset",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "4.2 관통 호떡이 같은 적을 여러 번 때리지 않게 하려면", "verbatim": true},
+        "lead": {"text": "팥 호떡은 적을 뚫고 지나가는데, 적과 겹쳐 있는 동안에는 매 프레임 충돌 판정에 걸립니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.2 관통 호떡이 같은 적을 여러 번 때리지 않게 하려면"],
+        "points": [{"label": "선택한 이유", "text": "관통은 \"여러 적을 한 번씩\" 때려야 하므로, 맞혔는지가 아니라 누구를 맞혔는지를 알아야 했습니다.", "verbatim": true}],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|bool 하나(isAttack)|✔ 선택: 맞힌 적 목록(HashSet<Enemy>)"}]
+      },
+      {
+        "key": "ai-collab",
+        "chapter": "ai",
+        "layout": "overview",
+        "tab": "",
+        "title": {"text": "5. AI 협업", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["5. AI 협업"],
+        "points": [
+          {
+            "label": "쓴 방식",
+            "text": "코드는 직접 쓰고, AI는 설계 상담 · 모르는 구현 방법의 설명 · 버그 원인 분석 · 애셋 프롬프트 작성에 썼습니다.",
+            "verbatim": true
+          },
+          {"label": "맡긴 것", "text": "구현 방법을 모르던 공간 분할 격자와 관통 호떡의 다단히트 방지(HashSet)는 설명과 예시를 받았습니다.", "verbatim": true},
+          {
+            "label": "직접 판단한 것",
+            "text": "리지드바디만 빼고 콜라이더를 남겨도 부담은 같다는 점도 확인해, 물리 엔진 대신 격자로 직접 판정하기로 했습니다(2.1, 4.1).",
+            "verbatim": true
+          },
+          {"label": "확인한 방법", "text": "받은 설명은 그대로 쓰지 않고 제 말로 다시 정리해 맞는지 되물은 뒤, 코드는 직접 짰습니다.", "verbatim": true}
+        ],
+        "visuals": []
+      }
+    ],
+    "base": [
+      {
+        "key": "intro",
+        "chapter": "overview",
+        "layout": "overview",
+        "tab": "개요",
+        "title": {"text": "1.1 최적화를 공부하기 위해 고른 뱀서류", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.1 최적화를 공부하기 위해 고른 뱀서류"],
+        "points": [{"label": "", "text": "개인 프로젝트로 공간 분할 격자, 무한맵, 추상 클래스 무기를 구현했습니다.", "verbatim": true}],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/gameplay.gif",
+            "w": 560,
+            "h": 296,
+            "caption": {"text": "적이 몰려오고 돈다발이 흩어진 플레이 화면", "verbatim": true}
           }
         ]
       },
@@ -231,18 +444,9 @@
         "chapter": "overview",
         "layout": "overview",
         "tab": "개요",
-        "title": {
-          "text": "1.1 최적화를 공부하기 위해 고른 뱀서류",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "최적화를 직접 공부해 보고 싶었습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "1. 개요",
-          "1.1 최적화를 공부하기 위해 고른 뱀서류"
-        ],
+        "title": {"text": "1.1 최적화를 공부하기 위해 고른 뱀서류", "verbatim": true},
+        "lead": {"text": "최적화를 직접 공부해 보고 싶었습니다.", "verbatim": true},
+        "sectionPath": ["1. 개요", "1.1 최적화를 공부하기 위해 고른 뱀서류"],
         "points": [
           {
             "label": "",
@@ -262,44 +466,20 @@
         "chapter": "overview",
         "layout": "visual",
         "tab": "흐름",
-        "title": {
-          "text": "1.2 게임 루프",
-          "verbatim": true
-        },
+        "title": {"text": "1.2 게임 루프", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "1. 개요",
-          "1.2 게임 루프"
-        ],
-        "points": [
-          {
-            "label": "",
-            "text": "돈다발 하나가 경험치 1이고, 레벨업에 필요한 경험치는 10에서 시작해 레벨마다 1씩 늘어납니다.",
-            "verbatim": true
-          }
-        ],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "flowchart LR"
-          }
-        ]
+        "sectionPath": ["1. 개요", "1.2 게임 루프"],
+        "points": [{"label": "", "text": "돈다발 하나가 경험치 1이고, 레벨업에 필요한 경험치는 10에서 시작해 레벨마다 1씩 늘어납니다.", "verbatim": true}],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "levelup",
         "chapter": "overview",
         "layout": "visual",
         "tab": "결과",
-        "title": {
-          "text": "1.2 게임 루프",
-          "verbatim": true
-        },
+        "title": {"text": "1.2 게임 루프", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "1. 개요",
-          "1.2 게임 루프"
-        ],
+        "sectionPath": ["1. 개요", "1.2 게임 루프"],
         "points": [],
         "visuals": [
           {
@@ -307,10 +487,7 @@
             "src": "images/levelup.gif",
             "w": 560,
             "h": 296,
-            "caption": {
-              "text": "레벨업 — 일반 · 팥 · 딸기 호떡 중 하나를 골라 획득 · 강화",
-              "verbatim": true
-            }
+            "caption": {"text": "레벨업 — 일반 · 팥 · 딸기 호떡 중 하나를 골라 획득 · 강화", "verbatim": true}
           }
         ]
       },
@@ -319,97 +496,43 @@
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {
-          "text": "2.1 격자를 중심으로 모이는 충돌 판정",
-          "verbatim": true
-        },
+        "title": {"text": "2.1 격자를 중심으로 모이는 충돌 판정", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.1 격자를 중심으로 모이는 충돌 판정"
-        ],
+        "sectionPath": ["2. 시스템 구조", "2.1 격자를 중심으로 모이는 충돌 판정"],
         "points": [
-          {
-            "label": "",
-            "text": "적과 돈다발은 자신이 속한 칸에 등록하고, 호떡과 플레이어는 자기 칸과 주변 8칸만 조회합니다.",
-            "verbatim": true
-          },
-          {
-            "label": "",
-            "text": "같은 격자를 공격 판정과 돈 줍기에 함께 씁니다.",
-            "verbatim": true
-          }
+          {"label": "", "text": "적과 돈다발은 자신이 속한 칸에 등록하고, 호떡과 플레이어는 자기 칸과 주변 8칸만 조회합니다.", "verbatim": true},
+          {"label": "", "text": "같은 격자를 공격 판정과 돈 줍기에 함께 씁니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "flowchart LR"
-          }
-        ]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "grid-search",
         "chapter": "structure",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "2.1 격자를 중심으로 모이는 충돌 판정",
-          "verbatim": true
-        },
+        "title": {"text": "2.1 격자를 중심으로 모이는 충돌 판정", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.1 격자를 중심으로 모이는 충돌 판정"
-        ],
+        "sectionPath": ["2. 시스템 구조", "2.1 격자를 중심으로 모이는 충돌 판정"],
         "points": [
           {
             "label": "칸은 Dictionary로",
             "text": "칸 좌표(Vector2Int)를 키로, 그 칸의 오브젝트 목록을 값으로 둡니다. 적은 칸이 바뀔 때만 다시 등록합니다.",
             "verbatim": true
           },
-          {
-            "label": "검사 대상을 줄이기",
-            "text": "화면 전체가 아니라 가까운 9칸에 있는 소수의 적과만 거리를 계산합니다.",
-            "verbatim": true
-          },
-          {
-            "label": "제곱근 없는 거리 비교",
-            "text": "실제 거리 대신 제곱 거리로 비교해 매 프레임 제곱근 계산을 피했습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "관통 호떡의 다단히트 방지",
-            "text": "이미 맞힌 적은 HashSet에 기록해 같은 적을 여러 번 때리지 않습니다.",
-            "verbatim": true
-          }
+          {"label": "검사 대상을 줄이기", "text": "화면 전체가 아니라 가까운 9칸에 있는 소수의 적과만 거리를 계산합니다.", "verbatim": true},
+          {"label": "제곱근 없는 거리 비교", "text": "실제 거리 대신 제곱 거리로 비교해 매 프레임 제곱근 계산을 피했습니다.", "verbatim": true},
+          {"label": "관통 호떡의 다단히트 방지", "text": "이미 맞힌 적은 HashSet에 기록해 같은 적을 여러 번 때리지 않습니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "// ① 내 위치가 속한 칸 번호",
-            "lines": [
-              3,
-              22
-            ]
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "// ① 내 위치가 속한 칸 번호", "lines": [3, 22]}]
       },
       {
         "key": "weapons",
         "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
-        "title": {
-          "text": "2.2 추상 클래스로 늘어나는 무기",
-          "verbatim": true
-        },
+        "title": {"text": "2.2 추상 클래스로 늘어나는 무기", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "2. 시스템 구조",
-          "2.2 추상 클래스로 늘어나는 무기"
-        ],
+        "sectionPath": ["2. 시스템 구조", "2.2 추상 클래스로 늘어나는 무기"],
         "points": [
           {
             "label": "",
@@ -417,109 +540,46 @@
             "verbatim": true
           }
         ],
-        "visuals": [
-          {
-            "kind": "mermaid",
-            "n": 1,
-            "fp": "classDiagram"
-          }
-        ]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}]
       },
       {
         "key": "infinite-map",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "3.1 끝없는 맵과 늘어나는 호떡",
-          "verbatim": true
-        },
+        "title": {"text": "3.1 끝없는 맵과 늘어나는 호떡", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.1 끝없는 맵과 늘어나는 호떡"
-        ],
+        "sectionPath": ["3. 핵심 기능", "3.1 끝없는 맵과 늘어나는 호떡"],
         "points": [
-          {
-            "label": "",
-            "text": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "",
-            "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.",
-            "verbatim": true
-          },
-          {
-            "label": "이유",
-            "text": "그래서 정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "이유",
-            "text": "또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
-            "verbatim": true
-          }
+          {"label": "", "text": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.", "verbatim": true},
+          {"label": "", "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.", "verbatim": true},
+          {"label": "이유", "text": "그래서 정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다.", "verbatim": true},
+          {"label": "이유", "text": "또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "// 플레이어와 1.5칸 넘게 멀어진 타일을"
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "// 플레이어와 1.5칸 넘게 멀어진 타일을"}]
       },
       {
         "key": "hotteok-types",
         "chapter": "features",
         "layout": "full",
         "tab": "구현",
-        "title": {
-          "text": "호떡 3종",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "3.1 끝없는 맵과 늘어나는 호떡",
-          "호떡 3종"
-        ],
+        "title": {"text": "호떡 3종", "verbatim": true},
+        "lead": {"text": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.", "verbatim": true},
+        "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
         "points": [],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "호떡|동작"
-          }
-        ]
+        "visuals": [{"kind": "table", "n": 1, "fp": "호떡|동작"}]
       },
       {
         "key": "ddalgi-orbit",
         "chapter": "features",
         "layout": "screens",
         "tab": "결과",
-        "title": {
-          "text": "호떡 3종",
-          "verbatim": true
-        },
+        "title": {"text": "호떡 3종", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3.1 끝없는 맵과 늘어나는 호떡",
-          "호떡 3종"
-        ],
+        "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
         "points": [
-          {
-            "label": "팥 호떡",
-            "text": "적을 관통. 이미 맞힌 적은 HashSet으로 걸러 다단히트 방지",
-            "verbatim": true
-          },
-          {
-            "label": "딸기 호떡",
-            "text": "플레이어 주위를 회전. 일정 시간 켜졌다 꺼지기를 반복하고, 다시 켜질 때 맞힌 기록을 비움",
-            "verbatim": true
-          }
+          {"label": "팥 호떡", "text": "적을 관통. 이미 맞힌 적은 HashSet으로 걸러 다단히트 방지", "verbatim": true},
+          {"label": "딸기 호떡", "text": "플레이어 주위를 회전. 일정 시간 켜졌다 꺼지기를 반복하고, 다시 켜질 때 맞힌 기록을 비움", "verbatim": true}
         ],
         "visuals": [
           {
@@ -527,30 +587,21 @@
             "src": "images/pat_hotteok.gif",
             "w": 400,
             "h": 211,
-            "caption": {
-              "text": "팥 호떡 — 레벨업에서 골라 적을 관통",
-              "verbatim": true
-            }
+            "caption": {"text": "팥 호떡 — 레벨업에서 골라 적을 관통", "verbatim": true}
           },
           {
             "kind": "image",
             "src": "images/ddalgi_hotteok.gif",
             "w": 400,
             "h": 211,
-            "caption": {
-              "text": "딸기 호떡 — 레벨업에서 골라 플레이어 주위를 회전",
-              "verbatim": true
-            }
+            "caption": {"text": "딸기 호떡 — 레벨업에서 골라 플레이어 주위를 회전", "verbatim": true}
           },
           {
             "kind": "image",
             "src": "images/ddalgi_orbit.gif",
             "w": 480,
             "h": 336,
-            "caption": {
-              "text": "딸기 호떡 — 플레이어 주위를 회전",
-              "verbatim": true
-            }
+            "caption": {"text": "딸기 호떡 — 플레이어 주위를 회전", "verbatim": true}
           }
         ]
       },
@@ -559,52 +610,20 @@
         "chapter": "features",
         "layout": "full",
         "tab": "구조",
-        "title": {
-          "text": "3.2 30초마다 오르는 난이도",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "게임은 100초를 버티면 클리어되고, 30초마다 적이 늘고 강해집니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.2 30초마다 오르는 난이도"
-        ],
-        "points": [
-          {
-            "label": "",
-            "text": "시작할 때는 두 종류의 적이 3마리씩, 모두 6마리 나옵니다.",
-            "verbatim": true
-          }
-        ],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "시간|추가되는 적|모든 적의 능력치"
-          },
-          {
-            "kind": "table",
-            "n": 2,
-            "fp": "적|체력|방어력|공격력|이동 속도"
-          }
-        ]
+        "title": {"text": "3.2 30초마다 오르는 난이도", "verbatim": true},
+        "lead": {"text": "게임은 100초를 버티면 클리어되고, 30초마다 적이 늘고 강해집니다.", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
+        "points": [{"label": "", "text": "시작할 때는 두 종류의 적이 3마리씩, 모두 6마리 나옵니다.", "verbatim": true}],
+        "visuals": [{"kind": "table", "n": 1, "fp": "시간|추가되는 적|모든 적의 능력치"}, {"kind": "table", "n": 2, "fp": "적|체력|방어력|공격력|이동 속도"}]
       },
       {
         "key": "difficulty-code",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
-        "title": {
-          "text": "3.2 30초마다 오르는 난이도",
-          "verbatim": true
-        },
+        "title": {"text": "3.2 30초마다 오르는 난이도", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.2 30초마다 오르는 난이도"
-        ],
+        "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
         "points": [
           {
             "label": "",
@@ -612,120 +631,62 @@
             "verbatim": true
           }
         ],
-        "visuals": [
-          {
-            "kind": "code",
-            "n": 1,
-            "fp": "if (GameManager.Instance.CurrentTime >= difficultyTime && cu"
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 1, "fp": "if (GameManager.Instance.CurrentTime >= difficultyTime && cu"}]
       },
       {
         "key": "physics-choice",
         "chapter": "tradeoffs",
         "layout": "full",
         "tab": "선택",
-        "title": {
-          "text": "4.1 충돌 판정을 물리 엔진에 맡길 것인가",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "뱀서류는 적과 탄환이 대량으로 몰려나오기 때문에, 문제가 생기기 전에 미리 예상하고 물리 엔진 대신 격자 방향을 택했습니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "4. 고민과 선택",
-          "4.1 충돌 판정을 물리 엔진에 맡길 것인가"
-        ],
+        "title": {"text": "4.1 충돌 판정을 물리 엔진에 맡길 것인가", "verbatim": true},
+        "lead": {"text": "뱀서류는 적과 탄환이 대량으로 몰려나오기 때문에, 문제가 생기기 전에 미리 예상하고 물리 엔진 대신 격자 방향을 택했습니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.1 충돌 판정을 물리 엔진에 맡길 것인가"],
         "points": [
           {
             "label": "선택한 이유",
             "text": "처음에는 Physics2D.CircleCast와 Enemy 태그로 호떡과 적의 충돌을 판정하기 시작했지만, 다음 날 격자와 제곱 거리 비교로 바꿨습니다.",
             "verbatim": true
           },
-          {
-            "label": "선택한 이유",
-            "text": "판정 수식과 칸 관리를 직접 맡는 비용은 감수했고, 적과 탄환은 원으로 단순화해 거리 비교만으로 판정했습니다.",
-            "verbatim": true
-          }
+          {"label": "선택한 이유", "text": "판정 수식과 칸 관리를 직접 맡는 비용은 감수했고, 적과 탄환은 원으로 단순화해 거리 비교만으로 판정했습니다.", "verbatim": true}
         ],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "|콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"
-          }
-        ]
+        "visuals": [{"kind": "table", "n": 1, "fp": "|콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"}]
       },
       {
         "key": "pierce-hashset",
         "chapter": "tradeoffs",
         "layout": "full",
         "tab": "선택",
-        "title": {
-          "text": "4.2 관통 호떡이 같은 적을 여러 번 때리지 않게 하려면",
-          "verbatim": true
-        },
-        "lead": {
-          "text": "팥 호떡은 적을 뚫고 지나가는데, 적과 겹쳐 있는 동안에는 매 프레임 충돌 판정에 걸립니다.",
-          "verbatim": true
-        },
-        "sectionPath": [
-          "4. 고민과 선택",
-          "4.2 관통 호떡이 같은 적을 여러 번 때리지 않게 하려면"
-        ],
-        "points": [
-          {
-            "label": "선택한 이유",
-            "text": "관통은 \"여러 적을 한 번씩\" 때려야 하므로, 맞혔는지가 아니라 누구를 맞혔는지를 알아야 했습니다.",
-            "verbatim": true
-          }
-        ],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "|bool 하나(isAttack)|✔ 선택: 맞힌 적 목록(HashSet<Enemy>)"
-          }
-        ]
+        "title": {"text": "4.2 관통 호떡이 같은 적을 여러 번 때리지 않게 하려면", "verbatim": true},
+        "lead": {"text": "팥 호떡은 적을 뚫고 지나가는데, 적과 겹쳐 있는 동안에는 매 프레임 충돌 판정에 걸립니다.", "verbatim": true},
+        "sectionPath": ["4. 고민과 선택", "4.2 관통 호떡이 같은 적을 여러 번 때리지 않게 하려면"],
+        "points": [{"label": "선택한 이유", "text": "관통은 \"여러 적을 한 번씩\" 때려야 하므로, 맞혔는지가 아니라 누구를 맞혔는지를 알아야 했습니다.", "verbatim": true}],
+        "visuals": [{"kind": "table", "n": 1, "fp": "|bool 하나(isAttack)|✔ 선택: 맞힌 적 목록(HashSet<Enemy>)"}]
       },
       {
         "key": "ai-collab",
         "chapter": "ai",
         "layout": "overview",
         "tab": "",
-        "title": {
-          "text": "5. AI 협업",
-          "verbatim": true
-        },
+        "title": {"text": "5. AI 협업", "verbatim": true},
         "lead": null,
-        "sectionPath": [
-          "5. AI 협업"
-        ],
+        "sectionPath": ["5. AI 협업"],
         "points": [
           {
             "label": "쓴 방식",
             "text": "코드는 직접 쓰고, AI는 설계 상담 · 모르는 구현 방법의 설명 · 버그 원인 분석 · 애셋 프롬프트 작성에 썼습니다.",
             "verbatim": true
           },
-          {
-            "label": "맡긴 것",
-            "text": "구현 방법을 모르던 공간 분할 격자와 관통 호떡의 다단히트 방지(HashSet)는 설명과 예시를 받았습니다.",
-            "verbatim": true
-          },
+          {"label": "맡긴 것", "text": "구현 방법을 모르던 공간 분할 격자와 관통 호떡의 다단히트 방지(HashSet)는 설명과 예시를 받았습니다.", "verbatim": true},
           {
             "label": "직접 판단한 것",
             "text": "리지드바디만 빼고 콜라이더를 남겨도 부담은 같다는 점도 확인해, 물리 엔진 대신 격자로 직접 판정하기로 했습니다(2.1, 4.1).",
             "verbatim": true
           },
-          {
-            "label": "확인한 방법",
-            "text": "받은 설명은 그대로 쓰지 않고 제 말로 다시 정리해 맞는지 되물은 뒤, 코드는 직접 짰습니다.",
-            "verbatim": true
-          }
+          {"label": "확인한 방법", "text": "받은 설명은 그대로 쓰지 않고 제 말로 다시 정리해 맞는지 되물은 뒤, 코드는 직접 짰습니다.", "verbatim": true}
         ],
         "visuals": []
       }
-    ]
+    ],
+    "applied": "507ef30946d7503f"
   }
 }
