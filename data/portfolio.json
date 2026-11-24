@@ -91,10 +91,5 @@
       ]
     }
   ],
-  "projects": [
-    "01-ODDITY",
-    "02-WeGotOne",
-    "03-hotteok-survivor",
-    "05-AnimalRun"
-  ]
+  "projects": ["03-hotteok-survivor", "02-WeGotOne", "01-ODDITY", "05-AnimalRun"]
 }
