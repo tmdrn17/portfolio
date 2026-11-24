@@ -133,3 +133,35 @@ table.md-table td:first-child { overflow-wrap: normal; }
   .skill, .skill:nth-child(n) { padding: 5pt 0; }
   .skill h3 { font-size: 10.5pt; }
 }
+
+/* 슬라이드 표지: 링크 카드(GitHub·영상·쇼츠·문서)를 오른쪽 칸(태그 아래)으로 — 2026-11-24 수강생 요청(We Got One · 애니멀 런)
+   왼쪽 칸 = 대표 이미지 → 이름·설명, 오른쪽 칸 = 장르·기간… → 개발 의도 → 태그 → 링크. 이 묶음을 지우면 원래 모습 */
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-main { grid-template-rows: auto 1fr auto; align-items: start; }
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-left { display: contents; }
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-cover { grid-column: 1; grid-row: 1; }
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-head { grid-column: 1; grid-row: 2 / span 2; }
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-right { grid-column: 2; grid-row: 1 / span 2; align-self: start; height: auto; }
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-links { grid-column: 2; grid-row: 3; }
+:is([data-pf-project="02-WeGotOne"], [data-pf-project="05-AnimalRun"]) .pf-scene.t-P1 .pi-right > .pi-links { order: 1; }
+
+/* 애니멀 런 표지: 세로로 긴 대표 이미지를 왼쪽 칸 가운데에, 1.25배 크기로 — 2026-11-24 수강생 요청 */
+[data-pf-project="05-AnimalRun"] .pf-scene.t-P1 .pi-cover { justify-self: center; height: 342px; max-height: none; }
+
+/* 슬라이드 목차: 장 번호(01·02…)를 감싼 상자 없애기 — 2026-11-24 수강생 요청 */
+.pf-scene.t-P2 .toc-list .n { background: none; border: 0; box-shadow: none; }
+/* 장 표지의 절 목록(2.1 …)도 같은 번호 상자 없애기, 목차·장 표지에서 제목 밑 작은 글씨(장면 N장 · 구조·구현 같은 탭 이름) 숨기기 — 2026-11-24 수강생 요청 */
+.pf-scene.t-CH .n { background: none; border: 0; box-shadow: none; }
+.pf-scene:is(.t-P2, .t-CH) .tx > .d { display: none; }
+
+/* 슬라이드 표: 칸마다 테두리 선(가로줄만 있어 칸 구분이 어렵던 것) — 2026-11-24 수강생 요청 */
+[data-view="deck"] table.md-table th, [data-view="deck"] table.md-table td { border: 1px solid var(--t-line-2, #A9D8C3); }
+
+/* 표(슬라이드 · 상세 문서): 가로 제목(머리 줄)과 세로 제목(첫 칸)은 크고 굵게, 내용 칸은 여백을 줄여 컴팩트하게 — 2026-11-24 수강생 요청
+   슬라이드 표는 장면 높이만큼 늘이지 않고 내용 높이대로(칸이 위아래로 길게 늘어나던 것). 이 묶음을 지우면 원래 모습 */
+[data-view="deck"] table.md-table { height: auto !important; }
+[data-view="deck"] table.md-table th { font-size: 16px; padding: 6px 10px; vertical-align: middle; }
+[data-view="deck"] table.md-table td { padding: 5px 10px; line-height: 1.45; }
+[data-view="deck"] table.md-table td:first-child { font-size: 16px; font-weight: 700; }
+.table-wrap table th { font-size: 16px; padding: 7px 10px; vertical-align: middle; }
+.table-wrap table td { padding: 6px 10px; line-height: 1.5; }
+.table-wrap table td:first-child { font-size: 15.5px; font-weight: 700; }

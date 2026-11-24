@@ -385,7 +385,7 @@
         "points": [
           {
             "label": "커브로 구간별 속도",
-            "text": "지금은 커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
+            "text": "커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
             "verbatim": false
           },
           {"label": "", "text": "구르기는 스태미나 25를 쓰고(최대 100, 1초 뒤부터 초당 15 회복), 진행도 0.8까지 무적입니다.", "verbatim": true}
@@ -401,7 +401,8 @@
               "verbatim": true
             }
           }
-        ]
+        ],
+        "edited": true
       },
       {
         "key": "roll-choice",
@@ -589,7 +590,12 @@
             "text": "벽 충돌 보정(SphereCast)은 필요한 기능이라고 판단해 남겼고, 상황에 따라 카메라가 바뀌는 부분은 그 위에 직접 더했습니다(3.4).",
             "verbatim": true
           },
-          {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true}
+          {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true},
+          {
+            "label": "안 된 것",
+            "text": "결과를 직접 볼 수 없는 작업을 오래 맡김, 검수 없이 맡긴 커밋 · 푸시, 다른 씬을 보고 내린 틀린 결론, 맡긴 범위 밖을 건드림",
+            "verbatim": false
+          }
         ],
         "visuals": []
       }
@@ -631,8 +637,25 @@
             "text": "쓰러진 채 무력하게 기다리는 시간을 줄여 플레이어가 빨리 다시 조작하도록 조기 기상을 넣고, 계속 쓰면 넉다운이 의미 없어지지 않도록 쿨타임을 두었습니다.",
             "verbatim": true
           },
-          {"label": "3인칭 카메라", "text": "달릴 때는 카메라가 뒤로 물러나 속도감을, 물체를 잡을 때는 다른 피벗 · 거리로 조준감을 주고 싶었습니다.", "verbatim": true},
-          {"label": "미션 시스템", "text": "보스 러시 구조를 스킬인 증강칩 획득과 연결하기 위해 팀원들과 기획을 논의하며 만들었습니다.", "verbatim": true}
+          {"label": "3인칭 카메라", "text": "달릴 때는 카메라가 뒤로 물러나 속도감을, 물체를 잡을 때는 다른 피벗 · 거리로 조준감을 주고 싶었습니다.", "verbatim": true}
+        ],
+        "visuals": []
+      },
+      {
+        "key": "why-parts-2",
+        "chapter": "overview",
+        "layout": "overview",
+        "tab": "개요",
+        "title": {"text": "1.2 목표한 경험과 기능마다의 의도", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["1. 개요", "1.2 목표한 경험과 기능마다의 의도"],
+        "points": [
+          {"label": "미션 시스템", "text": "보스 러시 구조를 스킬인 증강칩 획득과 연결하기 위해 팀원들과 기획을 논의하며 만들었습니다.", "verbatim": true},
+          {
+            "label": "UI 입력 잠금 · 에디터 툴",
+            "text": "UI를 조작하는 중에 캐릭터가 움직이지 않도록 입력 잠금을 한 곳에 모았고, 미션 UI 조립 · 로비 배치 같은 반복 작업은 에디터 툴로 줄였습니다.",
+            "verbatim": true
+          }
         ],
         "visuals": []
       },
@@ -958,11 +981,16 @@
             "text": "벽 충돌 보정(SphereCast)은 필요한 기능이라고 판단해 남겼고, 상황에 따라 카메라가 바뀌는 부분은 그 위에 직접 더했습니다(3.4).",
             "verbatim": true
           },
-          {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true}
+          {"label": "확인한 방법", "text": "카메라 초안을 검수하면서 벽 충돌 보정에 SphereCast가 쓰인 이유를 확인했습니다.", "verbatim": true},
+          {
+            "label": "안 된 것",
+            "text": "결과를 직접 볼 수 없는 작업을 오래 맡김, 검수 없이 맡긴 커밋 · 푸시, 다른 씬을 보고 내린 틀린 결론, 맡긴 범위 밖을 건드림",
+            "verbatim": false
+          }
         ],
         "visuals": []
       }
     ],
-    "applied": "9432a0ae24496e5c"
+    "applied": "6fe53f9adc598bb1"
   }
 }

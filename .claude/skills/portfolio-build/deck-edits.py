@@ -657,7 +657,11 @@ def apply_edits(data, edits, doc, rep):
             rep.add('필수', '고친 장면 "%s"의 key가 슬라이드의 다른 장면과 겹칩니다 → 반영하지 않았습니다' % k)
             S.remove(out)
             continue
-        if p.get('after') is not None:
+        if p.get('after') == '':   # 빈 after = 그 장의 맨 앞
+            S.remove(out)
+            first = next((i for i, s in enumerate(S) if s.get('chapter') == out['chapter']), None)
+            S.insert(first if first is not None else end_of_chapter(out['chapter']), out)
+        elif p.get('after') is not None:
             a = [s for s in S if s.get('key') == p['after'] and s is not out]
             if not a:
                 rep.add('권장', '고친 장면 "%s"의 after "%s"가 슬라이드에 없습니다(숨겼거나 없어진 장면) → 순서를 옮기지 않았습니다' % (k, p['after']))
