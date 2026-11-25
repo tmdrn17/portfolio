@@ -316,6 +316,24 @@
         "visuals": [{"kind": "table", "n": 2, "fp": "물고기|주요 수치"}]
       },
       {
+        "key": "squid-states",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "2.2 대왕오징어 상태 흐름", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 대왕오징어 상태 흐름"],
+        "points": [
+          {
+            "label": "",
+            "text": "촉수 센서에 플레이어가 닿으면 납치 상태로 넘어갑니다. 목적지에 닿으면 정리(Exit)에서 플레이어 몸을 Dynamic과 처음 자세로 되돌린 뒤 복귀 상태로 넘어가고, 시작 위치에 돌아오면 순찰을 이어 갑니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "기절 · 지침 · 납치 중에는 촉수 센서가 상태를 확인해 다시 납치하지 않습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "stateDiagram-v2"}]
+      },
+      {
         "key": "fsm",
         "chapter": "features",
         "layout": "visual",
@@ -746,6 +764,24 @@
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}]
       },
       {
+        "key": "squid-states",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {"text": "2.2 대왕오징어 상태 흐름", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.2 대왕오징어 상태 흐름"],
+        "points": [
+          {
+            "label": "",
+            "text": "촉수 센서에 플레이어가 닿으면 납치 상태로 넘어갑니다. 목적지에 닿으면 정리(Exit)에서 플레이어 몸을 Dynamic과 처음 자세로 되돌린 뒤 복귀 상태로 넘어가고, 시작 위치에 돌아오면 순찰을 이어 갑니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "기절 · 지침 · 납치 중에는 촉수 센서가 상태를 확인해 다시 납치하지 않습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "stateDiagram-v2"}]
+      },
+      {
         "key": "abduction-flow",
         "chapter": "features",
         "layout": "visual",
@@ -1040,6 +1076,6 @@
         "visuals": []
       }
     ],
-    "applied": "e06725e802ed7451"
+    "applied": "b3f9610a56c3739f"
   }
 }
