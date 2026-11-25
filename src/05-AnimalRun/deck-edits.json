@@ -6,15 +6,9 @@
       "chapter": "overview",
       "layout": "overview",
       "tab": "개요",
-      "title": {
-        "text": "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너",
-        "verbatim": true
-      },
+      "title": {"text": "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너", "verbatim": true},
       "lead": null,
-      "sectionPath": [
-        "1. 개요",
-        "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너"
-      ],
+      "sectionPath": ["1. 개요", "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너"],
       "points": [
         {
           "label": "",
@@ -33,14 +27,7 @@
         }
       ],
       "visuals": [],
-      "from": {
-        "key": "what",
-        "sectionPath": [
-          "1. 개요",
-          "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너"
-        ],
-        "sig": []
-      },
+      "from": {"key": "what", "sectionPath": ["1. 개요", "1.1 동물 무리를 늘리며 결승선까지 달리는 크라우드 러너"], "sig": []},
       "group": "merge-what"
     },
     {
@@ -48,43 +35,19 @@
       "chapter": "features",
       "layout": "code",
       "tab": "구현",
-      "title": {
-        "text": "3.2 정답을 먼저 정하고 식을 만드는 수식 문",
-        "verbatim": true
-      },
+      "title": {"text": "3.2 정답을 먼저 정하고 식을 만드는 수식 문", "verbatim": true},
       "lead": null,
-      "sectionPath": [
-        "3. 핵심 기능",
-        "3.2 정답을 먼저 정하고 식을 만드는 수식 문"
-      ],
+      "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
       "points": [
-        {
-          "label": "문제",
-          "text": "문에 숫자만 보여 주면 너무 단순하고, 식을 랜덤으로 만들면 결과가 얼마나 나올지 통제할 수 없었습니다.",
-          "verbatim": true
-        },
-        {
-          "label": "해결",
-          "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다. 새로운 식 유형은 함수 하나만 추가하면 됩니다.",
-          "verbatim": false
-        }
+        {"label": "문제", "text": "문에 숫자만 보여 주면 너무 단순하고, 식을 랜덤으로 만들면 결과가 얼마나 나올지 통제할 수 없었습니다.", "verbatim": true},
+        {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다.", "verbatim": true},
+        {"label": "정답부터", "text": "+·− 문은 −3~5(0 제외), ×·÷ 문은 2~3에서 결과를 먼저 뽑습니다.", "verbatim": true}
       ],
-      "visuals": [
-        {
-          "kind": "code",
-          "n": 1,
-          "fp": "private delegate Expression ExpressionBuilder(int value);"
-        }
-      ],
+      "visuals": [{"kind": "code", "n": 2, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
       "from": {
         "key": "door-quiz",
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.2 정답을 먼저 정하고 식을 만드는 수식 문"
-        ],
-        "sig": [
-          "3.2 정답을 먼저 정하고 식을 만드는 수식 문|code|1|private delegate Expression ExpressionBuilder(int value);"
-        ]
+        "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
+        "sig": ["3.2 정답을 먼저 정하고 식을 만드는 수식 문|code|1|private delegate Expression ExpressionBuilder(int value);"]
       }
     },
     {
@@ -92,21 +55,11 @@
       "chapter": "features",
       "layout": "visual",
       "tab": "결과",
-      "title": {
-        "text": "3.2 정답을 먼저 정하고 식을 만드는 수식 문",
-        "verbatim": true
-      },
+      "title": {"text": "3.2 정답을 먼저 정하고 식을 만드는 수식 문", "verbatim": true},
       "lead": null,
-      "sectionPath": [
-        "3. 핵심 기능",
-        "3.2 정답을 먼저 정하고 식을 만드는 수식 문"
-      ],
+      "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
       "points": [
-        {
-          "label": "첫 문",
-          "text": "첫 문은 항상 이득이 되는 쉬운 문제가 나오게 했습니다.",
-          "verbatim": true
-        },
+        {"label": "첫 문", "text": "첫 문은 항상 이득이 되는 쉬운 문제가 나오게 했습니다.", "verbatim": true},
         {
           "label": "결과를 색으로 알려 주지 않음",
           "text": "2023 원형은 +와 ×를 이득 색, −와 ÷를 손해 색으로 칠했습니다. 식을 풀어야 하는 문인데 색으로 표시하면 풀 이유가 없어지기 때문에, 지금은 모든 문을 같은 색으로 보여 줍니다.",
@@ -119,57 +72,13 @@
           "src": "images/formula_gate.gif",
           "w": 300,
           "h": 540,
-          "caption": {
-            "text": "수식 문을 지나며 무리가 늘어나는 장면",
-            "verbatim": true
-          }
+          "caption": {"text": "수식 문을 지나며 무리가 늘어나는 장면", "verbatim": true}
         }
       ],
       "from": {
         "key": "door-quiz-screen",
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.2 정답을 먼저 정하고 식을 만드는 수식 문"
-        ],
-        "sig": [
-          "3.2 정답을 먼저 정하고 식을 만드는 수식 문|image|images/formula_gate.gif|1"
-        ]
-      }
-    },
-    {
-      "key": "data-assets",
-      "chapter": "features",
-      "layout": "overview",
-      "tab": "구현",
-      "title": {
-        "text": "3.4 데이터 테이블과 에셋 자동화",
-        "verbatim": true
-      },
-      "lead": null,
-      "sectionPath": [
-        "3. 핵심 기능",
-        "3.4 데이터 테이블과 에셋 자동화"
-      ],
-      "points": [
-        {
-          "label": "",
-          "text": "동물 18종과 무기 7종의 수치는 TSV로 관리하고, 불러올 때 프리팹과 아이콘을 연결합니다.",
-          "verbatim": true
-        },
-        {
-          "label": "",
-          "text": "블렌더에서 만든 동물 모델은 에디터 툴(RunnerPrefabBuilder)이 머티리얼·애니메이터를 붙여 러너 프리팹으로 만들고, 미리보기 캡처까지 자동으로 처리합니다.",
-          "verbatim": true
-        }
-      ],
-      "visuals": [],
-      "from": {
-        "key": "data-assets",
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.4 데이터 테이블과 에셋 자동화"
-        ],
-        "sig": []
+        "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
+        "sig": ["3.2 정답을 먼저 정하고 식을 만드는 수식 문|image|images/formula_gate.gif|1"]
       }
     },
     {
@@ -177,62 +86,26 @@
       "chapter": "features",
       "layout": "problem",
       "tab": "문제 해결",
-      "title": {
-        "text": "3.8.1 Synty 적의 번쩍임이 안 보이는 문제",
-        "verbatim": false
-      },
+      "title": {"text": "3.8.1 Synty 적의 번쩍임이 안 보이는 문제", "verbatim": false},
       "lead": null,
-      "sectionPath": [
-        "3. 핵심 기능",
-        "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
-      ],
+      "sectionPath": ["3. 핵심 기능", "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"],
       "points": [
-        {
-          "label": "문제",
-          "text": "적을 Synty 캐릭터로 바꾸자 크기 펀치만 되고 번쩍임이 보이지 않았습니다.",
-          "verbatim": true
-        },
-        {
-          "label": "원인",
-          "text": "Synty 셰이더는 _BaseColor를 텍스처에 곱하는데 그 값이 흰색이라, 흰색으로 바꿔도 변화가 없었습니다.",
-          "verbatim": true
-        },
-        {
-          "label": "해결",
-          "text": "Synty 셰이더일 때는 번쩍이는 동안 발광(Emission)을 켜도록 바꿨습니다.",
-          "verbatim": true
-        }
+        {"label": "문제", "text": "적을 Synty 캐릭터로 바꾸자 크기 펀치만 되고 번쩍임이 보이지 않았습니다.", "verbatim": true},
+        {"label": "원인", "text": "Synty 셰이더는 _BaseColor를 텍스처에 곱하는데 그 값이 흰색이라, 흰색으로 바꿔도 변화가 없었습니다.", "verbatim": true},
+        {"label": "해결", "text": "Synty 셰이더일 때는 번쩍이는 동안 발광(Emission)을 켜도록 바꿨습니다.", "verbatim": true}
       ],
-      "visuals": [
-        {
-          "kind": "code",
-          "n": 1,
-          "fp": "// Synty 셰이더는 _BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"
-        }
-      ],
+      "visuals": [{"kind": "code", "n": 1, "fp": "// Synty 셰이더는 _BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"}],
       "from": {
         "key": "hit-flash",
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
-        ],
-        "sig": [
-          "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출|code|1|// Synty 셰이더는 BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"
-        ]
+        "sectionPath": ["3. 핵심 기능", "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"],
+        "sig": ["3.8 무리가 늘고 줄어드는 것을 보여 주는 연출|code|1|// Synty 셰이더는 BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"]
       }
     }
   ],
   "hide": [
     {
       "key": "why",
-      "from": {
-        "key": "why",
-        "sectionPath": [
-          "1. 개요",
-          "1.2 빠르게 만들어 스토어에 올리기 위한 하이퍼 캐주얼"
-        ],
-        "sig": []
-      },
+      "from": {"key": "why", "sectionPath": ["1. 개요", "1.2 빠르게 만들어 스토어에 올리기 위한 하이퍼 캐주얼"], "sig": []},
       "group": "merge-what"
     }
   ]

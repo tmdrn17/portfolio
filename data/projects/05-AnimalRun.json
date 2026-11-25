@@ -11,17 +11,40 @@
     "role": "기획·개발 전체"
   },
   "meta": [
-    { "label": "장르", "value": "3D 크라우드 러너 (모바일 세로 화면)" },
-    { "label": "기간", "value": "2023.10 원형 제작 → 2026.09 리팩토링" },
-    { "label": "인원", "value": "개인 프로젝트" },
-    { "label": "환경", "value": "Unity 2023.1, C#, CsvHelper (TSV 데이터), Blender(Claude Code)" }
+    {
+      "label": "장르",
+      "value": "3D 크라우드 러너 (모바일 세로 화면)"
+    },
+    {
+      "label": "기간",
+      "value": "2023.10 원형 제작 → 2026.09 리팩토링"
+    },
+    {
+      "label": "인원",
+      "value": "개인 프로젝트"
+    },
+    {
+      "label": "환경",
+      "value": "Unity 2023.1, C#, CsvHelper (TSV 데이터), Blender(Claude Code)"
+    }
   ],
-  "tags": ["Unity 2023.1", "C#", "절차적 레벨 생성", "전략 패턴", "거리 충돌", "ObjectPool", "TSV 데이터"],
+  "tags": [
+    "Unity 2023.1",
+    "C#",
+    "절차적 레벨 생성",
+    "전략 패턴",
+    "거리 충돌",
+    "ObjectPool",
+    "TSV 데이터"
+  ],
   "links": {
     "github": "https://github.com/tmdrn17/AnimalRun-Code",
     "video": "https://youtu.be/vwFRyeQ6Njk",
     "extra": [
-      { "label": "쇼츠", "url": "https://youtube.com/shorts/lrA1PyblqnI" }
+      {
+        "label": "쇼츠",
+        "url": "https://youtube.com/shorts/lrA1PyblqnI"
+      }
     ]
   },
   "intent": {
@@ -43,7 +66,12 @@
       "how": "뺄셈·일차방정식·거듭제곱·나눗셈 생성기를 delegate 배열에 넣어 두고 하나를 고르는 방식이라, 새로운 식 유형은 함수 하나만 추가하면 됩니다. 첫 문은 항상 이득이 되는 쉬운 문제가 나오게 했습니다.",
       "why": "문에 숫자만 보여 주면 너무 단순하고, 식을 랜덤으로 만들면 결과가 얼마나 나올지 통제할 수 없었습니다.",
       "section": "3.2 정답을 먼저 정하고 식을 만드는 수식 문",
-      "image": { "src": "images/formula_gate.gif", "w": 300, "h": 540, "caption": "수식 문을 지나며 무리가 늘어나는 장면" }
+      "image": {
+        "src": "images/formula_gate.gif",
+        "w": 300,
+        "h": 540,
+        "caption": "수식 문을 지나며 무리가 늘어나는 장면"
+      }
     },
     {
       "title": "이동 경로(선분)로 판정하는 총알 명중",
@@ -59,7 +87,12 @@
       "how": "AnimalTable · WeaponTable에서 ID를 무작위로 뽑고, 이미 뽑은 것과 겹치면 다시 뽑기 때문에 한 화면에 같은 선택지가 두 번 나오지 않습니다.",
       "why": "코인을 판 밖의 상점이 아니라 판 안에서 증강을 고르는 데 쓰게 하고 싶었습니다. 한 판 단위로 끝나는 단발성 루프로 중독성을 더하려는 것입니다.",
       "section": "3.5 게임 시작 시 동물 · 무기 선택",
-      "image": { "src": "images/start_select.gif", "w": 300, "h": 540, "caption": "시작 시 동물 · 무기 선택" }
+      "image": {
+        "src": "images/start_select.gif",
+        "w": 300,
+        "h": 540,
+        "caption": "시작 시 동물 · 무기 선택"
+      }
     }
   ],
   "troubleshooting": [
@@ -82,21 +115,46 @@
       "section": "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
     },
     {
-      "title": "재사용된 러너가 무적·회색으로 나오는 문제",
-      "problem": "러너를 풀에서 다시 꺼내 쓰자, 한 번 죽은 러너가 무적이 되거나 회색인 채로 나오고 무기가 켜지지 않았습니다.",
-      "cause": "",
-      "solution": "러너가 켜질 때 isDead와 원래 머티리얼을 되돌리고, 무기 오브젝트가 꺼져 있으면 다시 켜도록 고쳤습니다.",
+      "title": "재사용된 러너가 회색 · 무적이 되고 무기가 안 켜지는 문제",
+      "problem": "러너를 Destroy 대신 꺼 두었다가 다시 켜 쓰도록 바꾸자, 회색인 채로 나오고 다시 죽지도 않았으며 꺼 둔 무기가 다시 켜지지 않았습니다.",
+      "cause": "죽을 때 isDead를 켜고 회색 머티리얼로 바꾼 뒤 꺼 두는데 다시 켤 때 되돌리지 않았고, 디졸브 연출로 죽을 때 무기를 꺼 두게 됐는데 재사용 러너는 무기가 이미 있어 EquipWeapon이 바로 돌아가 버렸습니다.",
+      "solution": "켜질 때(OnEnable) isDead와 원래 머티리얼을 되돌리고, 무기 위치가 꺼져 있으면 다시 켜도록 바꿨습니다.",
       "result": "",
       "lesson": "",
       "section": "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"
     }
   ],
   "screenshots": [
-    { "src": "images/start_select.gif", "w": 300, "h": 540, "caption": "시작 시 동물 · 무기 선택" },
-    { "src": "images/augment_select.gif", "w": 300, "h": 540, "caption": "레벨업 증강 선택" },
-    { "src": "images/formula_gate.gif", "w": 300, "h": 540, "caption": "수식 문을 지나며 무리가 늘어나는 장면" },
-    { "src": "images/map_theme.gif", "w": 300, "h": 540, "caption": "판마다 바뀌는 맵 테마 — 두 판의 다른 테마" },
-    { "src": "images/runner_feedback.gif", "w": 300, "h": 540, "caption": "증원 빛기둥과 디졸브 사망" }
+    {
+      "src": "images/start_select.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "시작 시 동물 · 무기 선택"
+    },
+    {
+      "src": "images/augment_select.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "레벨업 증강 선택"
+    },
+    {
+      "src": "images/formula_gate.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "수식 문을 지나며 무리가 늘어나는 장면"
+    },
+    {
+      "src": "images/map_theme.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "판마다 바뀌는 맵 테마 — 두 판의 다른 테마"
+    },
+    {
+      "src": "images/runner_feedback.gif",
+      "w": 300,
+      "h": 540,
+      "caption": "증원 빛기둥과 디졸브 사망"
+    }
   ],
   "retro": {
     "section": "6. 결과와 회고",
@@ -188,9 +246,13 @@
           {"label": "목표 거리부터 정함", "text": "플레이 시간 × 기준 속도로 목표 거리를 먼저 정해, 판마다 플레이 시간이 고르게 됩니다.", "verbatim": true},
           {"label": "넘치지 않는 청크만 후보로", "text": "최대 거리를 넘는 청크는 빼고, 남은 후보 중 하나를 랜덤으로 붙입니다.", "verbatim": true},
           {"label": "결승선 위치까지 계산", "text": "결승선이 청크 안 어디에 있는지(offset)도 거리 계산에 넣었습니다.", "verbatim": true},
-          {"label": "", "text": "기준 속도 5, 플레이 시간 60~90초라 목표 거리는 300~450입니다.", "verbatim": true}
+          {
+            "label": "붙일 청크가 없으면 멈춤",
+            "text": "남은 거리가 가장 짧은 청크보다 짧으면 후보가 비는데, 이때 멈추지 않으면 끝 위치가 그대로라 반복문이 끝나지 않습니다.",
+            "verbatim": true
+          }
         ],
-        "visuals": [{"kind": "code", "n": 1, "fp": "// ① 목표 거리(플레이 시간 × 기준 속도)에 닿을 때까지"}]
+        "visuals": [{"kind": "code", "n": 1, "fp": "// ① 목표 거리: 플레이 시간(60~90초) × 기준 속도(5) → 300~450 중 하나", "lines": [1, 19]}]
       },
       {
         "key": "door-quiz",
@@ -202,9 +264,10 @@
         "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
         "points": [
           {"label": "문제", "text": "문에 숫자만 보여 주면 너무 단순하고, 식을 랜덤으로 만들면 결과가 얼마나 나올지 통제할 수 없었습니다.", "verbatim": true},
-          {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다. 새로운 식 유형은 함수 하나만 추가하면 됩니다.", "verbatim": false}
+          {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다.", "verbatim": true},
+          {"label": "정답부터", "text": "+·− 문은 −3~5(0 제외), ×·÷ 문은 2~3에서 결과를 먼저 뽑습니다.", "verbatim": true}
         ],
-        "visuals": [{"kind": "code", "n": 1, "fp": "private delegate Expression ExpressionBuilder(int value);"}],
+        "visuals": [{"kind": "code", "n": 2, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
         "edited": true
       },
       {
@@ -271,7 +334,7 @@
       {
         "key": "data-assets",
         "chapter": "features",
-        "layout": "overview",
+        "layout": "code",
         "tab": "구현",
         "title": {"text": "3.4 데이터 테이블과 에셋 자동화", "verbatim": true},
         "lead": null,
@@ -279,13 +342,17 @@
         "points": [
           {"label": "", "text": "동물 18종과 무기 7종의 수치는 TSV로 관리하고, 불러올 때 프리팹과 아이콘을 연결합니다.", "verbatim": true},
           {
-            "label": "",
-            "text": "블렌더에서 만든 동물 모델은 에디터 툴(RunnerPrefabBuilder)이 머티리얼·애니메이터를 붙여 러너 프리팹으로 만들고, 미리보기 캡처까지 자동으로 처리합니다.",
+            "label": "증강을 테이블로 옮긴 과정",
+            "text": "처음에는 동물 · 무기만 TSV 테이블로 만들고, 증강 7종은 AugmentDef 안에 static 리스트로 코드에 적어 두었습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "증강을 테이블로 옮긴 과정",
+            "text": "로직이 붙어 있어도 기본 토대는 같아야 한다고 판단해, 증강도 Augments.tsv와 AugmentTable로 옮겨 동물 · 무기와 같은 DTO → Def 구조로 맞췄습니다(옮기는 작업은 AI에게 맡김).",
             "verbatim": true
           }
         ],
-        "visuals": [],
-        "edited": true
+        "visuals": [{"kind": "code", "n": 2, "fp": "public void Load()", "lines": [1, 15]}]
       },
       {
         "key": "select-screen",
@@ -567,9 +634,13 @@
           {"label": "목표 거리부터 정함", "text": "플레이 시간 × 기준 속도로 목표 거리를 먼저 정해, 판마다 플레이 시간이 고르게 됩니다.", "verbatim": true},
           {"label": "넘치지 않는 청크만 후보로", "text": "최대 거리를 넘는 청크는 빼고, 남은 후보 중 하나를 랜덤으로 붙입니다.", "verbatim": true},
           {"label": "결승선 위치까지 계산", "text": "결승선이 청크 안 어디에 있는지(offset)도 거리 계산에 넣었습니다.", "verbatim": true},
-          {"label": "", "text": "기준 속도 5, 플레이 시간 60~90초라 목표 거리는 300~450입니다.", "verbatim": true}
+          {
+            "label": "붙일 청크가 없으면 멈춤",
+            "text": "남은 거리가 가장 짧은 청크보다 짧으면 후보가 비는데, 이때 멈추지 않으면 끝 위치가 그대로라 반복문이 끝나지 않습니다.",
+            "verbatim": true
+          }
         ],
-        "visuals": [{"kind": "code", "n": 1, "fp": "// ① 목표 거리(플레이 시간 × 기준 속도)에 닿을 때까지"}]
+        "visuals": [{"kind": "code", "n": 1, "fp": "// ① 목표 거리: 플레이 시간(60~90초) × 기준 속도(5) → 300~450 중 하나", "lines": [1, 19]}]
       },
       {
         "key": "door-quiz",
@@ -650,7 +721,7 @@
       {
         "key": "data-assets",
         "chapter": "features",
-        "layout": "overview",
+        "layout": "code",
         "tab": "구현",
         "title": {"text": "3.4 데이터 테이블과 에셋 자동화", "verbatim": true},
         "lead": null,
@@ -658,13 +729,17 @@
         "points": [
           {"label": "", "text": "동물 18종과 무기 7종의 수치는 TSV로 관리하고, 불러올 때 프리팹과 아이콘을 연결합니다.", "verbatim": true},
           {
-            "label": "",
-            "text": "블렌더에서 만든 동물 모델은 에디터 툴(RunnerPrefabBuilder)이 머티리얼·애니메이터를 붙여 러너 프리팹으로 만들고, 미리보기 캡처까지 자동으로 처리합니다.",
+            "label": "증강을 테이블로 옮긴 과정",
+            "text": "처음에는 동물 · 무기만 TSV 테이블로 만들고, 증강 7종은 AugmentDef 안에 static 리스트로 코드에 적어 두었습니다.",
             "verbatim": true
           },
-          {"label": "선택한 이유", "text": "4.2에 정리했습니다(동물 · 무기는 TSV, 맵 테마는 ScriptableObject로 나눈 이유).", "verbatim": true}
+          {
+            "label": "증강을 테이블로 옮긴 과정",
+            "text": "로직이 붙어 있어도 기본 토대는 같아야 한다고 판단해, 증강도 Augments.tsv와 AugmentTable로 옮겨 동물 · 무기와 같은 DTO → Def 구조로 맞췄습니다(옮기는 작업은 AI에게 맡김).",
+            "verbatim": true
+          }
         ],
-        "visuals": []
+        "visuals": [{"kind": "code", "n": 2, "fp": "public void Load()", "lines": [1, 15]}]
       },
       {
         "key": "select-screen",
@@ -870,6 +945,6 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "작업|AI에게 맡긴 것|직접 한 것|AI를 쓴 이유"}]
       }
     ],
-    "applied": "eac2ce15944cdc24"
+    "applied": "ebd4aa5f86e9dc9a"
   }
 }
