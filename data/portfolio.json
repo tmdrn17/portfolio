@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24",
+  "generatedAt": "2026-11-25",
   "profile": {
     "name": "김승구",
     "nameEn": "",
@@ -91,5 +91,10 @@
       ]
     }
   ],
-  "projects": ["03-hotteok-survivor", "02-WeGotOne", "01-ODDITY", "05-AnimalRun"]
+  "projects": [
+    "03-hotteok-survivor",
+    "02-WeGotOne",
+    "01-ODDITY",
+    "05-AnimalRun"
+  ]
 }
