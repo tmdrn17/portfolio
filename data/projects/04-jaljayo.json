@@ -3,12 +3,12 @@
   "id": "04-jaljayo",
   "doc": "기술문서.md",
   "title": "잘자요",
-  "tagline": "스테이지마다 다른 기믹으로 여러 경험을 주는 졸업 작품 — 지금의 실력으로 다시 고치는 중",
+  "tagline": "스테이지마다 다른 기믹으로 여러 경험을 주는 3D 어드벤처 게임",
   "cover": "images/jaljayo_title.png",
   "team": {
     "type": "team",
     "size": "4인",
-    "role": "팀장(일정·역할·회의), 게임 프로그래밍 전반"
+    "role": "팀장(일정 조율, 역할 분배, 회의 진행), 3인칭 카메라 · 세이브 · 게임 흐름 · 보스 · 1층 퍼즐 · 2층 미션 · UI · 맵, 플레이어(공동)"
   },
   "meta": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "label": "기간",
-      "value": "2023 (3개월)"
+      "value": "2022.10 ~ 2023.10"
     },
     {
       "label": "인원",
@@ -29,7 +29,7 @@
     },
     {
       "label": "버전",
-      "value": "v1 (2023 원본) · v2 (2026.11 코드 스타일 리팩터링 — 게임 동작은 그대로)"
+      "value": "v1 (2023 원본) · v2 (2026.11 리팩터링 — 1차 코드 스타일, 2차 구조 개선)"
     }
   ],
   "tags": [
@@ -42,7 +42,7 @@
     "Claude Code"
   ],
   "links": {
-    "github": "",
+    "github": "https://github.com/tmdrn17/Jaljayo-Code",
     "video": "https://youtu.be/7Z23aZDVGV8",
     "extra": [
       {
@@ -57,31 +57,31 @@
   },
   "highlights": [
     {
-      "title": "움직이는 발판 위의 플레이어",
-      "what": "왕복 · 회전 발판 위에서 플레이어가 발판과 함께 움직이게 하는 처리",
-      "how": "축마다 반복되던 왕복 코드를 abstract 부모 `PingPongMover`의 `PingPong()` 하나로 묶었습니다(템플릿 메서드). 발판은 축 벡터만 넘깁니다.",
-      "why": "v1은 이름이 바뀌면 발판이 멈추고, 축마다 같은 코드가 반복됐습니다.",
-      "section": "3.2 발판 v1 → v2: 움직이는 발판 위의 플레이어",
+      "title": "패턴을 하나씩 고르는 보스",
+      "what": "보스는 잠깐 생각한 뒤 점프(전등 떨어뜨리기) · 고함(서류 발사) · 내려찍기(바닥 타일 끄기) 중 하나를 무작위로 골라 실행하기를 반복합니다.",
+      "how": "패턴마다 자기 데이터를 갖는 `BossAttack`의 자식 3개로 나누고, 애니메이션 → 대기 → 공격 → 쿨타임 흐름은 부모가 정합니다(템플릿 메서드). Boss는 체력 · 죽음 · 패턴 고르기만 합니다.",
+      "why": "v1은 세 패턴의 데이터를 Boss 한 클래스가 모두 들고 있어, 패턴을 하나 더하려면 Boss의 필드 · `switch` · 코루틴을 모두 고쳐야 했습니다.",
+      "section": "3.2 보스 패턴 v1 → v2: 패턴을 하나씩 고르는 보스",
       "image": {
-        "src": "images/moving_floor.gif",
+        "src": "images/boss_pattern.gif",
         "w": 640,
         "h": 360,
-        "caption": "움직이는 발판에 올라타 함께 건너가는 플레이어"
+        "caption": "보스방 — 보스가 던지는 파일을 피하며 움직임"
       }
     },
     {
       "title": "스테이지를 이어 하는 JSON 세이브",
       "what": "HP·시간·점수·사직서 조각 수·클리어 여부·씬 이름·저장 지점을 저장해 스테이지를 이어 하는 세이브",
-      "how": "다른 스크립트의 static 변수 · public 필드에 직접 대입하던 것을 `SetHp()`, `RestoreFloorClear()` 같은 메서드 호출로 바꾸고, 기존 세이브 파일을 계속 읽을 수 있게 `SaveList`의 필드 이름은 그대로 유지했습니다.",
-      "why": "여러 static 변수에서 값을 모아 오는 구조라 저장할 값이 늘 때마다 SaveManager를 고쳐야 합니다.",
+      "how": "저장 위치를 `Application.persistentDataPath`로 옮기고, 저장 · 불러오기를 `try/catch`로 감쌌습니다. `TryLoadData()`는 읽기에 실패하면 아무 값도 바꾸지 않고 `false`를 돌려주고, 불러온 값은 값을 가진 쪽의 메서드로 되돌립니다.",
+      "why": "저장 경로가 Application.dataPath라 빌드 환경에서는 쓰기가 막힐 수 있고, 파일이 없거나 깨졌을 때를 처리하지 않았습니다.",
       "section": "3.3 세이브 v1 → v2: 스테이지를 이어 하는 JSON 세이브",
       "image": null
     },
     {
-      "title": "AI와 나눠 한 코드 스타일 리팩터링",
-      "what": "v1 코드 전체(스크립트 72개, 씬 · 프리팹 47개)를 게임 동작은 그대로 두고 지금의 코딩 스타일로 정리",
-      "how": "기준을 정하고, 작업을 나누고, 결과를 Unity에서 검증하는 일은 직접 하고, 반복 작업은 Claude Code에 맡겼습니다. 설계는 Opus, 얽힌 코드는 Sonnet, 작고 독립된 스크립트는 Haiku로 모델을 나눴습니다.",
-      "why": "바꾸는 기준은 이미 정해 두었고, 스크립트 72개와 씬 · 프리팹 47개에 같은 규칙을 적용해야 하는 반복 작업이 많았습니다.",
+      "title": "AI와 나눠 한 두 번의 리팩터링",
+      "what": "v1 코드 전체(팀원 코드 포함)를 1차는 코드 스타일, 2차는 구조 개선으로 리팩터링",
+      "how": "기준을 정하고, 작업을 나누고, 결과를 Unity에서 검증하는 일은 직접 하고, 반복 작업은 Claude Code에 맡겼습니다. 2차는 기준 문서에 구조 판단 기준 8개와 쓰지 않을 것을 더하고 R1~R12로 계획을 세운 뒤 진행했습니다.",
+      "why": "바꾸는 기준은 `코딩스타일.md`에 정해 두었고, 스크립트 72개와 씬 · 프리팹 47개에 같은 규칙을 적용해야 하는 반복 작업이 많았습니다.",
       "section": "4. AI 협업",
       "image": null
     }
@@ -89,10 +89,19 @@
   "troubleshooting": [
     {
       "title": "필드 이름을 바꾸자 인스펙터 값이 사라진 문제",
-      "problem": "합치기 단계(M2)에서 `cameraArm`이 비어 플레이어가 움직이지 않았고, M3에서는 공격 쿨타임 키를 고치지 않았다면 1초가 0.5초가 될 뻔했습니다.",
+      "problem": "합치기 단계(M2)에서 `cameraArm`이 비어 플레이어가 움직이지 않은 적이 있고, M3에서는 공격 쿨타임 키를 고치지 않았다면 1초가 0.5초가 될 뻔했습니다.",
       "cause": "필드 이름을 바꾸자 씬에 저장된 프리팹 오버라이드 키가 옛 이름으로 남아 값이 사라졌습니다.",
       "solution": "리팩터링 스킬에 \"필드 이름을 바꾸면 프리팹 오버라이드의 `propertyPath`도 확인한다\"는 규칙을 추가했습니다.",
-      "result": "필드 이름을 바꾼 곳은 씬 · 프리팹 YAML 키와 프리팹 오버라이드도 같이 바꿔 인스펙터 값을 유지 (47개)",
+      "result": "",
+      "lesson": "",
+      "section": "4. AI 협업"
+    },
+    {
+      "title": "AI가 조정 값까지 상수로 만든 문제",
+      "problem": "1차에서 AI가 이동 속도 · 쿨타임 · 목숨 수처럼 에디터에서 바꿀 수 있어야 하는 값까지 `const`로 만들었습니다.",
+      "cause": "1차 기준 문서는 단순하게 제 스타일만 준 문서였습니다.",
+      "solution": "2차 기준에 \"조정 값은 `const`로 두지 않는다\", \"다른 클래스의 값을 베끼지 않는다\", \"배열 길이는 `.Length`로 읽는다\"를 적어 넣었습니다.",
+      "result": "그 값들을 `[SerializeField]`로 되돌렸습니다.",
       "lesson": "",
       "section": "4. AI 협업"
     }
@@ -120,14 +129,16 @@
   "retro": {
     "section": "5. 회고",
     "achieved": [
-      "목표였던 전시회 출품을 이뤘습니다. 「잘자요」를 완성해 교내 전시회에 출품했고, 졸업 과제 기준도 통과했습니다.",
-      "v2 리팩터링으로 C# 파일 80개와 씬 · 프리팹 47개를 고쳐 코드 양을 4,462줄에서 3,741줄로 16% 줄였고, 합칠 때 충돌과 빌드 에러는 0이었습니다."
+      "「잘자요」를 완성해 교내 전시회에 출품했고, 졸업 과제 기준도 통과했습니다.",
+      "v2 1차로 C# 파일 80개와 씬 · 프리팹 47개를 고쳐 코드 양을 16% 줄였고, 2차로 C# 파일 49개와 씬 · 프리팹 9개의 구조를 고쳤습니다. 두 번 모두 합칠 때 충돌과 컴파일 에러는 0이었습니다."
     ],
     "regrets": [
-      "리팩터링 중 찾은 버그 13곳을 TODO로만 남김 — 코인 배열 범위 초과, 보스 체력이 음수가 되면 죽지 않음, OX 퀴즈 재시작 시 초기화 안 됨 등은 동작을 바꾸지 않는다는 원칙에 따라 표시만 했습니다."
+      "AI에게 리팩터링 뼈대를 맡겼더니 이동 속도나 체력처럼 에디터에서 바꿀 수 있어야 하는 값까지 모두 상수로 만들었습니다.",
+      "리팩터링 중 찾은 버그 11곳(코인 배열 범위 초과, 보스 체력이 음수가 되면 죽지 않음 등)과 `GameObject.Find` 10곳 · 매 프레임 텍스트를 다시 쓰는 2곳은 표시만 하고 남겼습니다."
     ],
     "plans": [
-      "커진 클래스를 상태 패턴으로 나누고, 전역 상태 의존을 줄이고, 결과를 수치로 확인하는 습관 들이기"
+      "2차에서는 해야 할 일뿐만 아니라 하지 말아야 할 일, 예외 상황과 판단 기준을 같이 작성해서 넘겼고, 상수로 바뀐 조정 값을 인스펙터 값으로 되돌렸습니다.",
+      "원래 기획서에서 엔딩 스테이지였던 3층 구현과 함께 수정할 계획입니다."
     ]
   },
   "deck": {
@@ -158,13 +169,6 @@
         "title": "AI 협업",
         "sectionPath": [
           "4. AI 협업"
-        ]
-      },
-      {
-        "key": "retro-ch",
-        "title": "회고",
-        "sectionPath": [
-          "5. 회고"
         ]
       }
     ],
@@ -237,17 +241,17 @@
         "points": [
           {
             "label": "",
-            "text": "씬이 바뀌어도 Player·카메라·UI를 유지하고, 새 스테이지에 들어가면 시작 지점에 배치합니다.",
+            "text": "씬이 바뀌어도 Player·카메라·UI(Canvas)를 유지하고, 새 스테이지에 들어가면 시작 지점에 배치합니다.",
             "verbatim": true
           },
           {
             "label": "",
-            "text": "체력·점수 같은 상태는 static 변수로, 기믹 상호작용은 태그·이름 문자열로 나눴습니다.",
+            "text": "체력·점수 같은 상태는 static 변수로 두고, Player와 2층 미션이 그 값을 직접 바꿨습니다.",
             "verbatim": true
           },
           {
             "label": "",
-            "text": "당시에 알던 방법이 이것뿐이었습니다.",
+            "text": "기믹 상호작용은 태그·이름 문자열로 나눴습니다.",
             "verbatim": true
           }
         ],
@@ -275,13 +279,18 @@
         ],
         "points": [
           {
-            "label": "",
+            "label": "1차 (코드 스타일)",
             "text": "v1에서 두 매니저가 따로 만들던 싱글톤은 제네릭 부모 `SingletonBase<T>`로, MoveFloor와 Spike에 똑같이 있던 왕복 이동 코드는 abstract 부모 `PingPongMover`로 묶었습니다.",
             "verbatim": true
           },
           {
-            "label": "",
-            "text": "다른 스크립트가 static 변수나 public 필드를 직접 바꾸던 곳은 읽기 전용 프로퍼티와 메서드(`SetHp()`, `SetCoinAmount()` 등)로 바꿨습니다.",
+            "label": "2차 (구조 개선)",
+            "text": "체력 · 코인은 static 클래스 `GameSession` 한 곳이 갖고, 값이 바뀔 때 이벤트로 알립니다.",
+            "verbatim": true
+          },
+          {
+            "label": "2차 (구조 개선)",
+            "text": "UI는 매 프레임 값을 읽지 않고 이벤트를 구독해 표시만 고칩니다.",
             "verbatim": true
           }
         ],
@@ -289,7 +298,7 @@
           {
             "kind": "mermaid",
             "n": 1,
-            "fp": "classDiagram"
+            "fp": "flowchart TB"
           }
         ]
       },
@@ -312,7 +321,59 @@
           {
             "kind": "table",
             "n": 1,
-            "fp": "정리한 것|내용"
+            "fp": "정리한 것|1차|2차"
+          }
+        ]
+      },
+      {
+        "key": "authors",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "개요",
+        "title": {
+          "text": "2.3 내 코드와 팀원 코드",
+          "verbatim": true
+        },
+        "lead": {
+          "text": "원본 레포의 커밋 기록과 줄 작성자(`git blame`)로 나눴습니다.",
+          "verbatim": true
+        },
+        "sectionPath": [
+          "2. 시스템 구조",
+          "2.3 내 코드와 팀원 코드"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 1,
+            "fp": "구분|스크립트"
+          }
+        ]
+      },
+      {
+        "key": "player-split",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "개요",
+        "title": {
+          "text": "Player.cs — 세 사람이 나눠 씀 (나 194 / 610줄, 약 32%)",
+          "verbatim": true
+        },
+        "lead": {
+          "text": "기믹마다 태그 분기를 Player 한 파일에 덧붙이는 구조라, 세 사람이 같은 메서드를 함께 고쳤습니다",
+          "verbatim": false
+        },
+        "sectionPath": [
+          "2. 시스템 구조",
+          "2.3 내 코드와 팀원 코드"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 2,
+            "fp": "영역|내가 쓴 것|팀원이 쓴 것"
           }
         ]
       },
@@ -323,7 +384,7 @@
         "tab": "구현",
         "title": {
           "text": "3.1 카메라 v1 → v2: 벽에 가려지지 않는 3인칭 카메라",
-          "verbatim": false
+          "verbatim": true
         },
         "lead": null,
         "sectionPath": [
@@ -377,12 +438,7 @@
           },
           {
             "label": "바꾼 것",
-            "text": "`tag == \"Wall\"` 비교를 `CompareTag(WallTag)` 상수로",
-            "verbatim": true
-          },
-          {
-            "label": "다음 단계 — 동작 개선",
-            "text": "SphereCast로 카메라 크기만큼의 공을 쏴서 모서리 파고듦을 막기",
+            "text": "(2차) `tag == \"Wall\"` 비교를 공용 상수 `Tags.Wall`과 `CompareTag`로, 회전을 멈추는 조건은 `Player.IsMove` 대신 GameManager가 가진 `IsMoveLocked`로",
             "verbatim": true
           }
         ],
@@ -392,68 +448,74 @@
             "n": 1,
             "fp": "public class CameraArm : MonoBehaviour   // 이전 이름 Camera1",
             "lines": [
-              4,
-              23
+              14,
+              33
             ]
           }
         ]
       },
       {
-        "key": "floor-play",
+        "key": "boss-play",
         "chapter": "features",
         "layout": "visual",
         "tab": "결과",
         "title": {
-          "text": "3.2 발판 v1 → v2: 움직이는 발판 위의 플레이어",
+          "text": "3.2 보스 패턴 v1 → v2: 패턴을 하나씩 고르는 보스",
           "verbatim": true
         },
         "lead": null,
         "sectionPath": [
           "3. 핵심 기능",
-          "3.2 발판 v1 → v2: 움직이는 발판 위의 플레이어"
+          "3.2 보스 패턴 v1 → v2: 패턴을 하나씩 고르는 보스"
         ],
-        "points": [],
+        "points": [
+          {
+            "label": "",
+            "text": "보스는 잠깐 생각한 뒤 점프(전등 떨어뜨리기) · 고함(서류 발사) · 내려찍기(바닥 타일 끄기) 중 하나를 무작위로 골라 실행하기를 반복합니다.",
+            "verbatim": true
+          }
+        ],
         "visuals": [
           {
             "kind": "image",
-            "src": "images/moving_floor.gif",
+            "src": "images/boss_pattern.gif",
             "w": 640,
             "h": 360,
             "caption": {
-              "text": "움직이는 발판에 올라타 함께 건너가는 플레이어",
+              "text": "보스방 — 보스가 던지는 파일을 피하며 움직임",
               "verbatim": true
             }
           }
         ]
       },
       {
-        "key": "floor-v1",
+        "key": "boss-v1",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
         "title": {
-          "text": "3.2 발판 v1 → v2: 움직이는 발판 위의 플레이어",
+          "text": "보스 v1 (2023) — 당시에 알던 방법",
           "verbatim": false
         },
         "lead": null,
         "sectionPath": [
-          "3.2 발판 v1 → v2: 움직이는 발판 위의 플레이어",
+          "3.2 보스 패턴 v1 → v2: 패턴을 하나씩 고르는 보스",
           "v1 (2023) — 당시에 알던 방법"
         ],
         "points": [
           {
             "label": "지금 다시 보면",
-            "text": "이름이 바뀌면 발판이 멈추고, 축마다 같은 코드가 반복됩니다.",
+            "text": "전등 · 서류 · 타일 등 세 패턴의 데이터를 Boss 한 클래스가 모두 들고 있습니다.",
             "verbatim": true
           },
           {
             "label": "지금 다시 보면",
-            "text": "Rigidbody가 있는 플레이어를 transform으로 옮겨 물리와 직접 이동이 섞입니다.",
+            "text": "\"애니메이션 → 0.5초 대기 → 공격 → 3초 쉬기 → `Think()` 다시 부르기\"가 패턴마다 반복됩니다.",
             "verbatim": true
           },
           {
             "label": "지금 다시 보면",
-            "text": "회전 발판에서는 플레이어도 함께 회전하고, 내릴 때 DontDestroyOnLoad를 다시 걸어야 합니다.",
+            "text": "패턴을 하나 더하려면 Boss의 필드 · `switch` · 코루틴을 모두 고쳐야 합니다.",
             "verbatim": true
           }
         ],
@@ -461,38 +523,37 @@
           {
             "kind": "code",
             "n": 1,
-            "fp": "// 오브젝트 이름으로 동작을 고름"
+            "fp": "IEnumerator Think()",
+            "lines": [
+              1,
+              20
+            ]
           }
         ]
       },
       {
-        "key": "floor-v2",
+        "key": "boss-v2",
         "chapter": "features",
         "layout": "code",
         "tab": "구현",
         "title": {
-          "text": "발판 v2 (2026) — 리팩터링",
+          "text": "보스 v2 (2026) — 리팩터링",
           "verbatim": false
         },
         "lead": null,
         "sectionPath": [
-          "3.2 발판 v1 → v2: 움직이는 발판 위의 플레이어",
+          "3.2 보스 패턴 v1 → v2: 패턴을 하나씩 고르는 보스",
           "v2 (2026) — 리팩터링"
         ],
         "points": [
           {
             "label": "바꾼 것",
-            "text": "축마다 반복되던 왕복 코드를 abstract 부모 `PingPongMover`의 `PingPong()` 하나로 묶음 (템플릿 메서드). 발판은 축 벡터만 넘김",
+            "text": "(2차) 패턴마다 자기 데이터를 갖는 `BossAttack`의 자식 3개로 나눔. Boss는 체력 · 죽음 · 패턴 고르기만 함",
             "verbatim": true
           },
           {
             "label": "바꾼 것",
-            "text": "플레이어 값을 직접 바꾸던 `player.isMovePanel = true`를 `player.SetMovePanel(true)` 메서드로",
-            "verbatim": true
-          },
-          {
-            "label": "다음 단계 — 동작 개선",
-            "text": "발판은 Rigidbody로 움직이고, 이번 프레임에 움직인 양을 공개",
+            "text": "(2차) 새 패턴을 더할 때 Boss의 `switch`나 코루틴을 고치지 않고 자식 클래스와 필드 하나만 더하면 됨",
             "verbatim": true
           }
         ],
@@ -500,7 +561,45 @@
           {
             "kind": "code",
             "n": 1,
-            "fp": "// upperLimit에 닿으면 아래로, turningPoint에 닿으면 위로 방향을 바꾸며 axis 방향"
+            "fp": "// 보스 공격 패턴 하나. 자기가 쓰는 프리팹·위치·시간 값을 직접 가진다.",
+            "lines": [
+              3,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "key": "boss-class",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {
+          "text": "보스 패턴 구조",
+          "verbatim": false
+        },
+        "lead": null,
+        "sectionPath": [
+          "3.2 보스 패턴 v1 → v2: 패턴을 하나씩 고르는 보스",
+          "v2 (2026) — 리팩터링"
+        ],
+        "points": [
+          {
+            "label": "",
+            "text": "BossAttack.cs — 흐름은 부모가 정하고, 자식은 `Attack()`만 채움 (템플릿 메서드)",
+            "verbatim": true
+          },
+          {
+            "label": "",
+            "text": "Boss.cs — 패턴을 고르고 실행만 함 (v1의 `Think()` 연쇄를 반복문 하나로)",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "mermaid",
+            "n": 1,
+            "fp": "classDiagram"
           }
         ]
       },
@@ -511,7 +610,7 @@
         "tab": "구현",
         "title": {
           "text": "3.3 세이브 v1 → v2: 스테이지를 이어 하는 JSON 세이브",
-          "verbatim": false
+          "verbatim": true
         },
         "lead": null,
         "sectionPath": [
@@ -522,6 +621,11 @@
           {
             "label": "지금 다시 보면",
             "text": "저장 경로가 Application.dataPath라 빌드 환경에서는 쓰기가 막힐 수 있습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "지금 다시 보면",
+            "text": "파일이 없거나 깨졌을 때를 처리하지 않습니다.",
             "verbatim": true
           },
           {
@@ -555,17 +659,17 @@
         "points": [
           {
             "label": "바꾼 것",
-            "text": "다른 스크립트의 static 변수 · public 필드에 직접 대입하던 것을 `SetHp()`, `RestoreFloorClear()` 같은 메서드 호출로",
+            "text": "(2차) 저장 위치를 `Application.persistentDataPath`로 옮기고, 예전 위치에 세이브가 있으면 처음 실행 때 한 번 복사",
             "verbatim": true
           },
           {
             "label": "바꾼 것",
-            "text": "기존 세이브 파일을 계속 읽을 수 있게 `SaveList`의 필드 이름은 그대로 유지",
-            "verbatim": true
+            "text": "(2차) 저장 · 불러오기를 `try/catch`로 감싸고, `LoadData()`를 성공 여부를 돌려주는 `TryLoadData()`로",
+            "verbatim": false
           },
           {
-            "label": "다음 단계 — 동작 개선",
-            "text": "저장 경로를 persistentDataPath로 변경 (지금도 Application.dataPath)",
+            "label": "바꾼 것",
+            "text": "(1차) 다른 스크립트의 static 변수 · public 필드에 직접 대입하던 것을 `SetHp()`, `RestoreFloorClear()` 같은 메서드 호출로",
             "verbatim": true
           }
         ],
@@ -573,7 +677,11 @@
           {
             "kind": "code",
             "n": 1,
-            "fp": "// 2. 각 매니저에 값을 되돌린다."
+            "fp": "public bool TryLoadData()",
+            "lines": [
+              1,
+              17
+            ]
           }
         ]
       },
@@ -596,7 +704,7 @@
           {
             "kind": "table",
             "n": 1,
-            "fp": "기믹|내용"
+            "fp": "기믹|내용|만든 사람"
           }
         ]
       },
@@ -628,11 +736,11 @@
           },
           {
             "kind": "image",
-            "src": "images/boss_pattern.gif",
+            "src": "images/moving_floor.gif",
             "w": 640,
             "h": 360,
             "caption": {
-              "text": "보스방 — 보스가 던지는 파일을 피하며 움직임",
+              "text": "움직이는 발판에 올라타 함께 건너가는 플레이어 (발판은 팀원 코드)",
               "verbatim": true
             }
           },
@@ -687,21 +795,59 @@
         ],
         "points": [
           {
-            "label": "",
-            "text": "v1에서는 Player 한 클래스가 태그 문자열로 모든 기믹과의 상호작용을 나눴습니다.",
-            "verbatim": true
+            "label": "1차",
+            "text": "LINQ `SequenceEqual`을 `for` 비교로, 밟은 순서 리스트는 private으로",
+            "verbatim": false
           },
           {
-            "label": "",
-            "text": "기믹마다 상호작용 인터페이스를 두어 Player가 기믹 종류를 몰라도 되게 하는 것은 다음 단계 계획입니다.",
-            "verbatim": true
+            "label": "2차",
+            "text": "틀렸다는 표시를 발판이 다음 프레임에 읽던 플래그에서 같은 프레임의 이벤트로",
+            "verbatim": false
           }
         ],
         "visuals": [
           {
             "kind": "code",
             "n": 1,
-            "fp": "private bool IsCorrect()"
+            "fp": "public event Action OnWrongSequence;",
+            "lines": [
+              1,
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "key": "quiz-data",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {
+          "text": "v1 → v2 — OX 퀴즈 문제 데이터",
+          "verbatim": true
+        },
+        "lead": null,
+        "sectionPath": [
+          "3.4 스테이지마다 다른 경험을 주는 기믹",
+          "v1 → v2 — OX 퀴즈 문제 데이터"
+        ],
+        "points": [
+          {
+            "label": "2차",
+            "text": "UI 오브젝트를 데이터 저장소로 쓰지 않고, 늘 같이 움직이던 인덱스 두 개는 `currentIndex` 하나로",
+            "verbatim": false
+          },
+          {
+            "label": "2차",
+            "text": "2층 미션 클리어도 `SecondFloorManager`가 매 프레임 숫자를 보던 것을 `OnMissionCleared` 이벤트로 바꿈",
+            "verbatim": false
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "code",
+            "n": 1,
+            "fp": "// v1: 문제와 정답을 화면의 Text 오브젝트 두 묶음에서 꺼냄"
           }
         ]
       },
@@ -726,7 +872,7 @@
           {
             "kind": "table",
             "n": 1,
-            "fp": "모델|맡긴 작업|고른 이유"
+            "fp": "모델|1차 (코드 스타일)|2차 (구조 개선)|고른 이유"
           }
         ]
       },
@@ -736,7 +882,7 @@
         "layout": "overview",
         "tab": "",
         "title": {
-          "text": "AI 협업",
+          "text": "AI 협업 — 겪은 일",
           "verbatim": false
         },
         "lead": null,
@@ -744,16 +890,6 @@
           "4. AI 협업"
         ],
         "points": [
-          {
-            "label": "지킨 원칙과 확인한 방법",
-            "text": "스크립트를 바꿀 때 `.meta`의 GUID를 유지해, 씬과 프리팹의 컴포넌트 연결이 끊기지 않게 했습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "지킨 원칙과 확인한 방법",
-            "text": "Unity batchmode가 라이선스 오류로 실행되지 않아, 컴파일은 `dotnet build`로 확인했습니다(에러 0).",
-            "verbatim": true
-          },
           {
             "label": "겪은 일",
             "text": "필드 이름을 바꾸자 씬에 저장된 프리팹 오버라이드 키가 옛 이름으로 남아 값이 사라졌습니다.",
@@ -763,55 +899,19 @@
             "label": "겪은 일",
             "text": "그래서 리팩터링 스킬에 \"필드 이름을 바꾸면 프리팹 오버라이드의 `propertyPath`도 확인한다\"는 규칙을 추가했습니다.",
             "verbatim": true
+          },
+          {
+            "label": "겪은 일",
+            "text": "1차에서 AI가 이동 속도 · 쿨타임 · 목숨 수처럼 에디터에서 바꿀 수 있어야 하는 값까지 `const`로 만들었습니다(§5.3).",
+            "verbatim": true
+          },
+          {
+            "label": "겪은 일",
+            "text": "2차 기준에 \"조정 값은 `const`로 두지 않는다\", \"다른 클래스의 값을 베끼지 않는다\", \"배열 길이는 `.Length`로 읽는다\"를 적어 넣고, 그 값들을 `[SerializeField]`로 되돌렸습니다.",
+            "verbatim": true
           }
         ],
         "visuals": []
-      },
-      {
-        "key": "v2-result",
-        "chapter": "retro-ch",
-        "layout": "full",
-        "tab": "결과",
-        "title": {
-          "text": "5.1 결과",
-          "verbatim": true
-        },
-        "lead": null,
-        "sectionPath": [
-          "5. 회고",
-          "5.1 결과"
-        ],
-        "points": [],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "지표|값"
-          }
-        ]
-      },
-      {
-        "key": "growth",
-        "chapter": "retro-ch",
-        "layout": "full",
-        "tab": "결과",
-        "title": {
-          "text": "5.2 배운 점 — 처음 만든 코드를 다시 보며",
-          "verbatim": true
-        },
-        "lead": null,
-        "sectionPath": [
-          "5. 회고",
-          "5.2 배운 점 — 처음 만든 코드를 다시 보며"
-        ],
-        "points": [],
-        "visuals": [
-          {
-            "kind": "table",
-            "n": 1,
-            "fp": "프로젝트|달라진 점"
-          }
-        ]
       }
     ]
   }
