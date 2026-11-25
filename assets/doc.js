@@ -59,10 +59,12 @@
   // ── 뼈대 ──
   const metaRows = (p.meta || []).map((m) => `<div><dt>${esc(m.label)}</dt><dd>${inline(m.value)}</dd></div>`).join('') +
     (p.team?.role ? `<div class="role"><dt>${T('name.role')}</dt><dd>${inline(p.team.role)}</dd></div>` : '');
+  // 링크 앞 아이콘(assets/icons.js, GitHub·YouTube) — 테마 글자색 한 색, 수강생 요청 2026-11-25
+  const ico = (url) => (window.PFIcons ? window.PFIcons.svg(window.PFIcons.forUrl(url)) : '');
   const ext = [
-    PF.isUrl(p.links?.github) && link({ href: p.links.github, label: 'GitHub', kind: 'external', cls: 'btn' }),
-    PF.isUrl(p.links?.video) && link({ href: p.links.video, label: T('name.video'), kind: 'external', cls: 'btn' }),
-    ...(p.links?.extra || []).filter((l) => PF.isUrl(l.url)).map((l) => link({ href: l.url, label: esc(l.label), kind: 'external', cls: 'btn' })),
+    PF.isUrl(p.links?.github) && link({ href: p.links.github, label: ico(p.links.github) + 'GitHub', kind: 'external', cls: 'btn' }),
+    PF.isUrl(p.links?.video) && link({ href: p.links.video, label: ico(p.links.video) + T('name.video'), kind: 'external', cls: 'btn' }),
+    ...(p.links?.extra || []).filter((l) => PF.isUrl(l.url)).map((l) => link({ href: l.url, label: ico(l.url) + esc(l.label), kind: 'external', cls: 'btn' })),
   ].filter(Boolean);
   const deckBtn = link({ href: deckUrl(), label: T('name.deck'), kind: 'page', cls: 'btn primary' });
   const tags = (p.tags || []).length ? `<ul class="tags">${p.tags.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : '';
@@ -367,7 +369,11 @@
     const h = a.getAttribute('href') || '';
     if (/^mailto:/i.test(h)) return;                                  // 메일: target 없음
     if (h.startsWith('#')) return;                                    // 같은 문서 안: 같은 탭
-    if (/^https?:/i.test(h) || /^[a-z][a-z0-9+.-]*:/i.test(h)) return markNewTab(a);   // 외부
+    if (/^https?:/i.test(h) || /^[a-z][a-z0-9+.-]*:/i.test(h)) {                        // 외부
+      const ic = window.PFIcons?.forUrl(h);                                                 // GitHub·YouTube 주소면 앞에 아이콘(글자 링크만, 그림 링크는 그대로)
+      if (ic && !a.querySelector('img, .pf-ico')) a.insertAdjacentHTML('afterbegin', window.PFIcons.svg(ic));
+      return markNewTab(a);
+    }
     if (h.startsWith('/')) return markNewTab(a);
     if (!isRelative(h)) return;
     const k = h.indexOf('#');

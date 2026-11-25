@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="../theme/theme.css">
 <!-- 라이트/다크 모드: 다른 페이지와 같은 스크립트·같은 기억(theme.css의 두 블록 중 고름). 그리기 전에 실어 깜빡임 없음 — 수강생 요청 2026-11-12 -->
 <script src="../assets/mode.js"></script>
+<!-- 아이콘(GitHub·YouTube·Claude·NotebookLM·C#·Unity·Fork): 배경 없이 한 색, 글자색(테마)을 따름 — 수강생 요청 2026-11-25 -->
+<script src="../assets/icons.js"></script>
 <!--
   배치: theme/layout.json (2026-11-23, /portfolio-layout)
   · 머리 막대 고정 — 왼쪽 GitHub·유튜브 재생목록 아이콘, 오른쪽 탭(프로젝트·시연 영상·기술 스택·프로필)
@@ -88,17 +90,36 @@
   /* 아래 띠: 장면 고르기 */
   .scenebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 0 16px 18px; pointer-events: none; }
   .scenebar ol { position: relative; display: flex; justify-content: center; gap: clamp(18px, 6vw, 88px); pointer-events: auto; }
-  .scenebar ol::before { content: ""; position: absolute; left: 10%; right: 10%; top: 28px; height: 1px; background: var(--line-2); }
+  /* 연결선: 첫 점 가운데 → 마지막 점 가운데를 JS로 재서 그음(점 위치가 글자 폭에 따라 달라서). 지나온 구간은 강조색으로 채움 */
+  .scenebar .rail { position: absolute; height: 2px; margin-top: -1px; border-radius: 2px; background: var(--line-2); pointer-events: none; z-index: 0; }
+  .scenebar .rail i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: inherit; background: var(--accent); transition: width .7s cubic-bezier(.65, 0, .35, 1); }
+  .scenebar li { position: relative; z-index: 1; }
   .dot { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted); font-size: 12.5px; font-weight: 700; }
   .dot .mark { width: 56px; height: 56px; display: grid; place-items: center; }
-  .dot .mark i { width: 9px; height: 9px; border-radius: 999px; background: var(--line-2); box-shadow: 0 0 0 4px var(--bg); transition: transform .15s, background .15s; }
+  .dot .mark i { width: 12px; height: 12px; border-radius: 999px; background: var(--bg); border: 2px solid var(--line-2); transition: transform .2s, background .3s, border-color .3s; }
+  .dot[data-passed] .mark i { background: var(--accent); border-color: var(--accent); }
+  .dot:hover .mark i { border-color: var(--accent); }
   .dot:hover .mark i { transform: scale(1.4); background: var(--accent); }
   .dot .thumb { width: 56px; height: 56px; border-radius: 999px; overflow: hidden; border: 2px solid var(--bg); box-shadow: 0 0 0 3px var(--accent), 0 6px 18px -6px rgba(0,0,0,.3); background: var(--surface); }
   .dot .thumb img { width: 100%; height: 100%; object-fit: cover; }
   .dot .thumb span { display: grid; place-items: center; height: 100%; font-family: var(--display); font-weight: 800; font-size: 14px; color: var(--ink); }
   .dot[aria-current="true"] { color: var(--ink); }
   .dot .label { white-space: nowrap; }
-  @media (max-width: 639px) { .dot .label { display: none; } .scenebar ol { gap: 14px; } .dot .mark, .dot .thumb { width: 44px; height: 44px; } .scenebar ol::before { top: 22px; } }
+  @media (max-width: 639px) { .dot .label { display: none; } .scenebar ol { gap: 14px; } .dot .mark, .dot .thumb { width: 44px; height: 44px; } }
+  .dot .thumb { animation: pop .45s cubic-bezier(.2, .8, .3, 1.2); }
+  @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+  /* 장면 넘김: 보이는 장면의 글·버튼이 차례로 떠오름, 배경은 살짝 줌 */
+  .scene .stage > *, .scene .me-stack { transition: opacity .6s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
+  .scene:not(.on) .stage > *, .scene:not(.on) .me-stack { opacity: 0; transform: translateY(22px); }
+  .scene.on .stage > :nth-child(2) { transition-delay: .06s; } .scene.on .stage > :nth-child(3) { transition-delay: .12s; }
+  .scene.on .stage > :nth-child(4) { transition-delay: .18s; } .scene.on .stage > :nth-child(5) { transition-delay: .24s; }
+  .scene.on .stage > :nth-child(n+6), .scene.on .me-stack { transition-delay: .3s; }
+  .scene .bg { transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+  .scene:not(.on) .bg { transform: scale(1.04); }
+  @media (prefers-reduced-motion: reduce) {
+    .scene .stage > *, .scene .me-stack, .scene .bg, .dot .thumb, .scenebar .rail i { transition: none; animation: none; }
+    .scene:not(.on) .stage > *, .scene:not(.on) .me-stack { opacity: 1; transform: none; }
+  }
   /* 위·아래 화살표: 처음엔 ↓만, 끝엔 ↑만, 가운데는 둘 다 */
   .next { position: fixed; left: 50%; transform: translateX(-50%); z-index: 20; width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center;
           border: 1px solid var(--line-2); color: var(--ink); font-size: 20px; background: color-mix(in srgb, var(--bg) 78%, transparent); transition: border-color .15s, color .15s; }
@@ -114,6 +135,13 @@
   .me-chip { display: inline-flex; padding: 3px 11px; border-radius: 999px; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--bg) 70%, transparent); color: var(--ink); font-size: 13px; font-weight: 600; white-space: nowrap; }
   .me-chip.main { padding: 5px 16px; font-size: 14.5px; font-weight: 800; border-color: var(--accent); color: var(--accent); }
   .me-stack { flex: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 8px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+  /* 아이콘(assets/icons.js): 글자 높이에 맞춘 한 색 그림 */
+  .pf-ico-wrap { display: inline-flex; flex: none; line-height: 0; }
+  .pf-ico { width: 1.1em; height: 1.1em; }
+  .icon-btn .pf-ico { width: 18px; height: 18px; }
+  .me-chip { align-items: center; gap: 6px; }
+  .me-chip .pf-ico { width: 15px; height: 15px; }
+  .me-chip.main .pf-ico { width: 17px; height: 17px; }
   .me-stack li { display: flex; align-items: center; gap: 6px; }
   @media (max-height: 700px), (max-width: 639px) { .me-stack { display: none; } }
   @media (max-height: 640px) { .me-intro p + p { display: none; } }
@@ -167,7 +195,7 @@
 <body>
 <div id="root"></div>
 <script type="text/babel" data-presets="react">
-const { useState, useEffect, useRef } = React;
+const { useState, useEffect, useLayoutEffect, useRef } = React;
 
 // ── 문구 표(theme/strings.tsv): 맨 끝 "내 문구" 칸이 있으면 그 문구, 없으면 기본 문구 ──
 const DEFAULTS = {
@@ -236,12 +264,14 @@ const FEATURE_IMAGES = {
 const NO_GALLERY = new Set(["02-WeGotOne"]);
 
 // ── 대표 아이콘(GitHub · YouTube) ──
-const GitHubIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-);
-const YouTubeIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-);
+// 그림은 assets/icons.js(PFIcons) 한 곳에서 — 첨부 아이콘을 테마 톤(한 색, currentColor)으로 다시 그린 것
+const PFIcon = ({ name, className }) => {
+  const html = name && window.PFIcons ? window.PFIcons.svg(name, "pf-ico" + (className ? " " + className : "")) : "";
+  return html ? <span className="pf-ico-wrap" aria-hidden="true" dangerouslySetInnerHTML={{ __html: html }} /> : null;
+};
+const GitHubIcon = () => <PFIcon name="github" />;
+const YouTubeIcon = () => <PFIcon name="youtube" />;
+const SkillIcon = ({ name }) => <PFIcon name={window.PFIcons?.forName(name)} />;
 
 // 기능의 그림 목록: 기능 그림 + 덧붙인 그림(같은 src는 한 번만)
 function featureImages(p, h) {
@@ -367,9 +397,9 @@ function StackPanel({ skills, S }) {
           const [group, ...keys] = s.name.split(" · ");
           return (
             <li key={s.name} className="panel p-5">
-              <h3 className="font-extrabold text-xl">{group}</h3>
+              <h3 className="font-extrabold text-xl flex items-center gap-2"><SkillIcon name={group} />{group}</h3>
               <ul className="mt-4 flex flex-wrap gap-2">
-                {keys.map(k => <li key={k} className="border line rounded-full px-3 py-1 text-[14.5px]" style={{ background: "var(--bg)" }}>{k}</li>)}
+                {keys.map(k => <li key={k} className="border line rounded-full px-3 py-1 text-[14.5px] inline-flex items-center gap-1.5" style={{ background: "var(--bg)" }}><SkillIcon name={k} />{k}</li>)}
               </ul>
             </li>
           );
@@ -502,11 +532,11 @@ function SceneBackground({ p, active }) {
 function Scene({ p, i, active, S, onPlay, onDetail }) {
   const metaLine = (p.meta || []).filter(m => ["장르", "기간"].includes(m.label)).map(m => m.value).join("  ·  ");
   return (
-    <section className="scene" id={"p-" + p.id} data-id={p.id} aria-label={p.title}>
+    <section className={"scene" + (active ? " on" : "")} id={"p-" + p.id} data-id={p.id} aria-label={p.title}>
       <SceneBackground p={p} active={active} />
       <div className="shade" />
       <div className="glow" />
-      <div className="relative h-full flex flex-col items-center justify-center text-center px-5 pt-[var(--bar)] pb-36">
+      <div className="stage relative h-full flex flex-col items-center justify-center text-center px-5 pt-[var(--bar)] pb-36">
         <p className="eyebrow">{S["en.project"]} {String(i + 1).padStart(2, "0")}</p>
         <h2 className="mt-3 text-5xl sm:text-7xl font-extrabold tracking-tight">{p.title}</h2>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -530,17 +560,17 @@ function Scene({ p, i, active, S, onPlay, onDetail }) {
 }
 
 // ── 프로필 장면: 프로젝트 탭 맨 위(0번 장면). 이름·자기소개·연락처를 가운데에(사진 없음, 2026-11-24), 밑단에 기술 스택 ──
-function ProfileScene({ profile, ownLinks, skills, projects, S }) {
+function ProfileScene({ profile, ownLinks, skills, projects, S, active }) {
   const covers = projects.filter(p => p.cover).slice(0, 6).map(p => img(p.id, p.cover));
   return (
-    <section className="scene me" id="profile" data-id="__profile" aria-label="프로필">
+    <section className={"scene me" + (active ? " on" : "")} id="profile" data-id="__profile" aria-label="프로필">
       <div className="bg">
         {covers.length > 0 && <div className="mosaic" style={{ "--n": Math.min(covers.length, 3) }}>{covers.map(c => <img key={c} src={c} alt="" />)}</div>}
       </div>
       <div className="shade" />
       <div className="me-wrap relative h-full max-w-[1120px] mx-auto flex flex-col px-5 sm:px-8 pt-[var(--bar)]">
       <div className="flex-1 min-h-0 flex flex-col items-center justify-center text-center">
-        <div className="min-w-0 flex flex-col items-center">
+        <div className="stage min-w-0 flex flex-col items-center">
           <p className="eyebrow">PROFILE</p>
           <h2 className="mt-3 text-5xl sm:text-7xl font-extrabold tracking-tight">{profile.name}</h2>
           {profile.nameEn && <p className="accent mt-2 text-lg font-extrabold" style={{ fontFamily: "var(--display)" }}>{profile.nameEn}</p>}
@@ -571,8 +601,8 @@ function ProfileScene({ profile, ownLinks, skills, projects, S }) {
           {skills.map(s => {
             const [group, ...keys] = s.name.split(" · ");
             return keys.length === 0
-              ? <li key={s.name}><span className="me-chip main">{group}</span></li>
-              : keys.map(k => <li key={k}><span className="me-chip">{k}</span></li>);
+              ? <li key={s.name}><span className="me-chip main"><SkillIcon name={group} />{group}</span></li>
+              : keys.map(k => <li key={k}><span className="me-chip"><SkillIcon name={k} />{k}</span></li>);
           })}
         </ul>
       )}
@@ -584,7 +614,7 @@ function ProfileScene({ profile, ownLinks, skills, projects, S }) {
 function ProfileDot({ current, onGo, label }) {
   return (
     <li>
-      <button type="button" className="dot" aria-current={current || undefined} onClick={() => onGo(0)} title={label}>
+      <button type="button" className="dot" aria-current={current || undefined} data-passed={!current || undefined} onClick={() => onGo(0)} title={label}>
         {current
           ? <span className="thumb"><span>ME</span></span>
           : <span className="mark"><i /></span>}
@@ -594,13 +624,13 @@ function ProfileDot({ current, onGo, label }) {
   );
 }
 
-function SceneDot({ p, i, current, onGo }) {
+function SceneDot({ p, i, current, passed, onGo }) {
   const logo = LOGOS[p.id] ? img(p.id, LOGOS[p.id]) : "";
   const ci = CARD_IMAGE[p.id];
   const src = logo || (ci ? ci.src : (p.cover ? img(p.id, p.cover) : ""));
   return (
     <li>
-      <button type="button" className="dot" aria-current={current || undefined} onClick={() => onGo(i)} title={p.title}>
+      <button type="button" className="dot" aria-current={current || undefined} data-passed={passed || undefined} onClick={() => onGo(i)} title={p.title}>
         {current
           ? <span className="thumb">{src ? <img src={src} alt="" style={{ objectFit: logo ? "contain" : "cover", objectPosition: ci?.position || "50% 50%" }} /> : <span>{String(i + 1).padStart(2, "0")}</span>}</span>
           : <span className="mark"><i /></span>}
@@ -625,13 +655,76 @@ function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrol
     pick();
     return () => { cancelAnimationFrame(raf); root.removeEventListener("scroll", pick); window.removeEventListener("resize", pick); };
   }, [projects]);
-  const go = i => scrollRef.current?.children[i]?.scrollIntoView({ behavior: "smooth" });
+  // 장면 넘김: 브라우저 기본 스냅 대신 천천히 출발·천천히 멈추는 곡선으로 직접 굴림(움직임 줄이기 설정이면 바로 이동)
+  const anim = useRef({ raf: 0, busy: false, to: null, end: 0, tail: false });
+  const go = i => {
+    const root = scrollRef.current; if (!root) return;
+    i = Math.max(0, Math.min(count - 1, i));
+    const target = root.children[i]?.offsetTop ?? i * root.clientHeight;
+    const a = anim.current;
+    cancelAnimationFrame(a.raf);
+    const from = root.scrollTop, dist = target - from;
+    if (Math.abs(dist) < 1 || matchMedia("(prefers-reduced-motion: reduce)").matches) { root.scrollTop = target; a.busy = false; a.to = null; return; }
+    const dur = Math.min(1150, 720 + Math.abs(dist) / (root.clientHeight || 1) * 140);
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    root.style.scrollSnapType = "none";   // 굴리는 동안 스냅이 끼어들어 덜컥거리지 않게
+    a.busy = true; a.to = i;
+    const t0 = performance.now();
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur);
+      root.scrollTop = from + dist * ease(t);
+      if (t < 1) { a.raf = requestAnimationFrame(step); return; }
+      a.busy = false; a.to = null; a.end = performance.now(); a.tail = true;
+      root.style.scrollSnapType = "";
+    };
+    a.raf = requestAnimationFrame(step);
+  };
+  // 마우스 휠·터치패드: 한 번 굴리면 한 장면씩(터치패드 관성으로 여러 장면이 넘어가지 않게). 터치 화면은 기본 스냅 그대로
+  useEffect(() => {
+    const root = scrollRef.current; if (!root) return;
+    let last = 0, acc = 0;
+    const onWheel = e => {
+      if (e.ctrlKey) return;   // 확대·축소 제스처는 그대로
+      e.preventDefault();
+      const now = performance.now(), gap = now - last; last = now;
+      const a = anim.current;
+      if (a.busy) { acc = 0; return; }
+      if (a.tail) { if (gap < 150 && now - a.end < 1500) return; a.tail = false; }
+      if (gap > 250) acc = 0;
+      acc += e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      if (Math.abs(acc) < 40) return;
+      const dir = Math.sign(acc); acc = 0;
+      go(Math.round(root.scrollTop / (root.clientHeight || 1)) + dir);
+    };
+    root.addEventListener("wheel", onWheel, { passive: false });
+    return () => { root.removeEventListener("wheel", onWheel); cancelAnimationFrame(anim.current.raf); };
+  }, [projects]);
+  // 아래 띠 연결선: 첫 점 가운데 ~ 마지막 점 가운데, 지금 장면까지는 강조색
+  const olRef = useRef(null);
+  const [rail, setRail] = useState(null);
+  useLayoutEffect(() => {
+    const ol = olRef.current; if (!ol) return;
+    const measure = () => {
+      const box = ol.getBoundingClientRect();
+      const xs = [...ol.querySelectorAll(".dot .mark, .dot .thumb")].map(m => {
+        const b = m.getBoundingClientRect();
+        return { x: b.left + b.width / 2 - box.left, y: b.top + b.height / 2 - box.top };
+      });
+      if (xs.length < 2) return setRail(null);
+      setRail({ x0: xs[0].x, x1: xs[xs.length - 1].x, xa: (xs[active] || xs[0]).x, y: xs[0].y });
+    };
+    measure();
+    const ro = new ResizeObserver(measure); ro.observe(ol);
+    document.fonts?.ready.then(measure);
+    return () => ro.disconnect();
+  }, [active, projects]);
   // 위·아래 방향키로 이전·다음 장면(영상·자세히가 열려 있거나 글 입력 중이면 쓰지 않음)
   useEffect(() => {
     const onKey = e => {
       if (locked || e.altKey || e.ctrlKey || e.metaKey) return;
       if (e.target.closest?.("input, textarea, select, [contenteditable]")) return;
-      const to = e.key === "ArrowDown" || e.key === "PageDown" ? active + 1 : e.key === "ArrowUp" || e.key === "PageUp" ? active - 1 : null;
+      const cur = anim.current.to ?? active;   // 굴리는 중에 또 누르면 그다음 장면으로 이어서
+      const to = e.key === "ArrowDown" || e.key === "PageDown" ? cur + 1 : e.key === "ArrowUp" || e.key === "PageUp" ? cur - 1 : null;
       if (to === null) return;
       e.preventDefault();
       if (to >= 0 && to < count) go(to);
@@ -642,14 +735,15 @@ function ProjectScenes({ projects, S, active, setActive, onPlay, onDetail, scrol
   return (
     <>
       <main ref={scrollRef} className="scenes">
-        <ProfileScene profile={profile} ownLinks={ownLinks} skills={skills} projects={projects} S={S} />
+        <ProfileScene profile={profile} ownLinks={ownLinks} skills={skills} projects={projects} S={S} active={active === 0} />
         {projects.map((p, i) => <Scene key={p.id} p={p} i={i} active={i + 1 === active} S={S} onPlay={onPlay} onDetail={onDetail} />)}
       </main>
       <nav className="scenebar" aria-label="프로젝트 고르기">
         <div className="wrap">
-          <ol>
+          <ol ref={olRef}>
+            {rail && <span className="rail" aria-hidden="true" style={{ left: rail.x0, width: rail.x1 - rail.x0, top: rail.y }}><i style={{ width: Math.max(0, rail.xa - rail.x0) }} /></span>}
             <ProfileDot current={active === 0} onGo={go} label="프로필" />
-            {projects.map((p, i) => <SceneDot key={p.id} p={p} i={i} current={i + 1 === active} onGo={() => go(i + 1)} />)}
+            {projects.map((p, i) => <SceneDot key={p.id} p={p} i={i} current={i + 1 === active} passed={i + 1 < active} onGo={() => go(i + 1)} />)}
           </ol>
           <div className="scrollhint" aria-hidden="true"><span className="mouse"><i /></span><span>SCROLL</span></div>
         </div>

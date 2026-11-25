@@ -38,7 +38,7 @@
     "TSV 데이터"
   ],
   "links": {
-    "github": "https://github.com/tmdrn17/AnimalRun-Code",
+    "github": "https://github.com/tmdrn17/AnimalRun",
     "video": "https://youtu.be/vwFRyeQ6Njk",
     "extra": [
       {
@@ -159,7 +159,8 @@
   "retro": {
     "section": "6. 결과와 회고",
     "achieved": [
-      "팀 해체 이후 다시 열어 2023 원형을 아래처럼 바꿨고, 초기 버전 보다 훨씬 게임에 가까운 모습으로 변했습니다."
+      "팀 해체 이후 다시 열어 2023 원형을 아래처럼 바꿨고, 초기 버전 보다 훨씬 게임에 가까운 모습으로 변했습니다.",
+      "이번 프로젝트에서는 역할 분리와 설계 패턴 적용으로 코드 구조를 개선하고, 세분화된 커밋 기록을 통해 개발 과정의 추적성과 이해도를 높였습니다."
     ],
     "regrets": [
       "스토어 업로드에는 실패",
@@ -221,6 +222,17 @@
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
+        "key": "arch-roles",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "구조",
+        "title": {"text": "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "클래스|맡은 일"}]
+      },
+      {
         "key": "game-loop",
         "chapter": "structure",
         "layout": "full",
@@ -253,6 +265,21 @@
           }
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "// ① 목표 거리: 플레이 시간(60~90초) × 기준 속도(5) → 300~450 중 하나", "lines": [1, 19]}]
+      },
+      {
+        "key": "level-gen-flow",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "흐름",
+        "title": {"text": "3.1 목표 플레이 시간에 맞춘 레벨 생성", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 목표 플레이 시간에 맞춘 레벨 생성"],
+        "points": [
+          {"label": "붙일 청크가 없으면 멈춤", "text": "그래서 결승선은 목표 거리보다 조금 짧아질 수 있지만, 최대 거리는 넘지 않습니다.", "verbatim": true},
+          {"label": "", "text": "기준 속도 5, 플레이 시간 60~90초라 목표 거리는 300~450입니다.", "verbatim": true},
+          {"label": "", "text": "적 무리는 첫 두 청크와 결승 청크를 빼고, 문에서 3 이상 떨어진 자리를 10번까지 찾아 0~5마리씩 놓습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart TD"}]
       },
       {
         "key": "door-quiz",
@@ -352,7 +379,7 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "code", "n": 2, "fp": "public void Load()", "lines": [1, 15]}]
+        "visuals": [{"kind": "code", "n": 3, "fp": "public void Load()", "lines": [1, 15]}]
       },
       {
         "key": "select-screen",
@@ -515,6 +542,29 @@
         "edited": true
       },
       {
+        "key": "runner-reuse",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "재사용된 러너 문제", "verbatim": false},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"],
+        "points": [
+          {"label": "문제", "text": "러너를 Destroy 대신 꺼 두었다가 다시 켜 쓰도록 바꾸자 두 가지 문제가 생겼습니다.", "verbatim": true},
+          {
+            "label": "회색 · 무적",
+            "text": "죽을 때 isDead를 켜고 회색 머티리얼로 바꾼 뒤 꺼 두는데, 다시 켤 때 되돌리지 않아 회색인 채로 나오고 다시 죽지도 않았습니다. 켜질 때(OnEnable) isDead와 원래 머티리얼을 되돌렸습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "무기가 안 켜짐",
+            "text": "재사용 러너는 무기가 이미 있어 바로 돌아가 버려, 꺼 둔 무기가 다시 켜지지 않았습니다. 무기 위치가 꺼져 있으면 다시 켜도록 바꿨습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "code", "n": 3, "fp": "// Runner.cs — 다시 켜질 때 죽기 전 상태로 되돌림"}]
+      },
+      {
         "key": "collision-choice",
         "chapter": "tradeoffs",
         "layout": "full",
@@ -609,6 +659,17 @@
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
+        "key": "arch-roles",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "구조",
+        "title": {"text": "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["2. 시스템 구조", "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "클래스|맡은 일"}]
+      },
+      {
         "key": "game-loop",
         "chapter": "structure",
         "layout": "full",
@@ -641,6 +702,21 @@
           }
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "// ① 목표 거리: 플레이 시간(60~90초) × 기준 속도(5) → 300~450 중 하나", "lines": [1, 19]}]
+      },
+      {
+        "key": "level-gen-flow",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "흐름",
+        "title": {"text": "3.1 목표 플레이 시간에 맞춘 레벨 생성", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.1 목표 플레이 시간에 맞춘 레벨 생성"],
+        "points": [
+          {"label": "붙일 청크가 없으면 멈춤", "text": "그래서 결승선은 목표 거리보다 조금 짧아질 수 있지만, 최대 거리는 넘지 않습니다.", "verbatim": true},
+          {"label": "", "text": "기준 속도 5, 플레이 시간 60~90초라 목표 거리는 300~450입니다.", "verbatim": true},
+          {"label": "", "text": "적 무리는 첫 두 청크와 결승 청크를 빼고, 문에서 3 이상 떨어진 자리를 10번까지 찾아 0~5마리씩 놓습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart TD"}]
       },
       {
         "key": "door-quiz",
@@ -739,7 +815,7 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "code", "n": 2, "fp": "public void Load()", "lines": [1, 15]}]
+        "visuals": [{"kind": "code", "n": 3, "fp": "public void Load()", "lines": [1, 15]}]
       },
       {
         "key": "select-screen",
@@ -901,6 +977,29 @@
         "visuals": [{"kind": "code", "n": 1, "fp": "// Synty 셰이더는 _BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"}]
       },
       {
+        "key": "runner-reuse",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "재사용된 러너 문제", "verbatim": false},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"],
+        "points": [
+          {"label": "문제", "text": "러너를 Destroy 대신 꺼 두었다가 다시 켜 쓰도록 바꾸자 두 가지 문제가 생겼습니다.", "verbatim": true},
+          {
+            "label": "회색 · 무적",
+            "text": "죽을 때 isDead를 켜고 회색 머티리얼로 바꾼 뒤 꺼 두는데, 다시 켤 때 되돌리지 않아 회색인 채로 나오고 다시 죽지도 않았습니다. 켜질 때(OnEnable) isDead와 원래 머티리얼을 되돌렸습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "무기가 안 켜짐",
+            "text": "재사용 러너는 무기가 이미 있어 바로 돌아가 버려, 꺼 둔 무기가 다시 켜지지 않았습니다. 무기 위치가 꺼져 있으면 다시 켜도록 바꿨습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [{"kind": "code", "n": 3, "fp": "// Runner.cs — 다시 켜질 때 죽기 전 상태로 되돌림"}]
+      },
+      {
         "key": "collision-choice",
         "chapter": "tradeoffs",
         "layout": "full",
@@ -945,6 +1044,6 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "작업|AI에게 맡긴 것|직접 한 것|AI를 쓴 이유"}]
       }
     ],
-    "applied": "ebd4aa5f86e9dc9a"
+    "applied": "e3c6c24b0174b159"
   }
 }

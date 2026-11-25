@@ -68,11 +68,11 @@
       "name": "협업 · Git · Fork",
       "evidence": [
         {
-          "text": "기능 단위 브랜치(feature/대왕-오징어)로 작업, 씬·프리팹·폰트 에셋 충돌 정리",
+          "text": "기능별 브랜치·버그 수정 브랜치를 나눠 작업하고, 씬·프리팹·폰트 에셋 충돌을 직접 해결",
           "project": "02-WeGotOne"
         },
         {
-          "text": "기능마다 브랜치를 나눠 작업",
+          "text": "AI가 팀 원격 브랜치에 푸시한 일 뒤로 커밋·푸시는 AI에 맡기지 않는 규칙을 정함",
           "project": "01-ODDITY"
         }
       ]
@@ -87,6 +87,14 @@
         {
           "text": "동물 프리팹 파이프라인과 맵 테마 청크·적 대량 제작에 Claude Code 사용",
           "project": "05-AnimalRun"
+        },
+        {
+          "text": "기준·분배·검증은 직접 하고, 기준대로 코드를 바꾸는 반복 리팩터링을 Claude Code에 맡김",
+          "project": "04-jaljayo"
+        },
+        {
+          "text": "강의 자료를 넣은 NotebookLM에 설계를 묻고, 공간 분할 격자·다단히트 방지 설명을 받음",
+          "project": "03-hotteok-survivor"
         }
       ]
     }
@@ -95,6 +103,7 @@
     "03-hotteok-survivor",
     "02-WeGotOne",
     "01-ODDITY",
-    "05-AnimalRun"
+    "05-AnimalRun",
+    "04-jaljayo"
   ]
 }

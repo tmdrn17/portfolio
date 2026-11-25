@@ -53,6 +53,8 @@ code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft
 .notice .pf-note-err { color: var(--faint); font-size: 13px; margin-top: 14px; }
 
 /* 새 탭 표시 ↗ (F10) */
+.pf-ico { display: inline-block; width: 1.05em; height: 1.05em; margin-right: .3em; vertical-align: -.16em; flex: none; }   /* 링크 아이콘(assets/icons.js) */
+.btn .pf-ico { margin-right: 2px; }
 .pf-newtab-icon { display: inline-block; width: .72em; height: .72em; margin-left: .22em; vertical-align: .02em; flex: none; opacity: .8; }
 
 /* 건너뛰기 링크 (같은 탭) */

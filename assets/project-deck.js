@@ -380,7 +380,7 @@
     all.forEach(PF.stretchScene);
     PF.noteFill(all, { fill: !auto });                                  // 예전 데이터 자동 구성은 채움률 참고를 내지 않음(다시 빌드 안내 1건만)
     if (auto) PF.note('cover', 'auto-mode', 1, '예전 데이터로 자동 구성(다시 빌드하면 슬라이드)');
-    else if (all.length > 30) PF.note('cover', 'many-scenes', all.length, `장면 ${all.length}장(권장 15~30장)`);
+    else if (all.length > 50) PF.note('cover', 'many-scenes', all.length, `장면 ${all.length}장(권장 15~50장)`);
     Object.assign(info.summary, { scenes: all.length, chapters: model.length, slides: model.reduce((a, c) => a + c.slides.length, 0), mode: info.mode });
     mark('summary');
     remapHash(p, all, model);
