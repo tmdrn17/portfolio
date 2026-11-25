@@ -406,6 +406,17 @@
         "edited": true
       },
       {
+        "key": "shock-history",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "3.1.2 전기가오리", "verbatim": true},
+        "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.2 전기가오리"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}]
+      },
+      {
         "key": "shock",
         "chapter": "features",
         "layout": "code",
@@ -440,7 +451,7 @@
           },
           {
             "label": "",
-            "text": "처음에는 닿기만 하면 펀치했지만, 팀 테스트 뒤 버그를 고치면서 부모의 FishStateManager 상태를 확인해 기절 · 지친 상태에서는 펀치하지 않도록 했습니다.",
+            "text": "처음에는 닿기만 하면 펀치했는데, 9/5 팀 테스트에서 이미 기절한 갯가재도 플레이어가 가까이 가면 펀치하는 문제가 나왔습니다. 그래서 부모의 FishStateManager 상태를 매 프레임 확인해, 기절 · 지친 상태에서는 펀치하지 않도록 했습니다.",
             "verbatim": true
           }
         ],
@@ -792,6 +803,17 @@
         "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}]
       },
       {
+        "key": "shock-history",
+        "chapter": "features",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {"text": "3.1.2 전기가오리", "verbatim": true},
+        "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.2 전기가오리"],
+        "points": [],
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}]
+      },
+      {
         "key": "shock",
         "chapter": "features",
         "layout": "code",
@@ -826,7 +848,7 @@
           },
           {
             "label": "",
-            "text": "처음에는 닿기만 하면 펀치했지만, 팀 테스트 뒤 버그를 고치면서 부모의 FishStateManager 상태를 확인해 기절 · 지친 상태에서는 펀치하지 않도록 했습니다.",
+            "text": "처음에는 닿기만 하면 펀치했는데, 9/5 팀 테스트에서 이미 기절한 갯가재도 플레이어가 가까이 가면 펀치하는 문제가 나왔습니다. 그래서 부모의 FishStateManager 상태를 매 프레임 확인해, 기절 · 지친 상태에서는 펀치하지 않도록 했습니다.",
             "verbatim": true
           }
         ],
@@ -1018,6 +1040,6 @@
         "visuals": []
       }
     ],
-    "applied": "bef739bd0aec907c"
+    "applied": "e06725e802ed7451"
   }
 }
