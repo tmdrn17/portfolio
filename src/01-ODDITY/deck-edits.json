@@ -108,7 +108,9 @@
       "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다.", "verbatim": true},
       "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
       "points": [
-        {"label": "", "text": "값마다 UI가 다른 안내 문구를 띄웁니다. 이후 팀원이 수락한 미션을 임무 목록에서 감추도록 바꿔, AlreadyAccepted는 지금 화면에 나오지 않고 같은 미션이 두 번 들어가지 않게 막는 마지막 확인으로만 남아 있습니다.",
+        {
+          "label": "",
+          "text": "값마다 UI가 다른 안내 문구를 띄웁니다. 이후 팀원이 수락한 미션을 임무 목록에서 감추도록 바꿔, AlreadyAccepted는 지금 화면에 나오지 않고 같은 미션이 두 번 들어가지 않게 막는 마지막 확인으로만 남아 있습니다.",
           "verbatim": true
         }
       ],
@@ -135,10 +137,44 @@
         },
         {
           "label": "",
-          "text": "예를 들어 구르기 입력이 들어오면 요청만 Player로 올라가고, Player가 스태미나를 확인한 뒤 PlayerController에 구르기를 시킵니다. 애니메이션이 끝났다는 신호(EndRolling · EndHit · WakeUp)도 Player가 받아 PlayerController에 전달합니다. 덕분에 보스 · 스킬 · 증강칩처럼 플레이어의 체력과 스태미나를 다루는 팀원 기능은 Player 쪽에 붙일 수 있었습니다.", "verbatim": true}
+          "text": "예를 들어 구르기 입력이 들어오면 요청만 Player로 올라가고, Player가 스태미나를 확인한 뒤 PlayerController에 구르기를 시킵니다. 애니메이션이 끝났다는 신호(EndRolling · EndHit · WakeUp)도 Player가 받아 PlayerController에 전달합니다. 덕분에 보스 · 스킬 · 증강칩처럼 플레이어의 체력과 스태미나를 다루는 팀원 기능은 Player 쪽에 붙일 수 있었습니다.",
+          "verbatim": true
+        }
       ],
       "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}],
       "from": {"key": "player-arch", "sectionPath": ["2. 시스템 구조", "2.1 플레이어"], "sig": ["2.1 플레이어|mermaid|1|flowchart LR"]}
+    },
+    {
+      "key": "ui-lock-code",
+      "chapter": "structure",
+      "layout": "code",
+      "tab": "구현",
+      "title": {"text": "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["2. 시스템 구조", "2.2 미션", "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"],
+      "points": [
+        {
+          "label": "문제",
+          "text": "Esc나 UI를 열면 조종 스크립트가 멈춰, 걷기 값이 남은 캐릭터가 제자리에서 계속 걸었습니다.",
+          "verbatim": false
+        },
+        {
+          "label": "해결",
+          "text": "컴포넌트는 켜 두고 잠금 값으로 조작만 막아 애니메이터 · 피격 처리는 그대로 돌게 했고, 확인하는 곳이 흩어지는 단점은 받아들였습니다.",
+          "verbatim": false
+        },
+        {
+          "label": "결과",
+          "text": "이후 팀원도 염동력 · 스킬 · 일시 정지 입력 제한을 같은 잠금 값(IsUIClose)으로 통일했습니다.",
+          "verbatim": false
+        }
+      ],
+      "visuals": [{"kind": "code", "n": 1, "fp": "// UIManager.cs — 커서를 잠그거나 풀 때 잠금 값 하나만 바꿈 (컴포넌트는 끄지 않음)"}],
+      "from": {
+        "key": "ui-lock-code",
+        "sectionPath": ["2. 시스템 구조", "2.2 미션", "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"],
+        "sig": ["2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가|code|1|// UIManager.cs — 커서를 잠그거나 풀 때 잠금 값 하나만 바꿈 (컴포넌트는 끄지 않음)"]
+      }
     }
   ],
   "hide": []
