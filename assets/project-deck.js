@@ -197,8 +197,9 @@
     const vis = (list) => `<div class="vis">${list.join('')}</div>`;
     const tight = variant.tight ? ' tight' : '';
     if (!vs.length) {
-      if (sl.layout === 'problem') return `<div class="dk dk-text${tight}">${flowHtml(points, variant.stack || variant.tight ? 'row' : 'col')}</div>`;
-      return `<div class="dk dk-text${tight}">${ncards(points, { two: points.length >= 3 && !variant.stack, num: sl.layout !== 'overview' })}</div>`;
+      // 글만 있는 장면은 위에서 아래로 한 줄씩 차례로(수강생 요청 2026-11-26). 한 줄로 안 들어갈 때만 2열·가로 흐름(variant.two)
+      if (sl.layout === 'problem') return `<div class="dk dk-text${tight}">${flowHtml(points, variant.two ? 'row' : 'col')}</div>`;
+      return `<div class="dk dk-text${tight}">${ncards(points, { two: !!variant.two && points.length >= 3, num: sl.layout !== 'overview' })}</div>`;
     }
     if (sl.layout === 'screens') {
       return `<div class="dk scr-row${tight}" style="--n:${vs.length}">${vs.map((v, i) => `<div class="fe-card">${vis([v])}${points[i] ? `<p class="fe-k">${esc(PF.t('en.feature'))} ${String(i + 1).padStart(2, '0')}</p>${points[i].label ? `<h3>${esc(PF.label(points[i].label))}</h3>` : ''}${txt(points[i]) ? `<p>${inline(txt(points[i]))}</p>` : ''}` : ''}</div>`).join('')}</div>`;
@@ -255,7 +256,8 @@
   //   codeChunk(v) = 그 코드의 이번 줄 범위 · tsplit = { v, rows: [a, b) } 행을 나누는 표 하나(다른 표는 그대로 둠)
   function fitSlide(sl, vis, sid, part, codeChunk, meta, tsplit = null, depth = 0) {
     const vs = vis.map((v) => vboxHtml(v, v.ref.kind === 'code' ? codeChunk(v) : v.ref.kind === 'table' && tsplit && tsplit.v === v ? tsplit.rows : null));
-    const V = sl.layout === 'full' || sl.layout === 'screens' ? [{}, { tight: true }]
+    const V = !vs.length ? [{}, { tight: true }, { two: true }, { two: true, tight: true }]   // 글만: 한 줄씩 차례로가 먼저
+      : sl.layout === 'full' || sl.layout === 'screens' ? [{}, { tight: true }]
       : [{ vw: 1.4 }, { vw: 1.7 }, { vw: 1.15 }, { vw: 1.4, tight: true }, { stack: true }, { stack: true, tight: true }];
     const build = (v) => {
       const s = PF.scene({ id: sid, tpl: 'D', eyebrow: meta.chapter, rlabel: meta.rlabel, title: txt(sl.title) || meta.chapter, sub: part, lead: part && part !== `1/${part.split('/')[1]}` ? '' : txt(sl.lead), foot: meta.foot, sec: meta.chapter, group: meta.chapter, stitle: txt(sl.title) });
@@ -369,9 +371,9 @@
     const end = endScene(p, foot, ext, auto);
     const toc = tocScene(p, foot, tocItems, merged ? [] : retro, auto);
     const all = [cover, toc, ...chapterScenes, ...(merged ? [] : retro), end];
-    // 글 장면 글 키우기 → 한 줄 지키기 → 꽉 채우기(수강생 요청 2026-11-12, deck-common.js). 모두 넘침 검사를 거치므로 넘침이 새로 생기지 않음
-    info.textGrow = PF.growText(all.filter((s) => s.classList.contains('pf-sum') && s.querySelector('.dk-text') && !s.querySelector('.pf-zoomwrap, .pf-clipped')),
-      ['.dk-text .ncard p', '.dk-text .ncard .lb', '.dk-text .ncard .num', '.dk-text .fstep p', '.dk-text .fstep .labelchip']);
+    // 한 줄 지키기 → 꽉 채우기(수강생 요청 2026-11-12, deck-common.js). 모두 넘침 검사를 거치므로 넘침이 새로 생기지 않음
+    //   글 장면 글 키우기(PF.growText)는 쓰지 않음(수강생 요청 2026-11-26: 글이 적은 장면을 글자를 키워 억지로 채우지 않음)
+    info.textGrow = 1;
     PF.oneLine(all, {
       deckSel: ['.pf-title'],
       sceneSel: ['.pf-lead', '.pi-t', '.pi-head .tagline', '.pi-meta dd', '.lcard .lc-t', '.ch-t', '.en-t', '.toc-list .t', '.toc-list .d',

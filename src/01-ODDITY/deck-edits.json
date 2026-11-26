@@ -98,6 +98,47 @@
         "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
         "sig": ["3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기|image|images/roll_speed_curve_inspector.png|1"]
       }
+    },
+    {
+      "key": "mission-enum",
+      "chapter": "features",
+      "layout": "code",
+      "tab": "구현",
+      "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+      "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다.", "verbatim": true},
+      "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+      "points": [
+        {"label": "", "text": "값마다 UI가 다른 안내 문구를 띄웁니다. 이후 팀원이 수락한 미션을 임무 목록에서 감추도록 바꿔, AlreadyAccepted는 지금 화면에 나오지 않고 같은 미션이 두 번 들어가지 않게 막는 마지막 확인으로만 남아 있습니다.",
+          "verbatim": true
+        }
+      ],
+      "visuals": [{"kind": "code", "n": 3, "fp": "public enum AddMissionResult"}],
+      "from": {
+        "key": "mission-enum",
+        "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+        "sig": ["3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템|code|3|public enum AddMissionResult"]
+      }
+    },
+    {
+      "key": "player-arch",
+      "chapter": "structure",
+      "layout": "visual",
+      "tab": "구조",
+      "title": {"text": "2.1 플레이어", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["2. 시스템 구조", "2.1 플레이어"],
+      "points": [
+        {
+          "label": "",
+          "text": "Player는 바깥과 만나는 창구로서 스태미나 판단과 신호 중계를, PlayerController는 이동 · 구르기 · 피격 모션 같은 실제 처리를 맡도록 나눴습니다.",
+          "verbatim": true
+        },
+        {
+          "label": "",
+          "text": "예를 들어 구르기 입력이 들어오면 요청만 Player로 올라가고, Player가 스태미나를 확인한 뒤 PlayerController에 구르기를 시킵니다. 애니메이션이 끝났다는 신호(EndRolling · EndHit · WakeUp)도 Player가 받아 PlayerController에 전달합니다. 덕분에 보스 · 스킬 · 증강칩처럼 플레이어의 체력과 스태미나를 다루는 팀원 기능은 Player 쪽에 붙일 수 있었습니다.", "verbatim": true}
+      ],
+      "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}],
+      "from": {"key": "player-arch", "sectionPath": ["2. 시스템 구조", "2.1 플레이어"], "sig": ["2.1 플레이어|mermaid|1|flowchart LR"]}
     }
   ],
   "hide": []

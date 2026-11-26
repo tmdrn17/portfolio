@@ -100,6 +100,26 @@
         "sectionPath": ["3. 핵심 기능", "3.8 무리가 늘고 줄어드는 것을 보여 주는 연출"],
         "sig": ["3.8 무리가 늘고 줄어드는 것을 보여 주는 연출|code|1|// Synty 셰이더는 BaseColor 가 텍스처에 곱해지는데 보통 흰색이라, 색을 바꿔도 번쩍임이 보"]
       }
+    },
+    {
+      "key": "level-gen-flow",
+      "chapter": "features",
+      "layout": "visual",
+      "tab": "흐름",
+      "title": {"text": "3.1 목표 플레이 시간에 맞춘 레벨 생성", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["3. 핵심 기능", "3.1 목표 플레이 시간에 맞춘 레벨 생성"],
+      "points": [
+        {"label": "붙일 청크가 없으면 멈춤", "text": "남은 거리가 가장 짧은 청크보다 짧으면 후보가 비는데, 이때 멈추지 않으면 끝 위치가 그대로라 반복문이 끝나지 않습니다. 그래서 결승선은 목표 거리보다 조금 짧아질 수 있지만, 최대 거리는 넘지 않습니다.", "verbatim": true},
+        {"label": "", "text": "기준 속도 5, 플레이 시간 60~90초라 목표 거리는 300~450입니다.", "verbatim": true},
+        {"label": "", "text": "적 무리는 첫 두 청크와 결승 청크를 빼고, 문에서 3 이상 떨어진 자리를 10번까지 찾아 0~5마리씩 놓습니다.", "verbatim": true}
+      ],
+      "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart TD"}],
+      "from": {
+        "key": "level-gen-flow",
+        "sectionPath": ["3. 핵심 기능", "3.1 목표 플레이 시간에 맞춘 레벨 생성"],
+        "sig": ["3.1 목표 플레이 시간에 맞춘 레벨 생성|mermaid|1|flowchart TD"]
+      }
     }
   ],
   "hide": [

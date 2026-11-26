@@ -6,24 +6,11 @@
       "chapter": "overview",
       "layout": "overview",
       "tab": "개요",
-      "title": {
-        "text": "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류",
-        "verbatim": true
-      },
-      "lead": {
-        "text": "Unity 물리 엔진에 맡기는 대신, 충돌 판정을 더 가벼운 방법으로 직접 짜 보며 공부하고 싶었습니다.",
-        "verbatim": true
-      },
-      "sectionPath": [
-        "1. 개요",
-        "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류"
-      ],
+      "title": {"text": "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류", "verbatim": true},
+      "lead": {"text": "Unity 물리 엔진에 맡기는 대신, 충돌 판정을 더 가벼운 방법으로 직접 짜 보며 공부하고 싶었습니다.", "verbatim": true},
+      "sectionPath": ["1. 개요", "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류"],
       "points": [
-        {
-          "label": "",
-          "text": "개인 프로젝트로 공간 분할 격자, 무한맵, 추상 클래스 무기를 구현했습니다.",
-          "verbatim": true
-        },
+        {"label": "", "text": "개인 프로젝트로 공간 분할 격자, 무한맵, 추상 클래스 무기를 구현했습니다.", "verbatim": true},
         {
           "label": "",
           "text": "적과 탄환이 화면 가득 몰려나오는 뱀서류는 그 연습에 잘 맞는 장르였습니다. 그래서 공간 분할 격자로 가까운 칸의 적만 골라 거리를 비교하도록 설계했습니다.",
@@ -41,21 +28,13 @@
           "src": "images/gameplay.gif",
           "w": 560,
           "h": 296,
-          "caption": {
-            "text": "적이 몰려오고 돈다발이 흩어진 플레이 화면",
-            "verbatim": true
-          }
+          "caption": {"text": "적이 몰려오고 돈다발이 흩어진 플레이 화면", "verbatim": true}
         }
       ],
       "from": {
         "key": "intro",
-        "sectionPath": [
-          "1. 개요",
-          "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류"
-        ],
-        "sig": [
-          "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류|image|images/gameplay.gif|1"
-        ]
+        "sectionPath": ["1. 개요", "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류"],
+        "sig": ["1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류|image|images/gameplay.gif|1"]
       },
       "group": "merge-intro"
     },
@@ -64,30 +43,16 @@
       "chapter": "features",
       "layout": "code",
       "tab": "구현",
-      "title": {
-        "text": "3.1 끝없는 맵과 늘어나는 호떡",
-        "verbatim": true
-      },
+      "title": {"text": "3.1 끝없는 맵과 늘어나는 호떡", "verbatim": true},
       "lead": null,
-      "sectionPath": [
-        "3. 핵심 기능",
-        "3.1 끝없는 맵과 늘어나는 호떡"
-      ],
+      "sectionPath": ["3. 핵심 기능", "3.1 끝없는 맵과 늘어나는 호떡"],
       "points": [
-        {
-          "label": "",
-          "text": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.",
-          "verbatim": true
-        },
-        {
-          "label": "",
-          "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.",
-          "verbatim": true
-        },
+        {"label": "", "text": "배경 타일 9장만으로 끝없는 맵을 만들었습니다.", "verbatim": true},
+        {"label": "", "text": "타일 크기는 스프라이트 크기에서 자동으로 계산하고, 같은 발상으로 화면에서 너무 멀어진 적도 다시 배치해 재사용합니다.", "verbatim": true},
         {
           "label": "이유",
-          "text": "그래서 정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다. 또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
-          "verbatim": false
+          "text": "뱀서류는 몬스터가 넘치게 소환되고, 플레이어는 계속 도망치면서 적을 요격해야 합니다. 그래서 정적으로 커다란 맵을 만들기보다 동적으로 계속 넓어지는 맵을 만들고 싶었습니다. 또 맵을 계속 새로 만들기보다 이미 렌더링된 맵을 재활용하는 쪽이 리소스 측면에서 낫다고 판단했습니다.",
+          "verbatim": true
         },
         {
           "label": "지금 코드가 되기까지",
@@ -95,22 +60,11 @@
           "verbatim": true
         }
       ],
-      "visuals": [
-        {
-          "kind": "code",
-          "n": 1,
-          "fp": "// 플레이어와 1.5칸 넘게 멀어진 타일을"
-        }
-      ],
+      "visuals": [{"kind": "code", "n": 1, "fp": "// 플레이어와 1.5칸 넘게 멀어진 타일을"}],
       "from": {
         "key": "infinite-map",
-        "sectionPath": [
-          "3. 핵심 기능",
-          "3.1 끝없는 맵과 늘어나는 호떡"
-        ],
-        "sig": [
-          "3.1 끝없는 맵과 늘어나는 호떡|code|1|// 플레이어와 1.5칸 넘게 멀어진 타일을"
-        ]
+        "sectionPath": ["3. 핵심 기능", "3.1 끝없는 맵과 늘어나는 호떡"],
+        "sig": ["3.1 끝없는 맵과 늘어나는 호떡|code|1|// 플레이어와 1.5칸 넘게 멀어진 타일을"]
       }
     },
     {
@@ -118,62 +72,24 @@
       "chapter": "features",
       "layout": "full",
       "tab": "구현",
-      "title": {
-        "text": "3.1.1 호떡 3종",
-        "verbatim": false
-      },
-      "lead": {
-        "text": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.",
-        "verbatim": true
-      },
-      "sectionPath": [
-        "3.1 끝없는 맵과 늘어나는 호떡",
-        "호떡 3종"
-      ],
+      "title": {"text": "3.1.1 호떡 3종", "verbatim": false},
+      "lead": {"text": "새 호떡은 이동과 피해 방식만 구현하면 추가됩니다.", "verbatim": true},
+      "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
       "points": [],
-      "visuals": [
-        {
-          "kind": "table",
-          "n": 1,
-          "fp": "호떡|동작"
-        }
-      ],
-      "from": {
-        "key": "hotteok-types",
-        "sectionPath": [
-          "3.1 끝없는 맵과 늘어나는 호떡",
-          "호떡 3종"
-        ],
-        "sig": [
-          "호떡 3종|table|1|호떡|동작"
-        ]
-      }
+      "visuals": [{"kind": "table", "n": 1, "fp": "호떡|동작"}],
+      "from": {"key": "hotteok-types", "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"], "sig": ["호떡 3종|table|1|호떡|동작"]}
     },
     {
       "key": "ddalgi-orbit",
       "chapter": "features",
       "layout": "screens",
       "tab": "결과",
-      "title": {
-        "text": "3.1.1 호떡 3종",
-        "verbatim": false
-      },
+      "title": {"text": "3.1.1 호떡 3종", "verbatim": false},
       "lead": null,
-      "sectionPath": [
-        "3.1 끝없는 맵과 늘어나는 호떡",
-        "호떡 3종"
-      ],
+      "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
       "points": [
-        {
-          "label": "팥 호떡",
-          "text": "적을 관통. 이미 맞힌 적은 HashSet으로 걸러 다단히트 방지",
-          "verbatim": true
-        },
-        {
-          "label": "딸기 호떡",
-          "text": "플레이어 주위를 회전. 일정 시간 켜졌다 꺼지기를 반복하고, 다시 켜질 때 맞힌 기록을 비움",
-          "verbatim": true
-        }
+        {"label": "팥 호떡", "text": "적을 관통. 이미 맞힌 적은 HashSet으로 걸러 다단히트 방지", "verbatim": true},
+        {"label": "딸기 호떡", "text": "플레이어 주위를 회전. 일정 시간 켜졌다 꺼지기를 반복하고, 다시 켜질 때 맞힌 기록을 비움", "verbatim": true}
       ],
       "visuals": [
         {
@@ -181,28 +97,19 @@
           "src": "images/pat_hotteok.gif",
           "w": 400,
           "h": 211,
-          "caption": {
-            "text": "팥 호떡 — 레벨업에서 골라 적을 관통",
-            "verbatim": true
-          }
+          "caption": {"text": "팥 호떡 — 레벨업에서 골라 적을 관통", "verbatim": true}
         },
         {
           "kind": "image",
           "src": "images/ddalgi_hotteok.gif",
           "w": 400,
           "h": 211,
-          "caption": {
-            "text": "딸기 호떡 — 레벨업에서 골라 플레이어 주위를 회전",
-            "verbatim": true
-          }
+          "caption": {"text": "딸기 호떡 — 레벨업에서 골라 플레이어 주위를 회전", "verbatim": true}
         }
       ],
       "from": {
         "key": "ddalgi-orbit",
-        "sectionPath": [
-          "3.1 끝없는 맵과 늘어나는 호떡",
-          "호떡 3종"
-        ],
+        "sectionPath": ["3.1 끝없는 맵과 늘어나는 호떡", "호떡 3종"],
         "sig": [
           "호떡 3종|image|images/ddalgi_hotteok.gif|1",
           "호떡 3종|image|images/ddalgi_orbit.gif|1",
@@ -215,18 +122,9 @@
       "chapter": "tradeoffs",
       "layout": "full",
       "tab": "선택",
-      "title": {
-        "text": "4.1 충돌 판정을 물리 엔진에 맡길 것인가",
-        "verbatim": true
-      },
-      "lead": {
-        "text": "Unity의 콜라이더 충돌에 맡기지 않고, 더 가벼운 방법으로 충돌 판정을 직접 짜 보는 것이 목표였습니다.",
-        "verbatim": true
-      },
-      "sectionPath": [
-        "4. 고민과 선택",
-        "4.1 충돌 판정을 물리 엔진에 맡길 것인가"
-      ],
+      "title": {"text": "4.1 충돌 판정을 물리 엔진에 맡길 것인가", "verbatim": true},
+      "lead": {"text": "Unity의 콜라이더 충돌에 맡기지 않고, 더 가벼운 방법으로 충돌 판정을 직접 짜 보는 것이 목표였습니다.", "verbatim": true},
+      "sectionPath": ["4. 고민과 선택", "4.1 충돌 판정을 물리 엔진에 맡길 것인가"],
       "points": [
         {
           "label": "선택한 이유",
@@ -234,36 +132,45 @@
           "verbatim": false
         }
       ],
-      "visuals": [
-        {
-          "kind": "table",
-          "n": 1,
-          "fp": "|콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"
-        }
-      ],
+      "visuals": [{"kind": "table", "n": 1, "fp": "|콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"}],
       "from": {
         "key": "physics-choice",
-        "sectionPath": [
-          "4. 고민과 선택",
-          "4.1 충돌 판정을 물리 엔진에 맡길 것인가"
-        ],
-        "sig": [
-          "4.1 충돌 판정을 물리 엔진에 맡길 것인가|table|1||콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"
-        ]
+        "sectionPath": ["4. 고민과 선택", "4.1 충돌 판정을 물리 엔진에 맡길 것인가"],
+        "sig": ["4.1 충돌 판정을 물리 엔진에 맡길 것인가|table|1||콜라이더 + Rigidbody|✔ 선택: 공간 분할 격자 (직접 구현)"]
+      }
+    },
+    {
+      "key": "difficulty-code",
+      "chapter": "features",
+      "layout": "code",
+      "tab": "구현",
+      "title": {"text": "3.2 30초마다 오르는 난이도", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
+      "points": [
+        {
+          "label": "이렇게 짠 이유",
+          "text": "경과 시간이 기준을 넘었는지만 보면, 기준을 넘은 뒤로는 매 프레임 조건이 참이 되어 적이 매 프레임 추가됩니다. 그래서 한 번 오르면 다음 기준을 30초 뒤로 밀어(③) 단계마다 한 번만 오르게 했습니다. 또 새로 추가되는 적만 강하게 하면, 죽은 뒤 풀에서 다시 켜지는 기존 적은 처음 능력치로 계속 나와 난이도가 일부만 오릅니다. 그래서 이미 나와 있는 적까지 모든 적의 능력치를 올립니다(②).",
+          "verbatim": true
+        },
+        {
+          "label": "",
+          "text": "DifficultySystem.cs — 단계마다 추가할 적 종류 · 수는 인스펙터 배열(enemyKind · enemyCount)로 정합니다.",
+          "verbatim": true
+        }
+      ],
+      "visuals": [{"kind": "code", "n": 1, "fp": "if (GameManager.Instance.CurrentTime >= difficultyTime && cu"}],
+      "from": {
+        "key": "difficulty-code",
+        "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
+        "sig": ["3.2 30초마다 오르는 난이도|code|1|if (GameManager.Instance.CurrentTime >= difficultyTime && cu"]
       }
     }
   ],
   "hide": [
     {
       "key": "why",
-      "from": {
-        "key": "why",
-        "sectionPath": [
-          "1. 개요",
-          "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류"
-        ],
-        "sig": []
-      },
+      "from": {"key": "why", "sectionPath": ["1. 개요", "1.1 거리 기준 충돌 판정을 공부하기 위해 고른 뱀서류"], "sig": []},
       "group": "merge-intro"
     }
   ]

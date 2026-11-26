@@ -275,11 +275,16 @@
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.1 목표 플레이 시간에 맞춘 레벨 생성"],
         "points": [
-          {"label": "붙일 청크가 없으면 멈춤", "text": "그래서 결승선은 목표 거리보다 조금 짧아질 수 있지만, 최대 거리는 넘지 않습니다.", "verbatim": true},
+          {
+            "label": "붙일 청크가 없으면 멈춤",
+            "text": "남은 거리가 가장 짧은 청크보다 짧으면 후보가 비는데, 이때 멈추지 않으면 끝 위치가 그대로라 반복문이 끝나지 않습니다. 그래서 결승선은 목표 거리보다 조금 짧아질 수 있지만, 최대 거리는 넘지 않습니다.",
+            "verbatim": true
+          },
           {"label": "", "text": "기준 속도 5, 플레이 시간 60~90초라 목표 거리는 300~450입니다.", "verbatim": true},
           {"label": "", "text": "적 무리는 첫 두 청크와 결승 청크를 빼고, 문에서 3 이상 떨어진 자리를 10번까지 찾아 0~5마리씩 놓습니다.", "verbatim": true}
         ],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart TD"}]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart TD"}],
+        "edited": true
       },
       {
         "key": "door-quiz",
@@ -1044,6 +1049,6 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "작업|AI에게 맡긴 것|직접 한 것|AI를 쓴 이유"}]
       }
     ],
-    "applied": "fb48f6b0e63ceabe"
+    "applied": "b2b264c295aa8485"
   }
 }

@@ -188,10 +188,9 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .pf-stretch .dk-text { align-content: stretch; }
 .pf-stretch .scr-row { align-items: stretch; }
 .pf-stretch .fe-card .vis { flex: 1 1 auto; }
-.pf-stretch :is(.dk-side, .dk-text) > :is(.cards, .flow) { align-content: stretch; height: 100%; }
+/* 카드·흐름 상자는 늘리지 않음(수강생 요청 2026-11-26): 상자는 글 높이에 딱 맞게, 상자 묶음은 칸 세로 가운데 */
+.pf-stretch :is(.dk-side, .dk-text) > :is(.cards, .flow) { align-content: center; height: 100%; }
 .pf-stretch .flow.col, .pf-stretch .cards:not(.row) { grid-auto-rows: auto; }
-.pf-stretch .ncard { align-content: center; }
-.pf-stretch .fstep { justify-content: center; }
 .pf-stretch .vbox[data-kind="image"] .vmedia img { width: 100%; height: 100%; object-fit: contain; }
 .pf-stretch .vbox[data-kind="code"] .vmedia { display: flex; align-items: center; }
 .pf-stretch table.md-table td { vertical-align: middle; }
@@ -275,9 +274,9 @@ table.md-table code { font-size: max(.86em, 12px); }   /* 머리 칸(13px) 안 �
 table.md-table img { max-height: 120px; max-width: 100%; height: auto; }   /* width·height 속성(렌더러가 미리 잰 크기)으로 불러오기 전에도 자리를 잡음 */
 .vbox[data-kind] > .pf-vband { min-width: 0; }                         /* 그림 상자 안 띠는 상자 폭에 맞춰 꺾임(높이는 fitVisuals가 다시 잼) */
 .cards { display: grid; gap: 12px; align-content: center; min-width: 0; }
-.cards.row { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); align-items: stretch; }
+.cards.row { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); align-items: center; }   /* 가로 줄 카드도 글 높이에 맞게, 줄 안 세로 가운데 */
 .cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.ncard { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: calc(var(--radius) * .7); align-items: start; }
+.ncard { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: calc(var(--radius) * .7); align-items: center; }   /* 번호 동그라미를 글 묶음 세로 가운데에 */
 .ncard.nonum { grid-template-columns: minmax(0, 1fr); }
 .ncard .num { width: 26px; height: 26px; border-radius: 50%; background: var(--glow); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
 .ncard .lb { display: block; font-size: 13px; font-weight: 800; letter-spacing: .02em; color: var(--accent-ink); margin-bottom: 3px; }
@@ -285,7 +284,7 @@ table.md-table img { max-height: 120px; max-width: 100%; height: auto; }   /* wi
 .dk-text .ncard p { font-size: 17px; }
 .dk.tight .ncard { padding: 10px 14px; }
 .dk.tight .ncard p { font-size: 15px; line-height: 1.52; }
-.flow { display: grid; gap: 10px; align-items: stretch; }
+.flow { display: grid; gap: 10px; align-items: center; }   /* 흐름 상자도 글 높이에 맞게 */
 .flow.row { grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); }
 .fstep { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; background: var(--card); border: 1px solid var(--line); border-radius: calc(var(--radius) * .7); }
 .fstep .labelchip { align-self: flex-start; padding: 4px 11px; font-size: 13px; }
@@ -293,7 +292,7 @@ table.md-table img { max-height: 120px; max-width: 100%; height: auto; }   /* wi
 .fstep .labelchip.ok { background: var(--ok); color: #fff; }
 .fstep p { font-size: 15px; line-height: 1.58; color: var(--ink); }
 .fstep.res { background: color-mix(in srgb, var(--ok) 16%, var(--card)); border-color: color-mix(in srgb, var(--ok) 50%, var(--card)); }
-.flow.col .fstep { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 12px; align-items: start; padding: 11px 14px; }
+.flow.col .fstep { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 12px; align-items: center; padding: 11px 14px; }
 .flow.col .fstep .labelchip { justify-content: center; }
 .scr-row { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 22px; }
 .pf-sizing .scr-row { align-items: stretch; }
