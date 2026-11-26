@@ -294,7 +294,7 @@
           {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다.", "verbatim": true},
           {"label": "정답부터", "text": "+·− 문은 −3~5(0 제외), ×·÷ 문은 2~3에서 결과를 먼저 뽑습니다.", "verbatim": true}
         ],
-        "visuals": [{"kind": "code", "n": 2, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
+        "visuals": [{"kind": "code", "n": 3, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
         "edited": true
       },
       {
@@ -1044,6 +1044,6 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "작업|AI에게 맡긴 것|직접 한 것|AI를 쓴 이유"}]
       }
     ],
-    "applied": "e3c6c24b0174b159"
+    "applied": "fb48f6b0e63ceabe"
   }
 }

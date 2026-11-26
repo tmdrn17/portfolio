@@ -43,7 +43,7 @@
         {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다.", "verbatim": true},
         {"label": "정답부터", "text": "+·− 문은 −3~5(0 제외), ×·÷ 문은 2~3에서 결과를 먼저 뽑습니다.", "verbatim": true}
       ],
-      "visuals": [{"kind": "code", "n": 2, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
+      "visuals": [{"kind": "code", "n": 3, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
       "from": {
         "key": "door-quiz",
         "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
