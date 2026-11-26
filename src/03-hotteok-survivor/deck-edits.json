@@ -165,6 +165,31 @@
         "sectionPath": ["3. 핵심 기능", "3.2 30초마다 오르는 난이도"],
         "sig": ["3.2 30초마다 오르는 난이도|code|1|if (GameManager.Instance.CurrentTime >= difficultyTime && cu"]
       }
+    },
+    {
+      "key": "ai-collab",
+      "chapter": "ai",
+      "layout": "overview",
+      "tab": "",
+      "title": {"text": "5. AI 협업", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["5. AI 협업"],
+      "points": [
+        {
+          "label": "쓴 방식",
+          "text": "코드는 직접 쓰고, AI는 설계 상담 · 모르는 구현 방법의 설명 · 버그 원인 분석 · 애셋 프롬프트 작성에 썼습니다.",
+          "verbatim": true
+        },
+        {"label": "맡긴 것", "text": "구현 방법을 모르던 공간 분할 격자와 관통 호떡의 다단히트 방지(HashSet)는 설명과 예시를 받았습니다.", "verbatim": true},
+        {
+          "label": "직접 판단한 것",
+          "text": "총알 근처의 적만 골라 거리로 판정하자는 답을 받았지만, 근처 적을 고르려면 결국 모든 적과의 거리를 재야 해서 부담이 줄지 않는다는 점을 짚었습니다.",
+          "verbatim": true
+        },
+        {"label": "확인한 방법", "text": "받은 설명은 그대로 쓰지 않고 제 말로 다시 정리해 맞는지 되물은 뒤, 코드는 직접 짰습니다.", "verbatim": true}
+      ],
+      "visuals": [],
+      "from": {"key": "ai-collab", "sectionPath": ["5. AI 협업"], "sig": []}
     }
   ],
   "hide": [
