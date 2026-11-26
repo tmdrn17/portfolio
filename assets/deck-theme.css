@@ -224,6 +224,7 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .lcard a .pf-newtab-icon { position: absolute; right: 12px; top: 11px; margin: 0; }
 .lcard a:hover { border-color: var(--accent); }
 .lcard .lc-t { display: inline; font-size: 15px; font-weight: 800; }
+.lcard .lc-t .pf-ico { display: inline-block; width: 1.05em; height: 1.05em; margin-right: .35em; vertical-align: -.16em; }   /* 링크 아이콘(assets/icons.js) — 글자색을 따름 */
 .lcard .url { display: block; margin-top: 1px; font-size: 12px; color: var(--muted); }
 .pi-right .tags { margin-top: 2px; }
 .pi-tight .pi-t { font-size: 38px; }

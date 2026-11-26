@@ -546,7 +546,7 @@
 
   // 맺음: 프로젝트 상세 문서(전문) · 바깥 링크 · 포트폴리오. 슬라이드 → 상세 문서 링크는 표지와 여기에만(G1)
   function endScene(p, foot, ext, auto) {
-    const card = (k, label, href, kind, visible, primary) => `<div class="lcard${primary ? ' primary' : ''}">${link({ href, kind, label: `<span class="lc-k">${esc(k)}</span><span class="lc-t">${esc(label)}</span>${visible ? `<span class="url">${esc(visible)}</span>` : ''}` })}</div>`;
+    const card = (k, label, href, kind, visible, primary) => `<div class="lcard${primary ? ' primary' : ''}">${link({ href, kind, label: `<span class="lc-k">${esc(k)}</span><span class="lc-t">${PF.linkIco(href)}${esc(label)}</span>${visible ? `<span class="url">${esc(visible)}</span>` : ''}` })}</div>`;
     const make = () => {
       const s = PF.scene({ id: 'end', tpl: 'EN', kind: 'bare', foot, sec: PF.t('deck.more'), stitle: PF.t('deck.end-title') });
       PF.body(s).innerHTML = `<div class="toprow"><span class="pf-eyebrow">${esc(PF.t('en.more'))}</span><span class="rl">${esc(PF.teamLabel(p.team))}</span></div>

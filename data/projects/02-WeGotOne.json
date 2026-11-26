@@ -316,49 +316,15 @@
         "visuals": [{"kind": "table", "n": 2, "fp": "물고기|주요 수치"}]
       },
       {
-        "key": "squid-states",
-        "chapter": "structure",
-        "layout": "visual",
-        "tab": "구조",
-        "title": {"text": "2.2 대왕오징어 상태 흐름", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.2 대왕오징어 상태 흐름"],
-        "points": [
-          {
-            "label": "",
-            "text": "촉수 센서에 플레이어가 닿으면 납치 상태로 넘어갑니다. 목적지에 닿으면 정리(Exit)에서 플레이어 몸을 Dynamic과 처음 자세로 되돌린 뒤 복귀 상태로 넘어가고, 시작 위치에 돌아오면 순찰을 이어 갑니다.",
-            "verbatim": true
-          },
-          {"label": "", "text": "기절 · 지침 · 납치 중에는 촉수 센서가 상태를 확인해 다시 납치하지 않습니다.", "verbatim": true}
-        ],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "stateDiagram-v2"}]
-      },
-      {
-        "key": "host-sync",
-        "chapter": "structure",
-        "layout": "visual",
-        "tab": "흐름",
-        "title": {"text": "2.3 멀티 플레이에서 물고기를 처리하는 곳", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.3 멀티 플레이에서 물고기를 처리하는 곳"],
-        "points": [
-          {"label": "", "text": "물고기의 생성 · 이동 · 상태 결정은 호스트가 맡습니다.", "verbatim": true},
-          {
-            "label": "",
-            "text": "호스트는 물고기마다 위치 · 방향 · 회전 · 현재 상태를 스냅샷에 담아 보내고, 게스트는 물고기 이동을 잠근 채 받은 값을 화면에 적용합니다.",
-            "verbatim": true
-          },
-          {"label": "", "text": "서버는 호스트의 스냅샷을 게스트에게, 게스트의 입력을 호스트에게 넘겨 주는 중계만 합니다(동기화 구조는 팀원이 만듦).", "verbatim": true}
-        ],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}]
-      },
-      {
         "key": "fsm",
-        "chapter": "features",
+        "chapter": "structure",
         "layout": "visual",
         "tab": "구조",
         "title": {"text": "2.1 물고기 FSM에 특수 상태와 센서를 얹는 구조", "verbatim": true},
-        "lead": null,
+        "lead": {
+          "text": "물고기의 기본 상태 머신(IFishState · FishStateManager)은 다른 팀원이 만들었고, 저는 그 위에 특수 물고기의 상태와 센서를 얹었습니다.",
+          "verbatim": true
+        },
         "sectionPath": ["2. 시스템 구조", "2.1 물고기 FSM에 특수 상태와 센서를 얹는 구조"],
         "points": [
           {
@@ -379,6 +345,31 @@
           {"label": "", "text": "전기가오리는 상태를 확인하지 않는 대신, 한 번 감전시키면 10초 동안 공격을 멈춥니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "classDiagram"}],
+        "edited": true
+      },
+      {
+        "key": "host-sync",
+        "chapter": "structure",
+        "layout": "visual",
+        "tab": "흐름",
+        "title": {"text": "2.2 멀티 플레이에서 물고기를 처리하는 곳", "verbatim": true},
+        "lead": {"text": "이 절의 동기화 구조(서버 중계 · 호스트 처리 · 게스트 적용)는 팀장님이 만들었습니다.", "verbatim": true},
+        "sectionPath": ["2. 시스템 구조", "2.2 멀티 플레이에서 물고기를 처리하는 곳"],
+        "points": [
+          {
+            "label": "",
+            "text": "제가 만든 특수 물고기와 다리 건설 연출이 이 구조 위에서 돌아가기 때문에, 제 기능을 이해하는 데 필요한 만큼만 정리했습니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "물고기의 생성 · 이동 · 상태 결정은 호스트가 맡습니다.", "verbatim": true},
+          {
+            "label": "",
+            "text": "호스트는 물고기마다 위치 · 방향 · 회전 · 현재 상태를 스냅샷에 담아 보내고, 게스트는 물고기 이동을 잠근 채 받은 값을 화면에 적용합니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "서버는 호스트의 스냅샷을 게스트에게, 게스트의 입력을 호스트에게 넘겨 주는 중계만 합니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}],
         "edited": true
       },
       {
@@ -1298,6 +1289,6 @@
         "visuals": []
       }
     ],
-    "applied": "d3f9e8006e7f03ad"
+    "applied": "65ef8f38f77ea661"
   }
 }

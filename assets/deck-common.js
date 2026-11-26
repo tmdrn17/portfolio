@@ -367,6 +367,8 @@
   const META_EN = { '장르': 'en.meta-genre', '기간': 'en.meta-duration', '개발 기간': 'en.meta-duration', '인원': 'en.meta-team', '팀': 'en.meta-team', '팀 구성': 'en.meta-team',
                     '환경': 'en.meta-env', '개발 환경': 'en.meta-env', '엔진': 'en.meta-engine', '플랫폼': 'en.meta-platform' };
   const metaEn = (label) => { const k = META_EN[String(label || '').replace(/\s+/g, ' ').trim()]; return k ? PF.t(k) : ''; };
+  // 링크 카드 아이콘(수강생 요청 2026-11-26): 주소가 GitHub·YouTube면 제목 앞에 한 색 아이콘(assets/icons.js). 없으면 ''
+  const linkIco = (href) => { const n = window.PFIcons?.forUrl(href); return n ? window.PFIcons.svg(n, 'pf-ico') : ''; };
   async function projectIntro(p, { id, titleTag = 'h2', eyebrow = PF.t('en.project'), links = [], foot = '', sec = '', group = '', stats, tpl = 'P1' }) {
     const d = p.cover ? (p.coverSize?.w ? p.coverSize : await imageSize(PF.srcPath(p.id, p.cover))) : null;
     const ar = d ? d.w / d.h : null;
@@ -374,7 +376,7 @@
     const meta = (p.meta || []).map((m) => `<div class="mi"><dt class="meta-k">${metaEn(m.label) ? `${esc(metaEn(m.label))} · ` : ''}${esc(m.label)}</dt><dd>${inline(m.value)}</dd></div>`);
     if (p.team?.role) meta.push(`<div class="mi wide role"><dt class="meta-k">${esc(PF.t('en.role'))} · ${esc(PF.t('name.role'))}</dt><dd>${inline(p.team.role)}</dd></div>`);
     const intent = p.intent?.text ? `<div class="intent"><p class="lc-k">${esc(PF.t('en.intent'))} · ${esc(PF.t('name.intent'))}</p><p class="it">${inline(p.intent.text)}</p></div>` : '';
-    const cards = links.map((l) => `<div class="lcard">${PF.link({ href: l.href, kind: l.kind, label: `<span class="lc-k">${esc(l.k)}</span><span class="lc-t">${esc(l.label)}</span>${l.visible ? `<span class="url">${esc(l.visible)}</span>` : ''}` })}</div>`).join('');
+    const cards = links.map((l) => `<div class="lcard">${PF.link({ href: l.href, kind: l.kind, label: `<span class="lc-k">${esc(l.k)}</span><span class="lc-t">${linkIco(l.href)}${esc(l.label)}</span>${l.visible ? `<span class="url">${esc(l.visible)}</span>` : ''}` })}</div>`).join('');
     const tags = (p.tags || []).length ? `<ul class="tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '';
     const cover = p.cover ? `<div class="media pi-cover"${ar ? ` style="aspect-ratio:${ar.toFixed(4)}"` : ''}>${imgTag(PF.srcPath(p.id, p.cover), p.title, d)}</div>` : '';
     const head = `<div class="pi-head"><${titleTag} class="pi-t">${esc(p.title)}</${titleTag}>${p.tagline ? `<p class="tagline">${inline(p.tagline)}</p>` : ''}</div>`;
@@ -517,5 +519,5 @@
   }
 
   Object.assign(PF, { stretchScene, oneLine, growText, oneLineK, scaleFont, sleep, loadFonts, imageSize, measureRoot, dropMeasure, scene, body, fitsScene, fitsM, pack, shrinkOrClip, guard, msgScene, DOT, imgTag, extLinks, refitOnLateFont,
-                      projectIntro, note, fillOf, noteFill, vband, fitVisuals, visScore, minFonts, deckSceneNear, FLOOR, extEn });
+                      projectIntro, linkIco, note, fillOf, noteFill, vband, fitVisuals, visScore, minFonts, deckSceneNear, FLOOR, extEn });
 })();
