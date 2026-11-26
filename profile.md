@@ -12,7 +12,7 @@
   <!-- 보관(2026-11-10, 페이지에서 뺌): 상상하던 세계를, 코드로 직접 움직이게 만드는 개발자 -->
 - 이메일: tmdrn9810@gmail.com
 - GitHub: https://github.com/tmdrn17
-- 기타 링크:
+- 기타 링크: [시연 영상 모음](https://youtube.com/playlist?list=PLPTVqFbggfIE) · [쇼츠 모음](https://youtube.com/playlist?list=PLP6sZs_Ynhjc)
 
 ## 자기소개
 
