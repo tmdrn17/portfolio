@@ -316,6 +316,7 @@
     // 장 → 장 표지 + 장면들
     const chapterScenes = [];
     const tocItems = [];
+    const secScenes = [];                                               // 장면 안 문서 링크(#section-…)를 장면으로 잇기 위한 [절 경로, 첫 장면 id]
     // 결과와 회고가 deck의 회고 장(같은 H2 절)과 겹치면 그 장 안에 넣음 — 목차 한 줄, 하위 절 번호 순서(수강생 요청 2026-11-23)
     const rp = auto ? null : retroPlace(p.retro || {}, model, P);
     let retro = [];
@@ -363,6 +364,7 @@
         slides.push({ sl, scenes });
       });
       const chs = chapterScene(c, no, chId, slides, foot, auto, p.title);
+      slides.forEach((x) => { if (x.scenes[0]) secScenes.push({ path: x.sl.sectionPath || [], id: x.scenes[0].id }); });
       chapterScenes.push(chs, ...slides.flatMap((x) => x.scenes));
       tocItems.push({ c, chId, no, n: slides.reduce((a, x) => a + x.scenes.length, 0) });
     });
@@ -385,10 +387,48 @@
     else if (all.length > 50) PF.note('cover', 'many-scenes', all.length, `장면 ${all.length}장(권장 15~50장)`);
     Object.assign(info.summary, { scenes: all.length, chapters: model.length, slides: model.reduce((a, c) => a + c.slides.length, 0), mode: info.mode });
     mark('summary');
+    docLinks(all, secScenes, P, p);
     remapHash(p, all, model);
     deck.replaceChildren(...all);
     deck.querySelectorAll('img').forEach((i) => { if (!i.hasAttribute('loading')) i.loading = 'lazy'; i.decoding = 'async'; });
     mark('assembled');
+  }
+
+  // 장면 안의 문서 속 링크(#section-5-3 · #source-… · #<제목 slug>)는 슬라이드에 그런 id가 없어 눌러도 움직이지 않았음(수강생 요청 2026-11-26)
+  //   → 그 절을 그린 장면이 있으면 그 장면(#<장면 id>, 키트가 이동), 없으면(하위 절 장면도 없음) 상세 문서의 같은 자리(새 탭)
+  function docLinks(all, secScenes, P, p) {
+    const ids = new Set(all.map((s) => s.id));
+    const byHead = new Map();                                            // 제목 → 그 절을 그린 첫 장면 id
+    secScenes.forEach(({ path, id }) => { const hs = PF.md.findSection(P, path); if (hs.length === 1 && !byHead.has(hs[0])) byHead.set(hs[0], id); });
+    const H = P.headings;
+    const before = (a, b) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+    const headOf = (el) => {                                             // 그 요소가 속한 절의 제목(빈 <a id>가 제목 바로 앞이면 다음 제목)
+      const own = H.find((h) => h.el === el); if (own) return own;
+      const blk = el.closest('p') || el;
+      if (!blk.textContent.trim()) { const nx = H.find((h) => before(blk, h.el)); if (nx) return nx; }
+      let last = null; for (const h of H) { if (before(h.el, el)) last = h; else break; } return last;
+    };
+    const sceneOf = (h) => {
+      if (!h) return '';
+      if (byHead.has(h)) return byHead.get(h);
+      const sub = H.find((x) => x.parents.includes(h) && byHead.has(x));   // 그 절은 장면이 없고 하위 절만 있으면 첫 하위 절 장면
+      if (sub) return byHead.get(sub);
+      const rs = PF.normTitle(p.retro?.section || '');                   // 회고 절(5.3 아쉬운 점 등) → 결과·회고 장면
+      return rs && ids.has('retro') && [h, ...h.parents].some((x) => PF.normTitle(x.text) === rs) ? 'retro' : '';
+    };
+    all.forEach((sc) => sc.querySelectorAll('a[href^="#"]').forEach((a) => {
+      if (a.dataset.pfRef || a.classList.contains('pf-skiplink')) return;
+      const enc = a.getAttribute('href').slice(1);
+      if (!enc) return;
+      let raw = enc; try { raw = decodeURIComponent(enc); } catch { /* 그대로 */ }
+      if (ids.has(raw) || /^s=/.test(raw)) return;
+      const t = P.frag.getElementById(raw);
+      if (!t) return;
+      const to = sceneOf(headOf(t));
+      if (to) { a.setAttribute('href', `#${to}`); return; }
+      a.setAttribute('href', PF.docUrl(p.id, enc));
+      PF.markNewTab(a);
+    }));
   }
 
   // 옛 장면 id(#s=hl-n …)·없는 장면 id(#s=d-<key>·ch-<key>) → 새 장면 id. 마운트 전에 주소만 바꿈(키트가 그 장면으로 이동)

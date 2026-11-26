@@ -35,9 +35,9 @@
       "chapter": "features",
       "layout": "visual",
       "tab": "흐름",
-      "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
+      "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
       "lead": null,
-      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
       "points": [
         {"label": "", "text": "납치되는 동안에는 플레이어 몸 전체를 Kinematic으로 바꿔 촉수 부착 지점에 고정하고, 물고기와의 충돌도 끕니다.", "verbatim": true},
         {"label": "", "text": "목적지에 닿으면 Dynamic과 충돌을 되돌리고 처음 자세로 복원한 뒤, 오징어는 원래 자리로 돌아가 순찰을 이어 갑니다.", "verbatim": true}
@@ -45,8 +45,8 @@
       "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}],
       "from": {
         "key": "abduction-flow",
-        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
-        "sig": ["3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기|mermaid|1|sequenceDiagram"]
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
+        "sig": ["3.1.1 대왕오징어|mermaid|1|sequenceDiagram"]
       }
     },
     {
@@ -54,15 +54,15 @@
       "chapter": "features",
       "layout": "code",
       "tab": "구현",
-      "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
+      "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
       "lead": null,
-      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
       "points": [],
       "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}],
       "from": {
         "key": "abduction-code",
-        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
-        "sig": ["3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기|code|1|playerRigidbodies = owner.PlayerRootPosition"]
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
+        "sig": ["3.1.1 대왕오징어|code|1|playerRigidbodies = owner.PlayerRootPosition"]
       }
     },
     {
@@ -70,15 +70,15 @@
       "chapter": "features",
       "layout": "problem",
       "tab": "문제 해결",
-      "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
+      "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
       "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
-      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
       "points": [],
       "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}],
       "from": {
         "key": "abduction-history",
-        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
-        "sig": ["3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기|table|1|단계|문제|바꾼 것"]
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
+        "sig": ["3.1.1 대왕오징어|table|1|단계|문제|바꾼 것"]
       }
     },
     {
@@ -86,9 +86,9 @@
       "chapter": "features",
       "layout": "full",
       "tab": "선택",
-      "title": {"text": "3.1.1 대왕오징어", "verbatim": false},
+      "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
       "lead": {"text": "납치 중인 플레이어를 어떻게 끌고 갈 것인가", "verbatim": true},
-      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
+      "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
       "points": [
         {
           "label": "선택한 이유",
@@ -99,8 +99,8 @@
       "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}],
       "from": {
         "key": "abduct-choice",
-        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기"],
-        "sig": ["3.1.1 대왕오징어 — 래그돌 플레이어를 안전하게 납치하고 되돌리기|table|2||몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"]
+        "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
+        "sig": ["3.1.1 대왕오징어|table|2||몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"]
       }
     },
     {

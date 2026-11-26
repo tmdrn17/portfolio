@@ -407,7 +407,8 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}]
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}],
+        "edited": true
       },
       {
         "key": "abduction-code",
@@ -417,8 +418,9 @@
         "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
-        "points": [{"label": "", "text": "해마는 이 납치에 대응하는 물고기로, 잡으면 플레이어를 목적지까지 데려다 줍니다.", "verbatim": true}],
-        "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}]
+        "points": [],
+        "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}],
+        "edited": true
       },
       {
         "key": "abduction-history",
@@ -429,7 +431,8 @@
         "lead": {"text": "지금 모습이 되기까지", "verbatim": true},
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
         "points": [],
-        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}]
+        "visuals": [{"kind": "table", "n": 1, "fp": "단계|문제|바꾼 것"}],
+        "edited": true
       },
       {
         "key": "abduct-choice",
@@ -446,7 +449,8 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}]
+        "visuals": [{"kind": "table", "n": 2, "fp": "|몸통만 고정해 끌기 (처음 방식)|✔ 선택: 납치 중에만 몸 전체의 물리를 끄고 고정"}],
+        "edited": true
       },
       {
         "key": "shock-play",
@@ -1289,6 +1293,6 @@
         "visuals": []
       }
     ],
-    "applied": "65ef8f38f77ea661"
+    "applied": "ffe72bf2965d3980"
   }
 }
