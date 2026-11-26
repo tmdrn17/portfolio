@@ -818,9 +818,10 @@ function App() {
   ];
   // 머리 막대 왼쪽 아이콘: profile.md의 GitHub, 링크 중 유튜브(재생목록)
   const ytLink = (profile.links || []).find(l => l && l.url && /youtube\.com|youtu\.be/i.test(l.url));
+  // 프로필 칸 버튼: 유튜브 링크(재생목록)는 시연 영상 탭과 겹치므로 빼고, 머리 막대 아이콘으로만 둠
   const ownLinks = [
     ...(profile.github ? [{ label: "GitHub", url: profile.github, icon: "github" }] : []),
-    ...(profile.links || []).filter(l => l && l.url).map(l => ({ label: l.label || "링크", url: l.url, icon: /youtube\.com|youtu\.be/i.test(l.url) ? "youtube" : "" })),
+    ...(profile.links || []).filter(l => l && l.url && !/youtube\.com|youtu\.be/i.test(l.url)).map(l => ({ label: l.label || "링크", url: l.url, icon: "" })),
   ];
   const detail = detailId && projects.find(p => p.id === detailId);
   const vSel = videoSel(videoId);
