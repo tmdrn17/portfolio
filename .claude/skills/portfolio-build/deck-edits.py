@@ -444,8 +444,8 @@ def validate(p, chapters, doc):
         errs.append('points는 글 조각(label·text·verbatim) 0~4개여야 함(text가 비면 label 필요)')
         pts = []
     vis = p.get('visuals') if p.get('visuals') is not None else []
-    if not isinstance(vis, list) or len(vis) > 3:
-        errs.append('visuals는 0~3개여야 함')
+    if not isinstance(vis, list) or len(vis) > 4:
+        errs.append('visuals는 0~4개여야 함')
         vis = []
     for i, v in enumerate(vis):
         if not isinstance(v, dict) or v.get('kind') not in KINDS:
@@ -469,8 +469,8 @@ def validate(p, chapters, doc):
             errs.append('visuals[%d]의 sectionPath는 제목 글자 배열' % i)
     if lay in ('visual', 'code', 'full') and not vis:
         errs.append('layout "%s"에는 시각 자료가 1개 이상 있어야 함' % lay)
-    if lay == 'screens' and not (2 <= len(vis) <= 3 and all(isinstance(v, dict) and v.get('kind') == 'image' for v in vis)):
-        errs.append('layout "screens"에는 그림이 2~3개 있어야 함')
+    if lay == 'screens' and not (2 <= len(vis) <= 4 and all(isinstance(v, dict) and v.get('kind') == 'image' for v in vis)):
+        errs.append('layout "screens"에는 그림이 2~4개 있어야 함(4개면 2×2)')
     if errs or doc is None:
         return errs, warns, pieces, cross
 
@@ -783,6 +783,7 @@ def _run_apply(pid, write, rep):
         return
     slides, base = apply_edits(data, edits, doc, rep)
     new_deck = dict(deck)
+    new_deck['chapters'] = chapter_covers(deck.get('chapters') or [], edits, rep)
     if slides == base:
         new_deck['slides'] = base
         new_deck.pop('base', None)
@@ -801,6 +802,30 @@ def _run_apply(pid, write, rep):
         rep.add('참고', 'data/projects/%s.json의 슬라이드를 갱신했습니다' % pid)
     else:
         rep.add('참고', '(check) 반영하면 슬라이드가 바뀝니다')
+
+
+def chapter_covers(chapters, edits, rep):
+    """고치기 파일의 noCover(장 key 목록) → 그 장의 cover: false(렌더러가 장 표지를 그리지 않음). 목록에서 빠지면 cover를 지움"""
+    nc = (edits or {}).get('noCover') or []
+    if not isinstance(nc, list) or not all(isinstance(x, str) for x in nc):
+        rep.add('필수', 'noCover는 장 key(글자) 배열이어야 합니다 → 장 표지는 그대로 둡니다')
+        nc = []
+    keys = [c.get('key') for c in chapters]
+    for x in nc:
+        if x not in keys:
+            rep.add('권장', 'noCover의 장 "%s"가 슬라이드에 없습니다(%s)' % (x, ', '.join(str(k) for k in keys)))
+    out = []
+    for c in chapters:
+        c2 = dict(c)
+        c2.pop('cover', None)
+        if c2.get('key') in nc:
+            c2['cover'] = False
+        out.append(c2)
+    if nc and edits is not None:
+        hid = [c.get('title') or c.get('key') for c in out if c.get('cover') is False]
+        if hid:
+            rep.add('참고', '장 표지를 그리지 않는 장: %s' % ', '.join(hid))
+    return out
 
 
 def all_ids():

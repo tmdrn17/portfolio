@@ -272,9 +272,9 @@
     const contain = (i, w, h) => {
       const t = nat[i];
       if (t.table) return { w: Math.floor(w), h: Math.floor(h) };
-      if (t.k === 'code') {                                              // 코드는 칸 폭을 다 쓰고, 높이는 줄인 배율만큼
+      if (t.k === 'code') {                                              // 코드 판은 글에 맞춘 크기(수강생 요청 2026-11-27: 짧은 코드가 칸 폭을 다 쓰지 않게) — 폭·높이 모두 줄인 배율만큼
         const z = Math.max(t.min, Math.min(1, w / t.nw, h / t.nh));
-        return { w: Math.floor(w), h: Math.ceil(t.nh * z) };
+        return { w: Math.floor(Math.min(w, Math.ceil(t.nw * z))), h: Math.ceil(t.nh * z) };
       }
       let bw = Math.min(w, h * t.ar);
       const lim = w <= h * t.ar ? 'w' : 'h';                             // 폭에 막힘(가로로 긴 그림) / 높이에 막힘(세로로 긴 그림)
@@ -423,7 +423,8 @@
     sz.forEach(({ b, m, bw, bh, mh }) => {
       if (!m) return;
       // 그림은 늘이지 않음(수강생 요청 2026-11-24): 판만 늘면 비율을 지키는 그림 둘레에 빈 여백이 생김 → 맞춘 크기 그대로, 칸 가운데에
-      if (b.dataset.kind === 'image') { b.style.alignSelf = 'center'; return; }
+      //   코드 판도 늘이지 않음(수강생 요청 2026-11-27): 짧은 코드 둘레에 빈 판이 커지지 않게 글에 맞춘 크기 그대로
+      if (b.dataset.kind === 'image' || b.dataset.kind === 'code') { b.style.alignSelf = 'center'; return; }
       if (b.parentElement.dataset.arr === 'row') Object.assign(b.style, { width: '', flex: `${bw} 1 ${bw}px`, minWidth: `${bw}px`, alignSelf: 'stretch' });
       else Object.assign(b.style, { width: '', flex: `${bh} 1 ${bh}px`, minHeight: `${bh}px`, alignSelf: 'stretch' });
       Object.assign(m.style, { width: '100%', height: '', flex: `1 1 ${mh}px`, minHeight: `${mh}px` });

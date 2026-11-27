@@ -202,7 +202,9 @@
       return `<div class="dk dk-text${tight}">${ncards(points, { two: !!variant.two && points.length >= 3, num: sl.layout !== 'overview' })}</div>`;
     }
     if (sl.layout === 'screens') {
-      return `<div class="dk scr-row${tight}" style="--n:${vs.length}">${vs.map((v, i) => `<div class="fe-card">${vis([v])}${points[i] ? `<p class="fe-k">${esc(PF.t('en.feature'))} ${String(i + 1).padStart(2, '0')}</p>${points[i].label ? `<h3>${esc(PF.label(points[i].label))}</h3>` : ''}${txt(points[i]) ? `<p>${inline(txt(points[i]))}</p>` : ''}` : ''}</div>`).join('')}</div>`;
+      // 화면 4장은 2×2로 가운데에 모음(수강생 요청 2026-11-27). 2~3장은 한 줄
+      const g22 = vs.length === 4;
+      return `<div class="dk scr-row${g22 ? ' g22' : ''}${tight}" style="--n:${g22 ? 2 : vs.length}">${vs.map((v, i) => `<div class="fe-card">${vis([v])}${points[i] ? `<p class="fe-k">${esc(PF.t('en.feature'))} ${String(i + 1).padStart(2, '0')}</p>${points[i].label ? `<h3>${esc(PF.label(points[i].label))}</h3>` : ''}${txt(points[i]) ? `<p>${inline(txt(points[i]))}</p>` : ''}` : ''}</div>`).join('')}</div>`;
     }
     if (sl.layout === 'problem') {
       if (variant.stack || !points.length) return `<div class="dk dk-stack${tight}">${vis(vs)}${points.length ? flowHtml(points, 'row') : ''}</div>`;
@@ -363,10 +365,13 @@
         scenes.forEach((s) => used.add(s.id));
         slides.push({ sl, scenes });
       });
-      const chs = chapterScene(c, no, chId, slides, foot, auto, p.title);
+      // 장 표지 끄기(수강생 요청 2026-11-27): deck.chapters[].cover === false(src/<폴더>/deck-edits.json의 noCover)면 장 표지를 그리지 않고
+      //   목차 줄은 그 장의 첫 장면으로 이음. 장면이 하나도 없으면 평소대로
+      const first = slides.find((x) => x.scenes[0])?.scenes[0];
+      const chs = c.cover === false && first ? null : chapterScene(c, no, chId, slides, foot, auto, p.title);
       slides.forEach((x) => { if (x.scenes[0]) secScenes.push({ path: x.sl.sectionPath || [], id: x.scenes[0].id }); });
-      chapterScenes.push(chs, ...slides.flatMap((x) => x.scenes));
-      tocItems.push({ c, chId, no, n: slides.reduce((a, x) => a + x.scenes.length, 0) });
+      chapterScenes.push(...(chs ? [chs] : []), ...slides.flatMap((x) => x.scenes));
+      tocItems.push({ c, chId: chs ? chId : first.id, no, n: slides.reduce((a, x) => a + x.scenes.length, 0) });
     });
     const merged = !!rp;
     if (!merged) retro = buildRetro(p.retro || {}, p, foot, auto);

@@ -297,6 +297,10 @@ table.md-table img { max-height: 120px; max-width: 100%; height: auto; }   /* wi
 .flow.col .fstep .labelchip { justify-content: center; }
 .scr-row { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 22px; }
 .pf-sizing .scr-row { align-items: stretch; }
+/* 화면 4장 = 2×2(수강생 요청 2026-11-27): 두 줄이 높이를 반씩, 왼쪽 열은 오른쪽 끝·오른쪽 열은 왼쪽 끝에 붙여 네 장이 가운데에 모임 */
+.scr-row.g22 { grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
+.scr-row.g22 > .fe-card:nth-child(odd) .vis { align-items: flex-end; }
+.scr-row.g22 > .fe-card:nth-child(even) .vis { align-items: flex-start; }
 .pf-vband { margin: 0; padding: 12px 14px; border-left: 4px solid #F04438; background: #2A1212; color: #FDA29B; font-size: 13px; line-height: 1.45; border-radius: 8px; min-width: 260px; }
 .pf-vband b { font-weight: 800; }
 .pf-vband span { display: block; margin-top: 3px; font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
