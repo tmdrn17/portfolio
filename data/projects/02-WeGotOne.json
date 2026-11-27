@@ -399,14 +399,7 @@
         "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
-        "points": [
-          {"label": "", "text": "납치되는 동안에는 플레이어 몸 전체를 Kinematic으로 바꿔 촉수 부착 지점에 고정하고, 물고기와의 충돌도 끕니다.", "verbatim": true},
-          {
-            "label": "",
-            "text": "목적지에 닿으면 Dynamic과 충돌을 되돌리고 처음 자세로 복원한 뒤, 오징어는 원래 자리로 돌아가 순찰을 이어 갑니다.",
-            "verbatim": true
-          }
-        ],
+        "points": [],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "sequenceDiagram"}],
         "edited": true
       },
@@ -418,8 +411,19 @@
         "title": {"text": "3.1.1 대왕오징어", "verbatim": true},
         "lead": null,
         "sectionPath": ["3. 핵심 기능", "3.1 특수 물고기 설계", "3.1.1 대왕오징어"],
-        "points": [],
-        "visuals": [{"kind": "code", "n": 1, "fp": "playerRigidbodies = owner.PlayerRootPosition"}],
+        "points": [
+          {"label": "", "text": "납치되는 동안에는 플레이어 몸 전체를 Kinematic으로 바꿔 촉수 부착 지점에 고정하고, 물고기와의 충돌도 끕니다.", "verbatim": true},
+          {
+            "label": "",
+            "text": "목적지에 닿으면 Dynamic과 충돌을 되돌리고 처음 자세로 복원한 뒤, 오징어는 원래 자리로 돌아가 순찰을 이어 갑니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {"kind": "code", "n": 2, "fp": "﻿using System.Collections.Generic;", "lines": [20, 39]},
+          {"kind": "code", "n": 2, "fp": "﻿using System.Collections.Generic;", "lines": [93, 110]},
+          {"kind": "code", "n": 2, "fp": "﻿using System.Collections.Generic;", "lines": [114, 125]}
+        ],
         "edited": true
       },
       {
@@ -751,7 +755,11 @@
         "lead": null,
         "sectionPath": ["4. AI 협업"],
         "points": [
-          {"label": "쓴 방식", "text": "코드는 직접 짜고, Gemini와 노트북LM에게 보여 주며 검토와 설명을 받았습니다.", "verbatim": true},
+          {
+            "label": "쓴 방식",
+            "text": "코드는 직접 짜고, Gemini와 노트북LM에게 보여 주며 검토와 설명을 받았습니다. 특수 물고기 이미지도 노트북LM으로 프롬포트를 생성하고 Gemini로 이미지를 만들었습니다.",
+            "verbatim": true
+          },
           {"label": "맡긴 것", "text": "직접 짠 대왕오징어 납치 상태와, 충돌 · 장애물 감지를 Fish 하나로 합친 코드를 검토받았습니다.", "verbatim": true},
           {
             "label": "직접 판단한 것",
@@ -764,7 +772,8 @@
             "verbatim": true
           }
         ],
-        "visuals": []
+        "visuals": [],
+        "edited": true
       }
     ],
     "base": [
@@ -1293,6 +1302,6 @@
         "visuals": []
       }
     ],
-    "applied": "ffe72bf2965d3980"
+    "applied": "94464d1ebcfe3097"
   }
 }
