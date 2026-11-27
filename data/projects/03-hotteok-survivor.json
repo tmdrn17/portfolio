@@ -381,6 +381,32 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "|bool 하나(isAttack)|✔ 선택: 맞힌 적 목록(HashSet<Enemy>)"}]
       },
       {
+        "key": "player-lookup",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "4.3 적이 플레이어를 어디서 찾게 할 것인가", "verbatim": true},
+        "lead": {
+          "text": "Player가 자기 자신을 GameManager에 등록하고, 적은 켜질 때(OnEnable) GameManager.Instance.Player를 한 번 읽어 Target에 저장하는 방식으로 만들었습니다.",
+          "verbatim": true
+        },
+        "sectionPath": ["4. 고민과 선택", "4.3 적이 플레이어를 어디서 찾게 할 것인가"],
+        "points": [
+          {
+            "label": "선택한 이유",
+            "text": "적은 Target을 한 번만 읽고 그 뒤로는 저장한 필드만 쓰므로, 두 방식 모두 매 프레임 탐색하지 않아 성능 차이는 없었습니다. 그래서 설계와 안정성으로 판단했습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 1,
+            "fp": "|Player를 싱글톤으로 (Player.Instance)|✔ 유지: GameManager에 등록 (GameManager.Instance.Player)"
+          }
+        ]
+      },
+      {
         "key": "ai-collab",
         "chapter": "ai",
         "layout": "overview",
@@ -668,6 +694,32 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "|bool 하나(isAttack)|✔ 선택: 맞힌 적 목록(HashSet<Enemy>)"}]
       },
       {
+        "key": "player-lookup",
+        "chapter": "tradeoffs",
+        "layout": "full",
+        "tab": "선택",
+        "title": {"text": "4.3 적이 플레이어를 어디서 찾게 할 것인가", "verbatim": true},
+        "lead": {
+          "text": "Player가 자기 자신을 GameManager에 등록하고, 적은 켜질 때(OnEnable) GameManager.Instance.Player를 한 번 읽어 Target에 저장하는 방식으로 만들었습니다.",
+          "verbatim": true
+        },
+        "sectionPath": ["4. 고민과 선택", "4.3 적이 플레이어를 어디서 찾게 할 것인가"],
+        "points": [
+          {
+            "label": "선택한 이유",
+            "text": "적은 Target을 한 번만 읽고 그 뒤로는 저장한 필드만 쓰므로, 두 방식 모두 매 프레임 탐색하지 않아 성능 차이는 없었습니다. 그래서 설계와 안정성으로 판단했습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 1,
+            "fp": "|Player를 싱글톤으로 (Player.Instance)|✔ 유지: GameManager에 등록 (GameManager.Instance.Player)"
+          }
+        ]
+      },
+      {
         "key": "ai-collab",
         "chapter": "ai",
         "layout": "overview",
@@ -684,7 +736,7 @@
           {"label": "맡긴 것", "text": "구현 방법을 모르던 공간 분할 격자와 관통 호떡의 다단히트 방지(HashSet)는 설명과 예시를 받았습니다.", "verbatim": true},
           {
             "label": "직접 판단한 것",
-            "text": "총알 근처의 적을 리스트에 담아 거리로 판정하자는 답에, 그러면 결국 적을 전부 찾아 거리를 계산해야 한다는 점을 짚었습니다.",
+            "text": "총알 근처의 적만 골라 거리로 판정하자는 답을 받았지만, 근처 적을 고르려면 결국 모든 적과의 거리를 재야 해서 부담이 줄지 않는다는 점을 짚었습니다.",
             "verbatim": true
           },
           {"label": "확인한 방법", "text": "받은 설명은 그대로 쓰지 않고 제 말로 다시 정리해 맞는지 되물은 뒤, 코드는 직접 짰습니다.", "verbatim": true}
@@ -692,6 +744,6 @@
         "visuals": []
       }
     ],
-    "applied": "1d3e4ad4727033e2"
+    "applied": "1389b2729be1b370"
   }
 }

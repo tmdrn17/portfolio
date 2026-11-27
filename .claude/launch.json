@@ -8,6 +8,12 @@
       "port": 4600
     },
     {
+      "name": "portfolio-py",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-3", "-m", "http.server", "4600"],
+      "port": 4600
+    },
+    {
       "name": "portfolio-node",
       "runtimeExecutable": "node",
       "runtimeArgs": ["C:/Users/VR9_~1/AppData/Local/Temp/claude/034210e653bc6045/fa8d5d1f-920f-4d4d-ba60-b62fae93770f/scratchpad/serve.js", ".", "4600"],
