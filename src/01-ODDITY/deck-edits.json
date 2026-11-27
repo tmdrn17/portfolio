@@ -72,15 +72,7 @@
       "title": {"text": "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기", "verbatim": true},
       "lead": null,
       "sectionPath": ["3. 핵심 기능", "3.1 애니메이션 진행도를 따라 움직이는 커브 기반 구르기"],
-      "points": [
-        {
-          "label": "커브로 구간별 속도",
-          "text": "커브 모양에 따라 총 거리도 달라집니다(거리 = rollDistance × 커브 넓이, 지금 커브로 약 6.4).",
-          "verbatim": false
-        },
-        {"label": "", "text": "구르기는 스태미나 25를 쓰고(최대 100, 1초 뒤부터 초당 15 회복).", "verbatim": true},
-        {"label": "", "text": "이동은 진행도 0.7에서 멈추지만 무적은 0.8까지 이어, 구르기가 끝날 무렵 플레이어에게 살짝 여유를 두었습니다.", "verbatim": true}
-      ],
+      "points": [],
       "visuals": [
         {
           "kind": "image",
@@ -105,7 +97,7 @@
       "layout": "code",
       "tab": "구현",
       "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
-      "lead": {"text": "AddMissionResult는 미션 수락 결과 enum입니다.", "verbatim": true},
+      "lead": null,
       "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
       "points": [
         {
@@ -153,21 +145,13 @@
       "lead": null,
       "sectionPath": ["2. 시스템 구조", "2.2 미션", "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"],
       "points": [
-        {
-          "label": "문제",
-          "text": "Esc나 UI를 열면 조종 스크립트가 멈춰, 걷기 값이 남은 캐릭터가 제자리에서 계속 걸었습니다.",
-          "verbatim": false
-        },
+        {"label": "문제", "text": "Esc나 UI를 열면 조종 스크립트가 멈춰, 걷기 값이 남은 캐릭터가 제자리에서 계속 걸었습니다.", "verbatim": false},
         {
           "label": "해결",
           "text": "컴포넌트는 켜 두고 잠금 값으로 조작만 막아 애니메이터 · 피격 처리는 그대로 돌게 했고, 확인하는 곳이 흩어지는 단점은 받아들였습니다.",
           "verbatim": false
         },
-        {
-          "label": "결과",
-          "text": "이후 팀원도 염동력 · 스킬 · 일시 정지 입력 제한을 같은 잠금 값(IsUIClose)으로 통일했습니다.",
-          "verbatim": false
-        }
+        {"label": "결과", "text": "이후 팀원도 염동력 · 스킬 · 일시 정지 입력 제한을 같은 잠금 값(IsUIClose)으로 통일했습니다.", "verbatim": false}
       ],
       "visuals": [{"kind": "code", "n": 1, "fp": "// UIManager.cs — 커서를 잠그거나 풀 때 잠금 값 하나만 바꿈 (컴포넌트는 끄지 않음)"}],
       "from": {
@@ -175,6 +159,69 @@
         "sectionPath": ["2. 시스템 구조", "2.2 미션", "2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가"],
         "sig": ["2.2.1 UI가 열렸을 때 플레이어를 어떻게 멈출 것인가|code|1|// UIManager.cs — 커서를 잠그거나 풀 때 잠금 값 하나만 바꿈 (컴포넌트는 끄지 않음)"]
       }
+    },
+    {
+      "key": "hit-animator",
+      "chapter": "features",
+      "layout": "visual",
+      "tab": "구조",
+      "title": {"text": "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응", "verbatim": true},
+      "lead": {"text": "넉다운·기상 Blend Tree, 피격 분기, 구르기, 사망까지 플레이어 애니메이터도 직접 구성했습니다.", "verbatim": true},
+      "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
+      "points": [],
+      "visuals": [
+        {
+          "kind": "image",
+          "src": "images/animator_hitreaction.png",
+          "w": 1560,
+          "h": 518,
+          "caption": {"text": "HitReaction 상태 머신 — HitMotion 값에 따라 피격 모션 · Knockdown Blend Tree로 분기", "verbatim": true}
+        },
+        {
+          "kind": "image",
+          "src": "images/animator_knockdown_blendtree.png",
+          "w": 1562,
+          "h": 540,
+          "caption": {"text": "Knockdown Blend Tree — HitDir 값(0 · 1)으로 앞 · 뒤 넉다운 모션 선택", "verbatim": true}
+        }
+      ],
+      "from": {
+        "key": "hit-animator",
+        "sectionPath": ["3. 핵심 기능", "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응"],
+        "sig": [
+          "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응|image|images/animator_hitreaction.png|1",
+          "3.2 피격 종류와 방향을 애니메이터에 맡기는 피격 반응|image|images/animator_knockdown_blendtree.png|1"
+        ]
+      }
+    },
+    {
+      "key": "mission-history",
+      "chapter": "features",
+      "layout": "problem",
+      "tab": "문제 해결",
+      "title": {"text": "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템", "verbatim": true},
+      "lead": null,
+      "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"],
+      "points": [
+        {
+          "label": "문제",
+          "text": "처음에는 미션 창에서 미션을 고르면 곧바로 그 보스 스테이지로 이동했습니다. 그런데 증강칩은 로비에서만 장착할 수 있어서, 장착을 깜빡하고 미션을 받으면 스킬을 장착하지 못하거나 필요 없는 스킬을 바꾸지 못한 채 보스전에 들어가게 됐습니다.",
+          "verbatim": true
+        },
+        {
+          "label": "해결",
+          "text": "그래서 기획을 바꿔, 미션은 수락 목록(최대 3개)에 담아 두기만 하고 출격은 출격 NPC(StageMoveUI)에서 따로 고르도록 나눴습니다.",
+          "verbatim": true
+        },
+        {"label": "문제", "text": "이렇게 바꾸자 보스 미션을 하고 로비로 돌아오면 함께 받아 둔 미션 목록이 초기화되는 문제가 생겼습니다.", "verbatim": true},
+        {
+          "label": "해결",
+          "text": "그래서 수락한 미션 목록을 static으로 저장해 두고, 로비로 돌아오면 남은 미션으로 목록을 다시 생성하도록 고쳤습니다.",
+          "verbatim": true
+        }
+      ],
+      "visuals": [],
+      "from": {"key": "mission-history", "sectionPath": ["3. 핵심 기능", "3.3 결과를 enum으로 돌려주는 데이터 기반 미션 시스템"], "sig": []}
     }
   ],
   "hide": []
