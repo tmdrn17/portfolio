@@ -81,7 +81,7 @@
       "title": "AI와 나눠 한 두 번의 리팩터링",
       "what": "v1 코드 전체(팀원 코드 포함)를 1차는 코드 스타일, 2차는 구조 개선으로 리팩터링",
       "how": "기준을 정하고, 작업을 나누고, 결과를 Unity에서 검증하는 일은 직접 하고, 반복 작업은 Claude Code에 맡겼습니다. 2차는 기준 문서에 구조 판단 기준 8개와 쓰지 않을 것을 더하고 R1-R12로 계획을 세운 뒤 진행했습니다.",
-      "why": "바꾸는 기준은 `코딩스타일.md`에 정해 두었고, 스크립트 72개와 씬 · 프리팹 47개에 같은 규칙을 적용해야 하는 반복 작업이 많았습니다.",
+      "why": "바꾸는 기준은 평소 정리해 둔 `코딩스타일.md`에 정해 두었고, 스크립트 72개와 씬 · 프리팹 47개에 같은 규칙을 적용해야 하는 반복 작업이 많았습니다.",
       "section": "4. AI 협업",
       "image": null
     }
@@ -91,7 +91,7 @@
       "title": "필드 이름을 바꾸자 인스펙터 값이 사라진 문제",
       "problem": "합치기 단계(M2)에서 `cameraArm`이 비어 플레이어가 움직이지 않은 적이 있고, M3에서는 공격 쿨타임 키를 고치지 않았다면 1초가 0.5초가 될 뻔했습니다.",
       "cause": "필드 이름을 바꾸자 씬에 저장된 프리팹 오버라이드 키가 옛 이름으로 남아 값이 사라졌습니다.",
-      "solution": "리팩터링 스킬에 \"필드 이름을 바꾸면 프리팹 오버라이드의 `propertyPath`도 확인한다\"는 규칙을 추가했습니다.",
+      "solution": "리팩터링 스킬(SKILL.md)에 \"프리팹 오버라이드도 같이 바꾼다\"는 규칙을 추가했습니다.",
       "result": "",
       "lesson": "",
       "section": "4. AI 협업"
@@ -100,8 +100,17 @@
       "title": "AI가 조정 값까지 상수로 만든 문제",
       "problem": "1차에서 AI가 이동 속도 · 쿨타임 · 목숨 수처럼 에디터에서 바꿀 수 있어야 하는 값까지 `const`로 만들었습니다.",
       "cause": "1차 기준 문서는 단순하게 제 스타일만 준 문서였습니다.",
-      "solution": "2차 기준에 \"조정 값은 `const`로 두지 않는다\", \"다른 클래스의 인스펙터 값을 `const`로 다시 적지 않고 `property`를 통해 가져온다\", \"배열 길이는 `.Length`로 읽는다\"를 적어 넣었습니다.",
+      "solution": "2차에서는 `style.md` 5절에 하지 말 것과 예외를 함께 적어 넣었습니다.",
       "result": "그 값들을 `[SerializeField]`로 되돌렸습니다.",
+      "lesson": "",
+      "section": "4. AI 협업"
+    },
+    {
+      "title": "상수 정리가 계획대로 다 되지 않은 문제",
+      "problem": "2차가 끝난 뒤 AI가 낸 결과를 다시 점검해 보니, 상수 정리가 계획대로 다 되지 않았습니다.",
+      "cause": "계획에 \"두 파일 이상이 쓰는 상수만 공용 클래스로\"라는 제한이 묻혀 들어가 확인받지 않은 채 적용됐고, 계획(R1)에 적은 7개 파일이 어느 세션에도 배정되지 않았습니다.",
+      "solution": "상수를 어디에 둘지 기준을 다시 정하고, `Tags`를 5개에서 23개로 늘리고 `InputNames` · `ObjectNames`를 새로 만들어 스크립트 23개를 고쳤습니다.",
+      "result": "문자열 값은 하나도 바꾸지 않았고, 컴파일 에러 0개를 확인했습니다.",
       "lesson": "",
       "section": "4. AI 협업"
     }
@@ -436,6 +445,33 @@
             "kind": "table",
             "n": 1,
             "fp": "|static class (고름)|struct"
+          }
+        ]
+      },
+      {
+        "key": "tags-where",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "선택",
+        "title": {
+          "text": "어떤 상수를 어디에 두나",
+          "verbatim": false
+        },
+        "lead": {
+          "text": "프로젝트 전체에 등록되는 이름(태그 · 씬 · 입력)은 모두 옮기고, 씬 오브젝트 이름은 여러 파일이 쓸 때만 옮겼습니다.",
+          "verbatim": false
+        },
+        "sectionPath": [
+          "2. 시스템 구조",
+          "2.2 v2 (리팩터링)",
+          "상수 모음을 static class로 만든 이유"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 2,
+            "fp": "종류|둘 곳|이유"
           }
         ]
       },
@@ -1054,6 +1090,69 @@
         ]
       },
       {
+        "key": "ai-sessions",
+        "chapter": "ai",
+        "layout": "visual",
+        "tab": "구조",
+        "title": {
+          "text": "AI 협업 — 세션을 나눈 기준",
+          "verbatim": false
+        },
+        "lead": null,
+        "sectionPath": [
+          "4. AI 협업"
+        ],
+        "points": [
+          {
+            "label": "결합도가 큰 것부터",
+            "text": "다른 스크립트가 모두 쓰는 공용 API를 바꾸는 세션(S1 · T1)을 먼저 혼자 하고, 바뀐 API를 노트로 남겼습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "세션 하나는 약 400~900줄",
+            "text": "한 세션 안에서 컨텍스트가 넘치지 않게 나눴습니다.",
+            "verbatim": true
+          },
+          {
+            "label": "동시에 돌리는 세션끼리 부딪히지 않게",
+            "text": "다른 세션이 쓰는 클래스는 public 이름을 동결하고, 2차에서는 양쪽이 따로 작업하는 메서드를 약속 API로 미리 정해 합치기 단계(N2)에서 양쪽이 같은지 확인했습니다.",
+            "verbatim": false
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 2,
+            "fp": "약속 API (2차)|만드는 세션|부르는 세션"
+          }
+        ]
+      },
+      {
+        "key": "ai-criteria",
+        "chapter": "ai",
+        "layout": "full",
+        "tab": "선택",
+        "title": {
+          "text": "AI 협업 — 2차에 더한 판단 기준",
+          "verbatim": false
+        },
+        "lead": {
+          "text": "2차는 먼저 style.md에 구조 판단 기준 8개와 쓰지 않을 것을 더하고, R1-R12로 계획을 세웠습니다.",
+          "verbatim": false
+        },
+        "sectionPath": [
+          "4. AI 협업"
+        ],
+        "points": [],
+        "visuals": [
+          {
+            "kind": "table",
+            "n": 3,
+            "fp": "#|확인할 것|걸리면"
+          }
+        ]
+      },
+      {
         "key": "ai-checks",
         "chapter": "ai",
         "layout": "overview",
@@ -1111,8 +1210,8 @@
           },
           {
             "label": "해결",
-            "text": "그래서 리팩터링 스킬에 \"필드 이름을 바꾸면 프리팹 오버라이드의 `propertyPath`도 확인한다\"는 규칙을 추가했습니다.",
-            "verbatim": true
+            "text": "리팩터링 스킬(SKILL.md)에 \"프리팹 오버라이드도 같이 바꾼다\"는 규칙을 추가했습니다.",
+            "verbatim": false
           }
         ],
         "visuals": []
@@ -1138,7 +1237,50 @@
           },
           {
             "label": "해결",
-            "text": "2차 기준에 \"조정 값은 `const`로 두지 않는다\", \"다른 클래스의 인스펙터 값을 `const`로 다시 적지 않고 `property`를 통해 가져온다\", \"배열 길이는 `.Length`로 읽는다\"를 적어 넣고, 그 값들을 `[SerializeField]`로 되돌렸습니다.",
+            "text": "2차에서는 `style.md` 5절에 하지 말 것과 예외를 함께 적어 넣고, 그 값들을 `[SerializeField]`로 되돌렸습니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "code",
+            "n": 1,
+            "fp": "// 1차 결과 (Player) — 걷기 · 달리기 속도를 상수로 만듦"
+          }
+        ]
+      },
+      {
+        "key": "ai-recheck",
+        "chapter": "ai",
+        "layout": "problem",
+        "tab": "문제 해결",
+        "title": {
+          "text": "AI 협업 — 겪은 일",
+          "verbatim": false
+        },
+        "lead": null,
+        "sectionPath": [
+          "4. AI 협업"
+        ],
+        "points": [
+          {
+            "label": "문제",
+            "text": "2차가 끝난 뒤 AI가 낸 결과를 다시 점검해 보니, 상수 정리가 계획대로 다 되지 않았습니다",
+            "verbatim": false
+          },
+          {
+            "label": "원인",
+            "text": "계획에 \"두 파일 이상이 쓰는 상수만 공용 클래스로\"라는 제한이 묻혀 들어가 확인받지 않은 채 적용됐고, R1에 적은 7개 파일은 어느 세션에도 배정되지 않았습니다.",
+            "verbatim": false
+          },
+          {
+            "label": "해결",
+            "text": "상수를 어디에 둘지 기준을 다시 정하고, `Tags`를 5개에서 23개로 늘리고 `InputNames` · `ObjectNames`를 새로 만들어 스크립트 23개를 고쳤습니다.",
+            "verbatim": false
+          },
+          {
+            "label": "결과",
+            "text": "문자열 값은 하나도 바꾸지 않았고, 컴파일 에러 0개를 확인했습니다.",
             "verbatim": true
           }
         ],
