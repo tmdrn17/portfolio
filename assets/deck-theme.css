@@ -147,7 +147,7 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .t-P2.compact .toc-list.sub.dotted .n { width: 40px; font-size: 12px; }
 
 /* ── 결과와 회고(P6) ── */
-.rt { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; height: 100%; align-items: start; }
+.rt { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; height: 100%; align-items: center; align-content: center; }   /* 달성 카드 · 아쉬운 점 표를 장면 세로 가운데로(수강생 요청 2026-11-27) */
 .rt.one { grid-template-columns: 1fr; }
 .rt-ach { padding: 20px 24px; }
 .rt-h { font-size: 20px; font-weight: 800; }
@@ -156,7 +156,7 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .rt-ach li { position: relative; padding-left: 30px; font-size: 16px; line-height: 1.6; color: var(--ink); }
 .rt-ach li::before { content: '✓'; position: absolute; left: 0; top: 1px; width: 20px; height: 20px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink);
                      font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; line-height: 1; }
-.rt table.mini td { font-size: 15px; }
+.rt table.mini td { font-size: 15px; vertical-align: middle; }
 .rt table.mini td.p { color: var(--accent-ink); font-weight: 600; }
 
 /* ── 안내 장면(데이터 없음·file:// 등) ── */
@@ -185,6 +185,8 @@ table.kv td.role { color: var(--accent-ink); font-weight: 800; }
 .pf-stretch .pf-fill > * { flex: 1 1 auto; min-height: 0; }
 .pf-stretch .dk-side { align-items: stretch; grid-template-rows: minmax(0, 1fr); }
 .pf-stretch .dk-stack { grid-template-rows: minmax(0, 1fr) auto; }
+/* 코드 판만 있는 위아래 배치: 코드 판은 글 크기라 늘지 않으므로, 카드 줄을 바닥에 두지 않고 코드 바로 밑에 붙여 함께 세로 가운데로(수강생 요청 2026-11-27) */
+.pf-stretch .dk-stack:not(:has(.vbox:not([data-kind="code"]))) { grid-template-rows: auto auto; align-content: center; }
 .pf-stretch .dk-text { align-content: stretch; }
 .pf-stretch .scr-row { align-items: stretch; }
 .pf-stretch .fe-card .vis { flex: 1 1 auto; }
@@ -294,7 +296,7 @@ table.md-table img { max-height: 120px; max-width: 100%; height: auto; }   /* wi
 .fstep p { font-size: 15px; line-height: 1.58; color: var(--ink); }
 .fstep.res { background: color-mix(in srgb, var(--ok) 16%, var(--card)); border-color: color-mix(in srgb, var(--ok) 50%, var(--card)); }
 .flow.col .fstep { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 12px; align-items: center; padding: 11px 14px; }
-.flow.col .fstep .labelchip { justify-content: center; }
+.flow.col .fstep .labelchip { justify-content: center; align-self: center; justify-self: center; }   /* 라벨 칩은 칸 가운데(수강생 요청 2026-11-27) */
 .scr-row { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 22px; }
 .pf-sizing .scr-row { align-items: stretch; }
 /* 화면 4장 = 2×2(수강생 요청 2026-11-27): 두 줄이 높이를 반씩, 왼쪽 열은 오른쪽 끝·오른쪽 열은 왼쪽 끝에 붙여 네 장이 가운데에 모임 */

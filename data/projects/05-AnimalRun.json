@@ -159,11 +159,11 @@
   "retro": {
     "section": "6. 결과와 회고",
     "achieved": [
-      "팀 해체 이후 다시 열어 2023 원형을 아래처럼 바꿨고, 초기 버전 보다 훨씬 게임에 가까운 모습으로 변했습니다.",
+      "더 공부한 이후 다시 열어 2023 원형을 아래처럼 바꿨고, 초기 버전 보다 훨씬 게임에 가까운 모습으로 변했습니다.",
       "이번 프로젝트에서는 역할 분리와 설계 패턴 적용으로 코드 구조를 개선하고, 세분화된 커밋 기록을 통해 개발 과정의 추적성과 이해도를 높였습니다."
     ],
     "regrets": [
-      "스토어 업로드에는 실패",
+      "개발 지연으로 스토어 업로드에는 실패",
       "총알마다 모든 적을 확인해, 적이 많아지면 비용이 커집니다.",
       "총알 · 폭발 이펙트 · 러너는 재사용하지만, 적은 아직 Instantiate · Destroy로 만들고 지웁니다."
     ],
@@ -193,12 +193,7 @@
         "points": [
           {
             "label": "",
-            "text": "3D 크라우드 러너 개인 프로젝트로 절차적 레벨 생성, 전략 패턴, 레벨업 증강 선택, 거리 충돌, ObjectPool, 맵 테마를 구현했습니다.",
-            "verbatim": true
-          },
-          {
-            "label": "",
-            "text": "빠르게 제작해 스토어에 올리기 위해 만들었습니다. 하이퍼 캐주얼 장르는 반복성이 있고, 에셋을 비교적 저렴한 비용으로 구매할 수 있습니다. 비슷한 종류의 게임이 이미 여러 사이트에서 광고되고 있어, 유저들이 받아들이기 쉬웠습니다.",
+            "text": "3D 크라우드 러너 개인 프로젝트로 절차적 레벨 생성, 전략 패턴, 레벨업 증강 선택, 거리 충돌, ObjectPool, 맵 테마를 구현했습니다. 빠르게 제작해 스토어에 올리기 위해 만들었습니다. 하이퍼 캐주얼 장르는 반복성이 있고, 에셋을 비교적 저렴한 비용으로 구매할 수 있습니다. 비슷한 종류의 게임이 이미 여러 사이트에서 광고되고 있어, 유저들이 받아들이기 쉬웠습니다.",
             "verbatim": false
           },
           {
@@ -211,13 +206,24 @@
         "edited": true
       },
       {
+        "key": "game-loop",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "흐름",
+        "title": {"text": "2.1 게임 루프", "verbatim": true},
+        "lead": {"text": "한 판 단위로 끝나는 단발성 구조입니다.", "verbatim": true},
+        "sectionPath": ["2. 시스템 구조", "2.1 게임 루프"],
+        "points": [],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
         "key": "arch",
         "chapter": "structure",
         "layout": "full",
         "tab": "구조",
-        "title": {"text": "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
+        "title": {"text": "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
         "lead": {"text": "TSV 데이터가 테이블을 거쳐 들어오고, 상태 변화는 이벤트로 알립니다.", "verbatim": true},
-        "sectionPath": ["2. 시스템 구조", "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
+        "sectionPath": ["2. 시스템 구조", "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
         "points": [],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
@@ -226,22 +232,11 @@
         "chapter": "structure",
         "layout": "full",
         "tab": "구조",
-        "title": {"text": "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
+        "title": {"text": "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
+        "sectionPath": ["2. 시스템 구조", "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
         "points": [],
         "visuals": [{"kind": "table", "n": 1, "fp": "클래스|맡은 일"}]
-      },
-      {
-        "key": "game-loop",
-        "chapter": "structure",
-        "layout": "full",
-        "tab": "흐름",
-        "title": {"text": "2.2 게임 루프", "verbatim": true},
-        "lead": {"text": "한 판 단위로 끝나는 단발성 구조입니다.", "verbatim": true},
-        "sectionPath": ["2. 시스템 구조", "2.2 게임 루프"],
-        "points": [],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "level-gen",
@@ -287,22 +282,6 @@
         "edited": true
       },
       {
-        "key": "door-quiz",
-        "chapter": "features",
-        "layout": "code",
-        "tab": "구현",
-        "title": {"text": "3.2 정답을 먼저 정하고 식을 만드는 수식 문", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
-        "points": [
-          {"label": "문제", "text": "문에 숫자만 보여 주면 너무 단순하고, 식을 랜덤으로 만들면 결과가 얼마나 나올지 통제할 수 없었습니다.", "verbatim": true},
-          {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다.", "verbatim": true},
-          {"label": "정답부터", "text": "+·− 문은 −3~5(0 제외), ×·÷ 문은 2~3에서 결과를 먼저 뽑습니다.", "verbatim": true}
-        ],
-        "visuals": [{"kind": "code", "n": 3, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
-        "edited": true
-      },
-      {
         "key": "door-quiz-screen",
         "chapter": "features",
         "layout": "visual",
@@ -327,6 +306,22 @@
             "caption": {"text": "수식 문을 지나며 무리가 늘어나는 장면", "verbatim": true}
           }
         ],
+        "edited": true
+      },
+      {
+        "key": "door-quiz",
+        "chapter": "features",
+        "layout": "code",
+        "tab": "구현",
+        "title": {"text": "3.2 정답을 먼저 정하고 식을 만드는 수식 문", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.2 정답을 먼저 정하고 식을 만드는 수식 문"],
+        "points": [
+          {"label": "문제", "text": "문에 숫자만 보여 주면 너무 단순하고, 식을 랜덤으로 만들면 결과가 얼마나 나올지 통제할 수 없었습니다.", "verbatim": true},
+          {"label": "해결", "text": "결과값을 먼저 뽑고, 그 값이 나오도록 식을 거꾸로 만듭니다.", "verbatim": true},
+          {"label": "정답부터", "text": "+·− 문은 −3~5(0 제외), ×·÷ 문은 2~3에서 결과를 먼저 뽑습니다.", "verbatim": true}
+        ],
+        "visuals": [{"kind": "code", "n": 3, "fp": "public static DoorQuiz Create(BonusType type)", "lines": [1, 16]}],
         "edited": true
       },
       {
@@ -395,9 +390,11 @@
         "lead": {"text": "게임을 시작할 때 동물 3개와 무기 3개를 선택지로 줍니다.", "verbatim": true},
         "sectionPath": ["3. 핵심 기능", "3.5 게임 시작 시 동물 · 무기 선택"],
         "points": [
-          {"label": "바꾼 이유", "text": "초기 버전에는 코인을 모아 스킨과 무기를 사는 상점이 있었습니다.", "verbatim": true},
-          {"label": "바꾼 이유", "text": "코인을 판 밖의 상점이 아니라 판 안에서 증강을 고르는 데 쓰게 하고 싶었습니다.", "verbatim": false},
-          {"label": "바꾼 이유", "text": "한 판 단위로 끝나는 단발성 루프로 중독성을 더하려는 것입니다.", "verbatim": true},
+          {
+            "label": "바꾼 이유",
+            "text": "초기 버전에는 코인을 모아 스킨과 무기를 사는 상점이 있었습니다. 코인을 판 밖의 상점이 아니라 판 안에서 증강을 고르는 데 쓰게 하고 싶었습니다. 한 판 단위로 끝나는 단발성 루프로 중독성을 더하려는 것입니다.",
+            "verbatim": false
+          },
           {"label": "결과", "text": "지금은 판마다 동물과 무기가 달라지고 새로운 증강으로 불리한 판을 뒤집을 수 있어 반복해도 덜 지루해졌습니다.", "verbatim": false}
         ],
         "visuals": [
@@ -408,7 +405,8 @@
             "h": 540,
             "caption": {"text": "시작 시 동물 · 무기 선택", "verbatim": true}
           }
-        ]
+        ],
+        "edited": true
       },
       {
         "key": "select",
@@ -427,6 +425,38 @@
           {"label": "", "text": "뽑을 개수는 후보 수를 넘지 않게 해, 후보가 버튼보다 적어도 무한 루프에 빠지지 않습니다.", "verbatim": true}
         ],
         "visuals": [{"kind": "code", "n": 1, "fp": "private static void PickRandomUnique<T>(List<T> result, int "}]
+      },
+      {
+        "key": "augment-screen",
+        "chapter": "features",
+        "layout": "visual",
+        "tab": "결과",
+        "title": {"text": "3.6 코인으로 레벨업해 고르는 증강", "verbatim": true},
+        "lead": null,
+        "sectionPath": ["3. 핵심 기능", "3.6 코인으로 레벨업해 고르는 증강"],
+        "points": [
+          {"label": "", "text": "첫 레벨업에는 경험치 5가 필요하고, 레벨마다 3씩 늘어납니다.", "verbatim": true},
+          {
+            "label": "",
+            "text": "증강은 무기 계열 5종(공격력 · 연사 · 사거리 · 탄속 · 폭발 범위)과 러너 계열 2종(무리 증원 러너 +3 · 무리 번식 러너 +50%)입니다.",
+            "verbatim": true
+          },
+          {
+            "label": "",
+            "text": "증강마다 전용 그림을 쓰고(SpriteKey로 불러옴), 무기 강화 · 무리 강화는 카드의 배지 · 태그 색으로 구분합니다.",
+            "verbatim": true
+          }
+        ],
+        "visuals": [
+          {
+            "kind": "image",
+            "src": "images/augment_select.gif",
+            "w": 300,
+            "h": 540,
+            "caption": {"text": "레벨업 증강 선택", "verbatim": true}
+          }
+        ],
+        "edited": true
       },
       {
         "key": "augment",
@@ -449,38 +479,8 @@
             "verbatim": true
           }
         ],
-        "visuals": [{"kind": "code", "n": 2, "fp": "private void ShowAugments()"}]
-      },
-      {
-        "key": "augment-screen",
-        "chapter": "features",
-        "layout": "visual",
-        "tab": "결과",
-        "title": {"text": "3.6 코인으로 레벨업해 고르는 증강", "verbatim": true},
-        "lead": null,
-        "sectionPath": ["3. 핵심 기능", "3.6 코인으로 레벨업해 고르는 증강"],
-        "points": [
-          {"label": "", "text": "첫 레벨업에는 경험치 5가 필요하고, 레벨마다 3씩 늘어납니다.", "verbatim": true},
-          {
-            "label": "",
-            "text": "증강은 무기 계열 5종(공격력 · 연사 · 사거리 · 탄속 · 폭발 범위)과 러너 계열 2종(무리 증원 러너 +3 · 무리 번식 러너 +50%)입니다.",
-            "verbatim": true
-          },
-          {
-            "label": "버튼 그림",
-            "text": "증강마다 전용 그림을 쓰고(SpriteKey로 불러옴), 무기 강화 · 무리 강화는 카드의 배지 · 태그 색으로 구분합니다.",
-            "verbatim": true
-          }
-        ],
-        "visuals": [
-          {
-            "kind": "image",
-            "src": "images/augment_select.gif",
-            "w": 300,
-            "h": 540,
-            "caption": {"text": "레벨업 증강 선택", "verbatim": true}
-          }
-        ]
+        "visuals": [{"kind": "code", "n": 2, "fp": "private void ShowAugments()"}],
+        "edited": true
       },
       {
         "key": "map-theme",
@@ -597,9 +597,16 @@
         "layout": "full",
         "tab": "선택",
         "title": {"text": "4.3 리팩터링으로 바뀐 충돌 판정", "verbatim": true},
-        "lead": {"text": "다섯 가지 판정을 모두 거리로 바꿨습니다.", "verbatim": true},
+        "lead": {"text": "즉, 충돌 비용을 줄인다는 목적이 의미가 없어지기 때문에 다섯 가지 판정을 모두 거리로 바꿨습니다.", "verbatim": true},
         "sectionPath": ["4. 고민과 선택", "4.3 리팩터링으로 바뀐 충돌 판정"],
-        "points": [{"label": "", "text": "기관총 탄속이 40이라 30fps에서는 한 프레임에 약 1.33을 움직이는데, 판정 지름은 1.2(반지름 0.6)입니다.", "verbatim": true}],
+        "points": [
+          {
+            "label": "바꾼 이유",
+            "text": "총알과 적, 플레이어의 충돌을 거리 비교로 바꿨는데, 나머지 판정을 콜라이더와 리지드바디를 쓰는 충돌 판정으로 그대로 두면 콜라이더 · 리지드바디를 쓰지 않는 충돌로 바꾼 의미가 없어집니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "기관총 탄속이 40이라 30fps에서는 한 프레임에 약 1.33을 움직이는데, 판정 지름은 1.2(반지름 0.6)입니다.", "verbatim": true}
+        ],
         "visuals": [{"kind": "table", "n": 1, "fp": "판정|2023 원형|2026 지금"}]
       },
       {
@@ -653,13 +660,24 @@
         "visuals": []
       },
       {
+        "key": "game-loop",
+        "chapter": "structure",
+        "layout": "full",
+        "tab": "흐름",
+        "title": {"text": "2.1 게임 루프", "verbatim": true},
+        "lead": {"text": "한 판 단위로 끝나는 단발성 구조입니다.", "verbatim": true},
+        "sectionPath": ["2. 시스템 구조", "2.1 게임 루프"],
+        "points": [],
+        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
+      },
+      {
         "key": "arch",
         "chapter": "structure",
         "layout": "full",
         "tab": "구조",
-        "title": {"text": "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
+        "title": {"text": "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
         "lead": {"text": "TSV 데이터가 테이블을 거쳐 들어오고, 상태 변화는 이벤트로 알립니다.", "verbatim": true},
-        "sectionPath": ["2. 시스템 구조", "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
+        "sectionPath": ["2. 시스템 구조", "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
         "points": [],
         "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
@@ -668,22 +686,11 @@
         "chapter": "structure",
         "layout": "full",
         "tab": "구조",
-        "title": {"text": "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
+        "title": {"text": "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름", "verbatim": true},
         "lead": null,
-        "sectionPath": ["2. 시스템 구조", "2.1 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
+        "sectionPath": ["2. 시스템 구조", "2.2 데이터 · 게임 상태 · 스테이지 · 전투의 흐름"],
         "points": [],
         "visuals": [{"kind": "table", "n": 1, "fp": "클래스|맡은 일"}]
-      },
-      {
-        "key": "game-loop",
-        "chapter": "structure",
-        "layout": "full",
-        "tab": "흐름",
-        "title": {"text": "2.2 게임 루프", "verbatim": true},
-        "lead": {"text": "한 판 단위로 끝나는 단발성 구조입니다.", "verbatim": true},
-        "sectionPath": ["2. 시스템 구조", "2.2 게임 루프"],
-        "points": [],
-        "visuals": [{"kind": "mermaid", "n": 1, "fp": "flowchart LR"}]
       },
       {
         "key": "level-gen",
@@ -1032,9 +1039,16 @@
         "layout": "full",
         "tab": "선택",
         "title": {"text": "4.3 리팩터링으로 바뀐 충돌 판정", "verbatim": true},
-        "lead": {"text": "다섯 가지 판정을 모두 거리로 바꿨습니다.", "verbatim": true},
+        "lead": {"text": "즉, 충돌 비용을 줄인다는 목적이 의미가 없어지기 때문에 다섯 가지 판정을 모두 거리로 바꿨습니다.", "verbatim": true},
         "sectionPath": ["4. 고민과 선택", "4.3 리팩터링으로 바뀐 충돌 판정"],
-        "points": [{"label": "", "text": "기관총 탄속이 40이라 30fps에서는 한 프레임에 약 1.33을 움직이는데, 판정 지름은 1.2(반지름 0.6)입니다.", "verbatim": true}],
+        "points": [
+          {
+            "label": "바꾼 이유",
+            "text": "총알과 적, 플레이어의 충돌을 거리 비교로 바꿨는데, 나머지 판정을 콜라이더와 리지드바디를 쓰는 충돌 판정으로 그대로 두면 콜라이더 · 리지드바디를 쓰지 않는 충돌로 바꾼 의미가 없어집니다.",
+            "verbatim": true
+          },
+          {"label": "", "text": "기관총 탄속이 40이라 30fps에서는 한 프레임에 약 1.33을 움직이는데, 판정 지름은 1.2(반지름 0.6)입니다.", "verbatim": true}
+        ],
         "visuals": [{"kind": "table", "n": 1, "fp": "판정|2023 원형|2026 지금"}]
       },
       {
@@ -1049,6 +1063,6 @@
         "visuals": [{"kind": "table", "n": 1, "fp": "작업|AI에게 맡긴 것|직접 한 것|AI를 쓴 이유"}]
       }
     ],
-    "applied": "b2b264c295aa8485"
+    "applied": "7d348c16ccd2a655"
   }
 }
