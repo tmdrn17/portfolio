@@ -493,7 +493,8 @@
     const make = (mode) => {
       const s = PF.scene({ id: chId, tpl: 'CH', kind: 'bare', cls: mode === 'compact' ? 'compact' : '', foot, sec: c.title, group: c.title, stitle: c.title });
       const roomy = mode === 'roomy';
-      const list = groups.map((g) => item(g.n, g.t, g.tabs, g.ref, roomy ? g.lead : '')).join('');
+      // 제목 아래 짧은 설명(탭 이름·도입 문장)은 넣지 않음 — 제목과 쪽 번호만(수강생 요청 2026-11-27)
+      const list = groups.map((g) => item(g.n, g.t, '', g.ref, '')).join('');
       PF.body(s).innerHTML = `<div class="toprow"><span class="pf-eyebrow long">${esc(ptitle)}</span><span class="rl">${esc(PF.t('deck.ch-count', { n: groups.length }))}</span></div>
         <div class="ch-mid"><div><p class="ch-no">${esc(PF.t('en.chapter'))} ${no.padStart(2, '0')}</p><h2 class="ch-t">${esc(c.title)}</h2>${DOT}</div>
         <div class="ch-list t-P2${mode === 'normal' ? '' : ' ' + mode}"><ol class="toc-list${roomy ? '' : ' sub'}${dotted ? ' dotted' : ''}">${list}</ol></div></div>`;
